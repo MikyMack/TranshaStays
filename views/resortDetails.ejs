@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>TRANSHA STAYS | RESORT DETAILS</title>
+    <link rel="shortcut icon" href="/img/transha/logo.jpeg" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&amp;family=Outfit:wght@300;400&amp;display=swap">
+    <link rel="stylesheet" href="/css/plugins.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader-bg"></div>
+    <div id="preloader">
+        <div id="preloader-status">
+            <div class="preloader-position loader"> <span></span> </div>
+        </div>
+    </div>
+    <!-- Progress scroll totop -->
+    <div class="progress-wrap cursor-pointer">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo -->
+            <div class="logo-wrapper">
+                <a class="logo" href="/"> <img src="/img/transha/logo.png" class="logo-img" alt=""> </a>
+            </div>
+            <!-- Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+                aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"> <span
+                    class="navbar-toggler-icon"><i class="ti-menu"></i></span> </button>
+            <!-- Menu -->
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item "> <a class="nav-link  " href="/" role="button">Home </a>
+
+                    </li>
+
+                    <li class="nav-item dropdown"> <a class="nav-link active dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Resort
+                            Accommodations <i class="ti-angle-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <% if (Array.isArray(resorts) && resorts.length > 0) { %>
+                                    <% resorts.forEach(function(resort) { %>
+                                        <li>
+                                            <a href="/resortDetails/<%= encodeURIComponent(resort.slug || resort.name) %>" class="dropdown-item">
+                                                <span><%= resort.name %></span>
+                                            </a>
+                                        </li>
+                                    <% }); %>
+                                <% } else { %>
+                                    <li><span class="dropdown-item text-muted">No resorts available</span></li>
+                                <% } %>
+                            </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="nearby-locations.html">Places to Visit Nearby</a>
+                    </li>
+                    <li class="nav-item dropdown"> <a class="nav-link  dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Services <i
+                                class="ti-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="pg.html" class="dropdown-item "><span>PG Stay</span></a></li>
+                            <li><a href="spa-wellness.html" class="dropdown-item"><span>Ayurvedic Spa &
+                                        Massage</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+
+
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Resort Details Dynamic View -->
+    <%
+      var property = typeof resortProperty !== "undefined" ? resortProperty : (typeof property !== "undefined" ? property : (typeof resort !== "undefined" ? resort : {}));
+    %>
+    <div class="room-details2 section-padding valign bg-img bg-fixed" data-overlay-dark="7"
+        data-background="<%= property.images && property.images.length > 0 ? property.images[0] : '/img/slider/6.jpg' %>">
+        <div class="container resort-details-main">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="wrap">
+                        <figure>
+                            <div class="owl-carousel owl-theme">
+                                <% if (Array.isArray(property.images) && property.images.length > 0) { %>
+                                    <% property.images.forEach(function(img) { %>
+                                        <div class="img">
+                                            <img src="<%= img %>" alt="Resort image">
+                                        </div>
+                                    <% }); %>
+                                <% } %>
+                            </div>
+                        </figure>
+                        <div class="caption">
+                            <% if (property.name) { %>
+                                <div class="title white mb-10"><%= property.name %></div>
+                            <% } %>
+                            <% if (property.rating && property.rating > 0) { %>
+                                <span>
+                                    <% for (var i = 0; i < Math.round(property.rating); i++) { %>
+                                        <i class="star-rating"></i>
+                                    <% } %>
+                                    <% for (var j = Math.round(property.rating); j < 5; j++) { %>
+                                        <i class="star-rating" style="opacity:0.3"></i>
+                                    <% } %>
+                                </span>
+                            <% } %>
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled list mb-4">
+                                        <% if (property.totalRooms !== undefined && property.totalRooms !== null) { %>
+                                            <li>
+                                                <div class="icon"><span class="flaticon-bed"></span></div>
+                                                <div class="text">
+                                                    <p>Total Rooms: <%= property.totalRooms %></p>
+                                                </div>
+                                            </li>
+                                        <% } %>
+                                        <% if (property.address) { %>
+                                            <li>
+                                                <div class="icon"><span class="ti-location-pin"></span></div>
+                                                <div class="text">
+                                                    <p>
+                                                        <%= property.address %>
+                                                        <% if (property.city) { %>, <%= property.city %> <% } %>
+                                                        <% if (property.state) { %>, <%= property.state %> <% } %>
+                                                        <% if (property.country) { %>, <%= property.country %> <% } %>
+                                                        <% if (property.pincode) { %> - <%= property.pincode %><% } %>
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        <% } %>
+                                        <% if (property.contactNumber) { %>
+                                            <li>
+                                                <div class="icon"><span class="ti-mobile"></span></div>
+                                                <div class="text">
+                                                    <p><%= property.contactNumber %></p>
+                                                </div>
+                                            </li>
+                                        <% } %>
+                                        <% if (property.email) { %>
+                                            <li>
+                                                <div class="icon"><span class="ti-email"></span></div>
+                                                <div class="text">
+                                                    <p><%= property.email %></p>
+                                                </div>
+                                            </li>
+                                        <% } %>
+                                        <% if (property.googleMapLink) { %>
+                                            <li>
+                                                <div class="icon"><span class="ti-map-alt"></span></div>
+                                                <div class="text">
+                                                    <p>
+                                                        <a href="<%= property.googleMapLink %>" target="_blank">View on Google Maps</a>
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        <% } %>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <% if (Array.isArray(property.amenities) && property.amenities.length > 0) { %>
+                                        <h6 class="mb-3">Amenities</h6>
+                                        <ul class="list-unstyled list mb-4">
+                                            <% property.amenities.forEach(function(amenity) { %>
+                                                <li>
+                                                    <div class="icon"><span class="flaticon-check"></span></div>
+                                                    <div class="text">
+                                                        <p><%= amenity %></p>
+                                                    </div>
+                                                </li>
+                                            <% }); %>
+                                        </ul>
+                                    <% } %>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Book Now Button (Style: iOS Glass UI inspired) -->
+                        <div class="text-center mt-4">
+                            <button id="openBookingModal" class="book-glass-btn" >
+                                <i class="ti-calendar"></i> Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Glass Modal -->
+    <div id="bookingGlassModal" class="glass-modal-backdrop" style="display:none;">
+      <div class="glass-modal">
+        <button class="glass-close" id="closeBookingModal">&times;</button>
+        <h5 class="glass-title"><i class="ti-calendar"></i> Book Your Stay</h5>
+        <form id="roomAvailabilityForm" autocomplete="off">
+            <input type="hidden" name="propertyId" value="<%= property._id %>">
+            <div class="mb-3">
+                <label class="glass-label">Check-in Date</label>
+                <input type="date" class="glass-input" name="checkInDate" required />
+            </div>
+            <div class="mb-3">
+                <label class="glass-label">Check-out Date</label>
+                <input type="date" class="glass-input" name="checkOutDate" required />
+            </div>
+            <div class="mb-3">
+                <label class="glass-label">Guests</label>
+                <input type="number" class="glass-input" name="guests" min="1" value="1" required />
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="glass-action-btn" id="checkAvailabilityBtn">
+                    <span id="availabilityBtnText">Check Availability</span>
+                    <span id="availabilitySpinner" style="display: none;"><i class="fa fa-spinner fa-spin"></i></span>
+                </button>
+            </div>
+            <div id="availabilityMessage" style="font-size:90%;margin-bottom:.7rem;"></div>
+        </form>
+
+        <!-- Booking Form, hidden until available -->
+        <form id="resortBookingForm" style="display:none;" autocomplete="off">
+            <input type="hidden" name="propertyId" value="<%= property._id %>">
+            <div class="mb-3">
+                <label class="glass-label">Room</label>
+                <select name="roomId" class="glass-input" id="modalRoomSelect" required></select>
+            </div>
+            <div class="mb-3">
+                <label class="glass-label">Full Name</label>
+                <input type="text" class="glass-input" name="fullName" required>
+            </div>
+            <div class="mb-3">
+                <label class="glass-label">Email</label>
+                <input type="email" class="glass-input" name="email">
+            </div>
+            <div class="mb-3">
+                <label class="glass-label">Phone</label>
+                <input type="text" class="glass-input" name="phone" required>
+            </div>
+            <div class="mb-3">
+                <label class="glass-label">Special Requests</label>
+                <input type="text" class="glass-input" name="specialRequests" placeholder="Optional">
+            </div>
+            <div class="mb-3">
+                <input type="hidden" name="checkInDate" id="bookingCheckInDate">
+                <input type="hidden" name="checkOutDate" id="bookingCheckOutDate">
+                <input type="hidden" name="guests" id="bookingGuests">
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="glass-action-btn" id="bookRoomBtn">
+                    Book Room
+                </button>
+            </div>
+            <div id="bookingMessage" style="font-size:90%;margin-bottom:.7rem;"></div>
+        </form>
+      </div>
+    </div>
+
+
+
+    <!-- Detailed Texts and Room Info -->
+    <section class="room-details1 section-padding" data-scroll-index="1" style="background: linear-gradient(120deg, #FAE1B2 0%, #F6F9FC 100%); border-radius: 16px; box-shadow: 0 2px 32px 0 rgba(40,60,120,0.07);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <% if (property.description) { %>
+                        <div class="mb-4" style="font-size:1.18rem;color:#374151;background:#fff8e8;padding:1rem 1.5rem;border-radius:12px;border-left:4px solid #e29932;margin-bottom:2.1rem;">
+                            <%= property.description %>
+                        </div>
+                    <% } %>
+
+                    <% if (property.rooms && property.rooms.length > 0) { %>
+                        <h2 class="mb-4" style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.55rem;color:#e66b04;letter-spacing: 0.05em;text-shadow:0 1.5px 0 #ffd087;">Room Types</h2>
+                        <div class="row g-4">
+                            <% property.rooms.forEach(function(room) { %>
+                                <div class="col-md-6">
+                                    <div class="room-card" style="background:#fff;box-shadow:0 2px 22px 0 rgba(230,153,4,0.06),0 1.5px 0px #ffe0b1;border-radius:16px;overflow:hidden;position:relative;transition:box-shadow .22s;padding:0;">
+                                        <% if (room.images && room.images.length > 0) { %>
+                                            <div style="padding: 0;">
+                                                <img src="<%= room.images[0] %>" alt="Room Image"
+                                                    style="width:100%;height:200px;object-fit:cover;display:block;border-radius:16px 16px 0 0;">
+                                            </div>
+                                        <% } %>
+                                        <div style="padding:1.25rem 1.1rem 1rem 1.1rem;">
+                                            <h4 style="
+                                                font-size: 1.12rem;
+                                                font-family: 'Outfit',sans-serif;
+                                                color: #1b1a54;
+                                                font-weight: bold;
+                                                margin-bottom: 0.6rem;
+                                                letter-spacing:0.02em;">
+                                                <%= room.name %>
+                                                <% if(room.roomType){ %>
+                                                    <span class="badge"
+                                                        style="background:linear-gradient(92deg,#ffbb5c 30%,#e86902 100%);color:#fff;font-size:0.92rem;font-weight:600;border-radius:14px;padding:4.5px 14px;margin-left:8px;box-shadow:0 2px 10px 0 rgba(230,153,4,0.07);">
+                                                        <%= room.roomType %>
+                                                    </span>
+                                                <% } %>
+                                            </h4>
+                                            <% if (room.description) { %>
+                                                <div style="font-size:0.96rem;color:#555;line-height:1.6;font-style: italic;margin-bottom:0.7em">
+                                                    <%= room.description %>
+                                                </div>
+                                            <% } %>
+                                            <div class="room-quick-details" style="margin-bottom:.7em;">
+                                                <ul style="list-style:none;padding:0;margin:0 0 0.7em 0;">
+                                                    <% if(room.bedType) { %>
+                                                        <li style="font-size:0.95rem;display:flex;align-items:center;margin-bottom:2.5px;">
+                                                            <i class="fa fa-bed" style="color:#e86902;margin-right:6px;"></i>
+                                                            <span><strong>Bed Type:</strong> <%= room.bedType %></span>
+                                                        </li>
+                                                    <% } %>
+                                                    <% if(room.capacity) { %>
+                                                        <li style="font-size:0.95rem;display:flex;align-items:center;margin-bottom:2.5px;">
+                                                            <i class="fa fa-user-friends" style="color:#2661ad;margin-right:6px;"></i>
+                                                            <span><strong>Capacity:</strong> <%= room.capacity %> guest<%= room.capacity > 1 ? 's' : '' %></span>
+                                                        </li>
+                                                    <% } %>
+                                                    <% if(typeof room.pricePerNight !== "undefined") { %>
+                                                        <li style="font-size:1.02rem;display:flex;align-items:center;margin-bottom:2.5px;">
+                                                            <i class="fa fa-rupee-sign" style="color:#e66b04;margin-right:6px;"></i>
+                                                            <span>
+                                                                <strong style="letter-spacing:0.5px;">Price/Night:</strong>
+                                                                <span style="color:#1b1a54;font-weight:600;font-size:1.09rem;">
+                                                                    ₹<%= room.pricePerNight.toLocaleString() %>
+                                                                </span>
+                                                            </span>
+                                                        </li>
+                                                    <% } %>
+                                                    <% if(room.extraBedPrice) { %>
+                                                        <li style="font-size:0.92rem;display:flex;align-items:center;">
+                                                            <i class="fa fa-plus-circle" style="color:#8f601a;margin-right:6px;"></i>
+                                                            <span><strong>Extra Bed:</strong> ₹<%= room.extraBedPrice.toLocaleString() %></span>
+                                                        </li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                            <% if (Array.isArray(room.amenities) && room.amenities.length > 0) { %>
+                                                <div class="mt-2">
+                                                    <span class="fw-bold" style="font-size:0.98rem;color:#e89404;">Room Amenities:</span>
+                                                    <div style="margin:6px 0 0 0;">
+                                                        <ul style="display:flex;flex-wrap:wrap;gap:7px 10px;padding:0;list-style:none;margin:0;">
+                                                            <% room.amenities.forEach(function(a) { %>
+                                                                <li style="background:#FAF1E4;color:#555;font-size:0.92rem;padding: 3.5px 13px;border-radius:12px;box-shadow:0 1px 8px 0 rgba(208,135,46,0.07);">
+                                                                    <i class="ti-layout-grid2" style="color:#e86902;font-size:1em;margin-right:4px;"></i>
+                                                                    <%= a %>
+                                                                </li>
+                                                            <% }); %>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    <% } %>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h6 style="font-weight:600;color:#2661ad;"><i class="fa fa-arrow-down-circle" style="color:#e66b04;"></i> Check-in Information</h6>
+                            <ul class="list-unstyled page-list mb-30">
+                                <li>
+                                    <div class="page-list-icon"> <span class="ti-check"></span> </div>
+                                    <div class="page-list-text">
+                                        <p>
+                                            Check-in from
+                                            <%= property.checkInTime || '12:00 PM' %>
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 style="font-weight:600;color:#2661ad;"><i class="fa fa-arrow-up-circle" style="color:#e66b04;"></i> Check-out Information</h6>
+                            <ul class="list-unstyled page-list mb-30">
+                                <li>
+                                    <div class="page-list-icon"> <span class="ti-check"></span> </div>
+                                    <div class="page-list-text">
+                                        <p>
+                                            Check-out before
+                                            <%= property.checkOutTime || '11:00 AM' %>
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <% if (Array.isArray(property.amenities) && property.amenities.length > 0) { %>
+                        <div class="col-md-12">
+                            <h6 style="font-weight:700;color:#e66b04;">Resort Amenities</h6>
+                            <ul class="list-unstyled page-list mb-30 d-flex flex-wrap" style="gap:10px;">
+                                <% property.amenities.forEach(function(amenity) { %>
+                                    <li style="background:#fdf3e1;color:#ba7600;font-size:0.97rem;font-weight:500;padding: 4px 14px;border-radius:14px;box-shadow:0 1px 7px 0 rgba(208,135,46,0.07);display:flex;align-items:center;">
+                                        <span class="ti-layout-grid2" style="color:#e86902;margin-right:5px;"></span>
+                                        <span><%= amenity %></span>
+                                    </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                        <% } %>
+
+                        <% if (Array.isArray(property.rules) && property.rules.length > 0) { %>
+                        <div class="col-md-12">
+                            <h6 style="font-weight:700;color:#185a9d;">Resort Rules &amp; Policies</h6>
+                            <ul class="list-unstyled page-list mb-30">
+                                <% property.rules.forEach(function(rule) { %>
+                                    <li>
+                                        <div class="page-list-icon"> <span class="ti-info" style="color:#d4790a"></span> </div>
+                                        <div class="page-list-text" style="color:#333;">
+                                            <p style="margin-bottom:0.4rem;"><%= rule %></p>
+                                        </div>
+                                    </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="col-md-3 offset-md-1">
+                    <h6 style="font-weight:700;color:#1b1a54;letter-spacing:0.03em;">Quick Details</h6>
+                    <ul class="list-unstyled page-list mb-30">
+                        <% if (property.city) { %>
+                        <li>
+                            <div class="page-list-icon"><span class="ti-location-pin" style="color:#e86902;"></span></div>
+                            <div class="page-list-text">
+                                <p style="margin-bottom:2px;">Location: 
+                                    <strong style="color:#185a9d;"><%= property.city %></strong>
+                                    <% if(property.state){ %>, <%= property.state %><% } %>
+                                    <% if(property.country){ %>, <%= property.country %><% } %>
+                                    <% if(property.pincode){ %> - <%= property.pincode %><% } %>
+                                </p>
+                            </div>
+                        </li>
+                        <% } %>
+                        <% if (property.contactNumber) { %>
+                        <li>
+                            <div class="page-list-icon"><span class="ti-mobile" style="color:#2661ad;"></span></div>
+                            <div class="page-list-text" style="font-size:1.05rem;">
+                                <a href="tel:<%= property.contactNumber %>" style="color:#e66b04;font-weight:600;text-decoration:none;"><%= property.contactNumber %></a>
+                            </div>
+                        </li>
+                        <% } %>
+                        <% if (property.email) { %>
+                        <li>
+                            <div class="page-list-icon"><span class="ti-email" style="color:#439ce7;"></span></div>
+                            <div class="page-list-text">
+                                <a href="mailto:<%= property.email %>" style="color:#b07b23;font-weight:500;text-decoration:underline;"><%= property.email %></a>
+                            </div>
+                        </li>
+                        <% } %>
+                        <% if (property.googleMapLink) { %>
+                        <li>
+                            <div class="page-list-icon"><span class="ti-map-alt" style="color:#2ac27a;"></span></div>
+                            <div class="page-list-text">
+                                <a href="<%= property.googleMapLink %>" target="_blank" style="color:#34917a;font-weight:600;text-decoration:underline;">Google Maps</a>
+                            </div>
+                        </li>
+                        <% } %>
+                        <% if (property.rating && property.rating > 0) { %>
+                        <li>
+                            <div class="page-list-icon"><span class="ti-star" style="color:#ebad0b;"></span></div>
+                            <div class="page-list-text">
+                                <p style="margin-bottom:2px;">Rating: <span style="font-weight:700;color:#e86902;"><%= property.rating %></span>/5</p>
+                            </div>
+                        </li>
+                        <% } %>
+                        <% if (property.totalRooms !== undefined && property.totalRooms !== null) { %>
+                        <li>
+                            <div class="page-list-icon"><span class="flaticon-bed" style="color:#2467d1;"></span></div>
+                            <div class="page-list-text">
+                                <p style="margin-bottom:0px;">Total Rooms: <strong style="font-weight:700;color:#1b1a54;"><%= property.totalRooms %></strong></p>
+                            </div>
+                        </li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Room type custom styles -->
+        <style>
+        .room-card:hover {
+            box-shadow:0 4px 24px 0 #fbdfa3, 0 1.5px 0px #ffe6bb;
+            transform: translateY(-2px) scale(1.03);
+            transition: box-shadow .22s, transform .2s;
+            border-left:4px solid #e66b04;
+        }
+        </style>
+    </section>
+
+    <!-- Booking Modal Scripts -->
+    <script>
+      const openBtn = document.getElementById('openBookingModal');
+      const modal = document.getElementById('bookingGlassModal');
+      const closeBtn = document.getElementById('closeBookingModal');
+      const availForm = document.getElementById('roomAvailabilityForm');
+      const bookingForm = document.getElementById('resortBookingForm');
+      const availMsg = document.getElementById('availabilityMessage');
+      const bookMsg = document.getElementById('bookingMessage');
+      const spinner = document.getElementById('availabilitySpinner');
+      const availBtnText = document.getElementById('availabilityBtnText');
+      const modalRoomSelect = document.getElementById('modalRoomSelect');
+      const bookingCheckInInput = document.getElementById('bookingCheckInDate');
+      const bookingCheckOutInput = document.getElementById('bookingCheckOutDate');
+      const bookingGuestsInput = document.getElementById('bookingGuests');
+      let lastRoomData = null;
+
+      if (openBtn && modal) {
+        openBtn.onclick = () => {
+          modal.style.display = "flex";
+          availMsg.innerText = '';
+          bookingForm.style.display = "none";
+          availForm.style.display = "block";
+          availForm.reset();
+        };
+      }
+      if (closeBtn && modal) {
+        closeBtn.onclick = () => {
+          modal.style.display = "none";
+          availMsg.innerText = '';
+          bookMsg.innerText = '';
+        };
+      }
+      window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            availMsg.innerText = '';
+            bookMsg.innerText = '';
+        }
+      }
+
+      // Availability check
+      availForm && availForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        availMsg.innerText = "";
+        spinner.style.display = "inline-block";
+        availBtnText.style.display = "none";
+        bookingForm.style.display = "none";
+        modalRoomSelect.innerHTML = '';
+        bookMsg.innerText = '';
+
+        // Fields
+        const propertyId = availForm.propertyId.value;
+        const checkInDate = availForm.checkInDate.value;
+        const checkOutDate = availForm.checkOutDate.value;
+        const guests = availForm.guests.value;
+
+        // Simple Validation
+        if (!checkInDate || !checkOutDate || (new Date(checkOutDate) <= new Date(checkInDate))) {
+          spinner.style.display = "none";
+          availBtnText.style.display = "";
+          availMsg.innerHTML = "<span style='color:#e34760'>&#9888; Please provide valid dates</span>";
+          return;
+        }
+
+        // Ajax: check availability
+        try {
+          const res = await fetch('/resort/availability', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ propertyId, checkInDate, checkOutDate, guests })
+          });
+          const data = await res.json();
+          spinner.style.display = "none";
+          availBtnText.style.display = "";
+          if (!data.success) {
+            availMsg.innerHTML = "<span style='color:#e34760'>" + (data.message || "No rooms available") + "</span>";
+            return;
+          }
+          // rooms: array of { ...room, available }
+          lastRoomData = data.rooms;
+          // Only available rooms
+          const availableRooms = data.rooms.filter(r => r.available);
+
+          if (availableRooms.length === 0) {
+            availMsg.innerHTML = "<span style='color:#e34760'>No rooms available for selected dates.</span>";
+            return;
+          }
+          // Fill select
+          modalRoomSelect.innerHTML = "";
+          availableRooms.forEach(r => {
+            let type = r.roomType ? " (" + r.roomType + ")" : "";
+            let price = r.pricePerNight ? " – ₹" + r.pricePerNight : "";
+            modalRoomSelect.innerHTML += `<option value="${r._id}">${r.name}${type}${price}</option>`;
+          });
+          // Pass dates/guests to booking form
+          bookingCheckInInput.value = checkInDate;
+          bookingCheckOutInput.value = checkOutDate;
+          bookingGuestsInput.value = guests;
+          availMsg.innerHTML = "<span style='color:#43cea2'>Rooms available! Complete your booking below.</span>";
+          // Show booking form
+          bookingForm.style.display = "block";
+          availForm.style.display = "none";
+        } catch(e){
+          spinner.style.display = "none";
+          availBtnText.style.display = "";
+          availMsg.innerHTML = "<span style='color:#e34760'>System error: Try again.</span>";
+        }
+      });
+
+      // Booking
+      bookingForm && bookingForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        bookMsg.innerText = "";
+        const fd = new FormData(bookingForm);
+        const json = {};
+        fd.forEach((val,key)=>{json[key]=val;});
+
+        try {
+          const res = await fetch('/resort/bookingResort', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(json)
+          });
+          const data = await res.json();
+          if (data.success) {
+            bookMsg.innerHTML = "<span style='color:#43cea2'>Booked! Confirmation sent.<br>You may close this popup.</span>";
+            bookingForm.reset();
+          } else {
+            bookMsg.innerHTML = "<span style='color:#e34760'>" + (data.message || 'Booking error!') + "</span>";
+          }
+        } catch(e){
+          bookMsg.innerHTML = "<span style='color:#e34760'>Server error. Try again.</span>";
+        }
+      });
+
+      // Optional: prevent modal form scrolling background
+      document.addEventListener('wheel', function(ev){
+        if (modal.style.display === 'flex') ev.preventDefault();
+      }, { passive:false });
+
+      // Patch for keyboard only users: Esc to close
+      document.addEventListener('keydown', function(ev){
+        if (modal.style.display === 'flex' && ev.key === "Escape") modal.style.display = 'none';
+      });
+
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 mb-30">
+                        <div class="sub-title border-footer-light whte">Transha Stays</div>
+                        <p style="color: white;">Transha Stays offers premium resorts, PG accommodations, and authentic
+                            Noorani Ayurveda massage experiences. Relax, rejuvenate, and enjoy a comfortable stay with
+                            us.</p>
+                    </div>
+                    <div class="col-md-4 offset-md-1">
+                        <div class="item">
+                            <h3>Get in touch</h3>
+                            <p>Kerala, Thiruvananthapuram, India</p>
+
+                            <p class="phone">+91 96058 32333</p>
+                            <p class="mail">info@transhastays.com</p>
+                            <div class="social mt-2">
+                                <a href="https://www.instagram.com/transha_stays?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                                    target="_blank"><i class="ti-instagram"></i></a>
+                                <a href="#"><i class="ti-twitter"></i></a>
+                                <a href="#"><i class="ti-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="item">
+                            <h3>Quick Links</h3>
+                            <ul class="footer-explore-list list-unstyled">
+                                <li><a href="/">Home</a></li>
+                                <li><a href="resorts.html">Resort Accommodations</a></li>
+                                <li><a href="nearby-locations.html">Places to Visit Nearby</a></li>
+                                <li><a href="services.html">PG Stays</a></li>
+                                <li><a href="services.html">Nooranu Ayurvedic Massage</a></li>
+                                <li><a href="about.html">About</a></li>
+                                <li><a href="blogs.html">Blogs</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <p style="text-align: center;">© 2025 Transha Stays. All rights reserved.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="contact-container">
+        <div class="contact-btn whatsapp-btn">
+            <div class="contact-pulse"></div>
+            <i class="fab fa-whatsapp"></i>
+            <span class="contact-label">Chat on WhatsApp</span>
+        </div>
+
+        <div class="contact-btn phone-btn">
+            <div class="contact-pulse phone-pulse"></div>
+            <i class="fas fa-phone-alt"></i>
+            <span class="contact-label">Call +91 96058 32333</span>
+        </div>
+    </div>
+    <nav class="mobile__bottom__navbar">
+        <!-- Home -->
+        <div class="nav__item__container " data-page="home">
+            <div class="nav__icon__wrapper">
+                <svg class="nav__icon__svg" viewBox="0 0 24 24">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <div class="active__indicator__dot"></div>
+            </div>
+            <span class="nav__label__text">Home</span>
+        </div>
+
+        <!-- Resort -->
+        <div class="nav__item__container active__nav__item" data-page="resort">
+            <div class="nav__icon__wrapper">
+                <svg class="nav__icon__svg" viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+                <div class="active__indicator__dot"></div>
+            </div>
+            <span class="nav__label__text">Resort</span>
+        </div>
+
+        <!-- PG -->
+        <div class="nav__item__container" data-page="pg">
+            <div class="nav__icon__wrapper">
+                <svg class="nav__icon__svg" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="9" y1="3" x2="9" y2="21"></line>
+                </svg>
+                <div class="active__indicator__dot"></div>
+            </div>
+            <span class="nav__label__text">PG</span>
+        </div>
+
+        <!-- Nearby -->
+        <div class="nav__item__container " data-page="nearby">
+            <div class="nav__icon__wrapper">
+                <svg class="nav__icon__svg" viewBox="0 0 24 24">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <div class="active__indicator__dot"></div>
+            </div>
+            <span class="nav__label__text">Nearby</span>
+        </div>
+
+        <!-- Contact -->
+        <div class="nav__item__container" data-page="contact">
+            <div class="nav__icon__wrapper">
+                <svg class="nav__icon__svg" viewBox="0 0 24 24">
+                    <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                    </path>
+                </svg>
+                <div class="active__indicator__dot"></div>
+            </div>
+            <span class="nav__label__text">Contact</span>
+        </div>
+    </nav>
+    <!-- jQuery -->
+    <script src="/js/jquery-3.6.3.min.js"></script>
+    <script src="/js/jquery-migrate-3.0.0.min.js"></script>
+    <script src="/js/modernizr-2.6.2.min.js"></script>
+    <script src="/js/imagesloaded.pkgd.min.js"></script>
+    <script src="/js/jquery.isotope.v3.0.2.js"></script>
+    <script src="/js/pace.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/scrollIt.min.js"></script>
+    <script src="/js/jquery.waypoints.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/jquery.stellar.min.js"></script>
+    <script src="/js/jquery.magnific-popup.js"></script>
+    <script src="/js/YouTubePopUp.js"></script>
+    <script src="/js/select2.js"></script>
+    <script src="/js/datepicker.js"></script>
+    <script src="/js/smooth-scroll.min.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/custom.js"></script>
+</body>
+
+</html>
