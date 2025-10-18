@@ -81,18 +81,19 @@
         </div>
     </nav>
     <!-- PG Property Details Header -->
+    <!-- PG HEADER & BOOK NOW BUTTON (GLASS) -->
     <div class="room-details2 section-padding valign bg-img bg-fixed" data-overlay-dark="7"
         data-background="<%= pg.images && pg.images.length > 0 ? pg.images[0] : 'img/slider/6.jpg' %>">
         <div class="container resort-details-main">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="wrap">
+                    <div class="wrap position-relative">
                         <figure>
                             <div class="owl-carousel owl-theme">
                                 <% if (pg.images && pg.images.length > 0) { %>
-                                  <% pg.images.forEach(function(img) { %>
-                                    <div class="img"> <img src="<%= img %>" alt="<%= pg.name %>"> </div>
-                                  <% }); %>
+                                    <% pg.images.forEach(function(img) { %>
+                                        <div class="img"> <img src="<%= img %>" alt="<%= pg.name %>"> </div>
+                                    <% }); %>
                                 <% } else { %>
                                     <div class="img"> <img src="/img/rooms/19.jpg" alt="PG Room"> </div>
                                     <div class="img"> <img src="/img/rooms/20.jpg" alt="PG Room"> </div>
@@ -113,7 +114,16 @@
                                     <span style="margin-left:10px;font-size:16px;color:#ffe48a;"><%= pg.rating %>/5</span>
                                 </span>
                             <% } %>
-                            
+
+                            <!-- BOOK NOW BUTTON -->
+                            <div class="mt-3 mb-2">
+                                <button 
+                                    class="book-glass-btn"
+                                    onclick="window.openPGBookingPopup && window.openPGBookingPopup(null,null,null)">
+                                    <i class="ti-calendar"></i>
+                                    Book Now
+                                </button>
+                            </div>
                             <ul class="list-inline info-list">
                                 <li class="text-white"><strong>Address:</strong> <%= pg.address %><% if(pg.city){%>, <%= pg.city %><%}%> <% if(pg.state){%>, <%= pg.state %><%}%></li>
                                 <li class="text-white"><strong>Contact:</strong> <%= pg.contactNumber || '+91 96058 32333' %></li>
@@ -121,7 +131,7 @@
                                 <li class="text-white"><strong>Email:</strong> <%= pg.email %></li>
                                 <% } %>
                                 <% if(pg.googleMapLink){ %>
-                                <li >
+                                <li>
                                     <a href="<%= pg.googleMapLink %>" target="_blank" style="color:#ffe48a;">
                                         <i class="ti-location-pin"></i> View on Google Maps
                                     </a>
@@ -150,9 +160,9 @@
                                         if (pg.floors && Array.isArray(pg.floors)) {
                                             pg.floors.forEach(function(floor) {
                                                 if (floor.allRooms && Array.isArray(floor.allRooms)) {
-                                                    floor.allRooms.forEach(function(room) {
-                                                        if (room.allBeds && Array.isArray(room.allBeds)) {
-                                                            totalBeds += room.allBeds.length;
+                                                    floor.allRooms.forEach(function(rm) {
+                                                        if (rm.allBeds && Array.isArray(rm.allBeds)) {
+                                                            totalBeds += rm.allBeds.length;
                                                         }
                                                     });
                                                 }
@@ -161,8 +171,485 @@
                                     %>
                                     <%= totalBeds %>
                                 </li>
-                            </ul>                     
+                            </ul>
                         </div>
+
+                        <!-- Modal Popup: Booking Modal -->
+                        <div class="glass-modal-backdrop" id="pgBookingPopup" style="display:none;z-index:1055;">
+                            <div class="glass-modal booking-modal-wide">
+                                <button type="button" class="glass-close" onclick="window.closePGBookingPopup && window.closePGBookingPopup()">&times;</button>
+                                <div class="glass-title"><i class="ti-calendar"></i> Book <%= pg.name %></div>
+                                <div id="modal-form-scroll-wrapper">
+                                    <form id="pgBookingForm" autocomplete="off">
+                                        <input type="hidden" name="propertyId" id="pgPropertyId" value="<%= pg._id ? pg._id : '' %>">
+                                        <input type="hidden" name="totalRent" id="booking-totalRent">
+                                        <input type="hidden" name="advance" id="booking-advance">
+                                        <div id="pgBookingMsg" class="mb-2"></div>
+                                        <div class="row g-3">
+                                            <div class="col-md-6 col-12">
+                                                <div>
+                                                    <label class="glass-label">PG Property</label>
+                                                    <input type="text" class="glass-input" name="propertyName" value="<%= pg.name %>" readonly>
+                                                </div>
+                                                <div>
+                                                    <label class="glass-label">Floor</label>
+                                                    <select class="glass-input" name="floorId" id="booking-floor-id" required>
+                                                        <option value="">Select a Floor</option>
+                                                        <% if (pg.floors && Array.isArray(pg.floors) && pg.floors.length) { %>
+                                                            <% pg.floors.forEach(function(floor, fIdx) { %>
+                                                                <option value="<%= floor._id || fIdx %>"><%= floor.name || ('Floor ' + (fIdx + 1)) %></option>
+                                                            <% }); %>
+                                                        <% } %>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="glass-label">Room</label>
+                                                    <select class="glass-input" name="roomId" id="booking-room-id" required disabled>
+                                                        <option value="">Select a Room</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="glass-label">Bed <span class="text-muted">(optional)</span></label>
+                                                    <select class="glass-input" name="bedId" id="booking-bed-id" disabled>
+                                                        <option value="">Select a Bed</option>
+                                                    </select>
+                                                </div>
+                                                <div id="rentAdvanceInfo" style="display:none;" class="mt-2 mb-2">
+                                                    <div class="alert alert-info p-2 mb-1" style="font-size:0.98em;">
+                                                        <div>Total Rent: <span id="show-totalRent"></span></div>
+                                                        <div>Advance: <span id="show-advance"></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div>
+                                                    <label class="glass-label">Your Name <span style="color:red">*</span></label>
+                                                    <input required type="text" class="glass-input" name="name" placeholder="Full Name">
+                                                </div>
+                                                <div>
+                                                    <label class="glass-label">Mobile <span style="color:red">*</span></label>
+                                                    <input required type="tel" class="glass-input" name="phone" pattern="[0-9]{10,15}" placeholder="Your Phone">
+                                                </div>
+                                                <div>
+                                                    <label class="glass-label">Email <span style="color:red">*</span></label>
+                                                    <input required type="email" class="glass-input" name="email" placeholder="Email">
+                                                </div>
+                                                <div>
+                                                    <label class="glass-label">Check-in Date <span style="color:red">*</span></label>
+                                                    <input required type="date" class="glass-input" name="checkInDate" min="<%= new Date().toISOString().slice(0,10) %>">
+                                                </div>
+                                                <div>
+                                                    <label class="glass-label">Check-out Date</label>
+                                                    <input type="date" class="glass-input" name="checkOutDate" min="<%= new Date().toISOString().slice(0,10) %>">
+                                                </div>
+                                                <div>
+                                                    <label class="glass-label">Notes</label>
+                                                    <textarea class="glass-input" name="notes" placeholder="Anything else…"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="glass-action-btn w-100 mt-3" id="bookBtn">
+                                            <i class="ti-check"></i> Confirm Booking
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="text-muted text-center mt-2" style="font-size:0.97em;">We’ll verify your request and contact you soon.</div>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            // Build a mapping from roomId to floorId for direct access
+                            function buildRoomToFloorMap() {
+                                var map = {};
+                                (window.pgDetailFloorsWithRoomPrice || []).forEach(function(floor) {
+                                    (floor.rooms || []).forEach(function(room) {
+                                        if(room._id) map[room._id] = floor._id;
+                                    });
+                                });
+                                return map;
+                            }
+                            // Build a mapping from bedId to {floorId, roomId}
+                            function buildBedToRoomFloorMap() {
+                                var map = {};
+                                (window.pgDetailFloorsWithRoomPrice || []).forEach(function(floor) {
+                                    (floor.rooms || []).forEach(function(room) {
+                                        (room.beds || []).forEach(function(bed) {
+                                            if(bed._id) map[bed._id] = { floorId: floor._id, roomId: room._id };
+                                        });
+                                    });
+                                });
+                                return map;
+                            }
+
+                            window.pgDetailFloorsWithRoomPrice = <%- JSON.stringify((pg.floors || []).map(function(floor, fIdx) {
+                                return {
+                                    _id: floor._id || String(fIdx),
+                                    name: floor.name || ('Floor ' + (fIdx + 1)),
+                                    rooms: (floor.allRooms || []).map(function(room, rIdx) {
+                                        return {
+                                            _id: room._id || String(rIdx),
+                                            name: room.roomNumber || room.number || ('Room ' + (rIdx + 1)),
+                                            isAvailable: room.isAvailable !== false,
+                                            totalRent: typeof room.pricePerMonth !== "undefined" ? Number(room.pricePerMonth) : "",
+                                            advance: typeof room.depositAmount !== "undefined" ? Number(room.depositAmount) : "",
+                                            beds: (room.allBeds || []).map(function(bed, bIdx) {
+                                                return {
+                                                    _id: bed._id || String(bIdx),
+                                                    name: 'Bed ' + (bed.bedNumber || bed.number || (bIdx + 1)),
+                                                    isOccupied: !!bed.isOccupied
+                                                };
+                                            })
+                                        }
+                                    })
+                                }
+                            })) %>;
+
+                            window._roomToFloorMap = buildRoomToFloorMap();
+                            window._bedToRoomFloorMap = buildBedToRoomFloorMap();
+
+                            function populateRoomSelect(floorId) {
+                                var roomSel = document.getElementById('booking-room-id');
+                                var bedSel = document.getElementById('booking-bed-id');
+                                roomSel.innerHTML = '<option value="">Select a Room</option>';
+                                roomSel.disabled = true;
+                                bedSel.innerHTML = '<option value="">Select a Bed</option>';
+                                bedSel.disabled = true;
+                                document.getElementById('booking-totalRent').value = "";
+                                document.getElementById('booking-advance').value = "";
+                                document.getElementById('rentAdvanceInfo').style.display = 'none';
+                                var floor = (window.pgDetailFloorsWithRoomPrice || []).find(function(f) { return f._id == floorId; });
+                                if (floor && floor.rooms) {
+                                    floor.rooms.forEach(function(room) {
+                                        var option = document.createElement('option');
+                                        option.value = room._id;
+                                        option.text = room.name;
+                                        if (!room.isAvailable)
+                                            option.text += " (Not Available)";
+                                        option.disabled = !room.isAvailable;
+                                        option.dataset.totalrent = room.totalRent || "";
+                                        option.dataset.advance = room.advance || "";
+                                        roomSel.appendChild(option);
+                                    });
+                                    roomSel.disabled = false;
+                                }
+                            }
+                            function populateBedSelect(floorId, roomId) {
+                                var bedSel = document.getElementById('booking-bed-id');
+                                bedSel.innerHTML = '<option value="">Select a Bed</option>';
+                                bedSel.disabled = true;
+                                if (!floorId || !roomId) return;
+                                var floor = (window.pgDetailFloorsWithRoomPrice || []).find(function(f) { return f._id == floorId; });
+                                if (floor && floor.rooms) {
+                                    var room = floor.rooms.find(function(r) { return r._id == roomId; });
+                                    if (room && room.beds) {
+                                        room.beds.forEach(function(bed) {
+                                            var option = document.createElement('option');
+                                            option.value = bed._id;
+                                            option.text = bed.name;
+                                            if (bed.isOccupied) {
+                                                option.text += " (Occupied)";
+                                                option.disabled = true;
+                                            }
+                                            bedSel.appendChild(option);
+                                        });
+                                        bedSel.disabled = false;
+                                    }
+                                }
+                            }
+                            window.populateRoomSelect = populateRoomSelect;
+                            window.populateBedSelect = populateBedSelect;
+
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var popup = document.getElementById('pgBookingPopup');
+                                if (popup && popup.parentNode.tagName.toLowerCase() != "body") {
+                                    document.body.appendChild(popup);
+                                }
+                                popup.addEventListener('click', function(e){
+                                    if(e.target === popup){
+                                        window.closePGBookingPopup && window.closePGBookingPopup();
+                                    }
+                                });
+
+                                var floorSel = document.getElementById('booking-floor-id');
+                                var roomSel = document.getElementById('booking-room-id');
+                                var bedSel = document.getElementById('booking-bed-id');
+                                var rentField = document.getElementById('booking-totalRent');
+                                var advanceField = document.getElementById('booking-advance');
+                                var rentAdvanceInfo = document.getElementById('rentAdvanceInfo');
+                                var showTotalRent = document.getElementById('show-totalRent');
+                                var showAdvance = document.getElementById('show-advance');
+                                var propertyIdField = document.getElementById('pgPropertyId');
+
+                                function clearRentAdvanceUI() {
+                                    rentField.value = '';
+                                    advanceField.value = '';
+                                    showTotalRent.textContent = '';
+                                    showAdvance.textContent = '';
+                                    rentAdvanceInfo.style.display = "none";
+                                }
+
+                                if (floorSel && roomSel && bedSel) {
+                                    floorSel.addEventListener('change', function() {
+                                        populateRoomSelect(floorSel.value);
+                                        clearRentAdvanceUI();
+                                    });
+                                    roomSel.addEventListener('change', function() {
+                                        populateBedSelect(floorSel.value, roomSel.value);
+
+                                        var floor = (window.pgDetailFloorsWithRoomPrice || []).find(function(f) { return f._id == floorSel.value; });
+                                        var roomObj = floor && floor.rooms ? floor.rooms.find(function(r) { return r._id == roomSel.value; }) : null;
+                                        if (roomObj) {
+                                            rentField.value = roomObj.totalRent || '';
+                                            advanceField.value = roomObj.advance || '';
+                                            showTotalRent.textContent = roomObj.totalRent ? ('₹ ' + roomObj.totalRent + ' / Month') : "-";
+                                            showAdvance.textContent = roomObj.advance ? ('₹ ' + roomObj.advance) : "-";
+                                            rentAdvanceInfo.style.display = "block";
+                                        } else {
+                                            clearRentAdvanceUI();
+                                        }
+                                    });
+                                }
+
+                                // Improved: When Book/Book Now is clicked, always set the property ID, floor, room, bed
+                                window.openPGBookingPopup = function(roomId, bedId, preferenceText) {
+                                    var form = document.getElementById('pgBookingForm');
+                                    var popup = document.getElementById('pgBookingPopup');
+                                    popup.style.display = 'flex';
+                                    popup.scrollTop = 0;
+                                    document.body.style.overflow = "hidden";
+                                    document.getElementById('pgBookingMsg').innerHTML = '';
+                                    form.reset();
+
+                                    // Always set propertyId field (for bug where propertyId is missing)
+                                    if(propertyIdField) {
+                                        propertyIdField.value = "<%= pg._id ? pg._id : '' %>";
+                                    }
+
+                                    // Reset all selects first
+                                    floorSel.selectedIndex = 0;
+                                    roomSel.innerHTML = '<option value="">Select a Room</option>';
+                                    roomSel.disabled = true;
+                                    bedSel.innerHTML = '<option value="">Select a Bed</option>';
+                                    bedSel.disabled = true;
+                                    clearRentAdvanceUI();
+
+                                    let preSelectFloor = '', preSelectRoom = '', preSelectBed = '';
+
+                                    // If roomId specified, get floorId using mapping
+                                    if(roomId) {
+                                        if(window._roomToFloorMap && window._roomToFloorMap[roomId]) {
+                                            preSelectFloor = window._roomToFloorMap[roomId];
+                                            preSelectRoom = roomId;
+                                            if(bedId && window._bedToRoomFloorMap && window._bedToRoomFloorMap[bedId]) {
+                                                preSelectBed = bedId;
+                                            }
+                                        }
+                                    } else if(bedId) {
+                                        // If bedId specified but not roomId
+                                        if(window._bedToRoomFloorMap && window._bedToRoomFloorMap[bedId]) {
+                                            preSelectFloor = window._bedToRoomFloorMap[bedId].floorId;
+                                            preSelectRoom = window._bedToRoomFloorMap[bedId].roomId;
+                                            preSelectBed = bedId;
+                                        }
+                                    }
+
+                                    if(preSelectFloor) {
+                                        floorSel.value = preSelectFloor;
+                                        populateRoomSelect(preSelectFloor);
+                                        if(preSelectRoom) {
+                                            roomSel.value = preSelectRoom;
+                                            populateBedSelect(preSelectFloor, preSelectRoom);
+                                            if(preSelectBed) {
+                                                bedSel.value = preSelectBed;
+                                            }
+                                            // Also set rent/advance field values and UI
+                                            var floorObj = (window.pgDetailFloorsWithRoomPrice || []).find(function(f) { return f._id == preSelectFloor; });
+                                            var matchedRoom = floorObj && floorObj.rooms ? floorObj.rooms.find(function(r) { return r._id == preSelectRoom; }) : null;
+                                            if (matchedRoom) {
+                                                rentField.value = matchedRoom.totalRent || '';
+                                                advanceField.value = matchedRoom.advance || '';
+                                                showTotalRent.textContent = matchedRoom.totalRent ? ('₹ ' + matchedRoom.totalRent + ' / Month') : "-";
+                                                showAdvance.textContent = matchedRoom.advance ? ('₹ ' + matchedRoom.advance) : "-";
+                                                rentAdvanceInfo.style.display = "block";
+                                            } else {
+                                                clearRentAdvanceUI();
+                                            }
+                                        }
+                                    }
+                                    var modalscroll = document.getElementById("modal-form-scroll-wrapper");
+                                    if(modalscroll) modalscroll.scrollTop = 0;
+                                };
+                                window.closePGBookingPopup = function() {
+                                    var popup = document.getElementById('pgBookingPopup');
+                                    popup.style.display = 'none';
+                                    document.body.style.overflow = "";
+                                };
+
+                                var form = document.getElementById('pgBookingForm');
+                                var bookBtn = document.getElementById('bookBtn');
+                                if(form){
+                                    form.addEventListener('submit', async function(e){
+                                        e.preventDefault();
+                                        var msgDiv = document.getElementById('pgBookingMsg');
+                                        msgDiv.innerHTML = '';
+                                        bookBtn.disabled = true;
+                                        bookBtn.textContent = 'Checking availability...';
+
+                                        var formData = new FormData(form);
+                                        var propertyId  = formData.get('propertyId');
+                                        var floorId     = formData.get('floorId');
+                                        var roomId      = formData.get('roomId');
+                                        var bedId       = formData.get('bedId');
+                                        var checkInDate  = formData.get('checkInDate');
+                                        var checkOutDate = formData.get('checkOutDate');
+                                        var name        = formData.get('name');
+                                        var phone       = formData.get('phone');
+                                        var email       = formData.get('email');
+                                        var notes       = formData.get('notes');
+                                        var totalRent   = formData.get('totalRent');
+                                        var advance     = formData.get('advance');
+
+                                        // New: Always check for propertyId
+                                        if (!propertyId || propertyId === '') {
+                                            msgDiv.innerHTML = '<div class="alert alert-danger p-2 mb-2">Property ID is missing (reload the page and try again).</div>';
+                                            bookBtn.disabled = false;
+                                            bookBtn.textContent = "Confirm Booking";
+                                            return;
+                                        }
+
+                                        if (!floorId || !roomId) {
+                                            msgDiv.innerHTML = '<div class="alert alert-warning p-2 mb-2">Please select floor and room to proceed.</div>';
+                                            bookBtn.disabled = false;
+                                            bookBtn.textContent = "Confirm Booking";
+                                            return;
+                                        }
+
+                                        let checkPayload = { propertyId, moveInDate: checkInDate, roomId, bedId };
+                                        let query = new URLSearchParams(checkPayload).toString();
+
+                                        try {
+                                            let resp = await fetch('/pgAvailability?' + query, { method:'GET' });
+                                            let avail = await resp.json();
+
+                                            let bookingPayload = {
+                                                property: propertyId,
+                                                floor: floorId,
+                                                room: roomId,
+                                                bed: bedId,
+                                                name,
+                                                phone,
+                                                email,
+                                                checkInDate,
+                                                checkOutDate: checkOutDate ? checkOutDate : undefined,
+                                                notes,
+                                                totalRent,
+                                                advance
+                                            };
+
+                                            // Remove undefined fields
+                                            Object.keys(bookingPayload).forEach(k => {
+                                                if(bookingPayload[k] === undefined || bookingPayload[k]==='') delete bookingPayload[k];
+                                            });
+
+                                            if(avail.success && avail.available){
+                                                bookBtn.textContent = 'Booking...';
+                                                let result = await fetch('/bookPG', {
+                                                    method: 'POST',
+                                                    headers: { 'Content-Type':'application/json' },
+                                                    body: JSON.stringify(bookingPayload)
+                                                });
+                                                let r = await result.json();
+
+                                                if (r.booking || r.success || (r.message && r.message.toLowerCase().includes("success"))) {
+                                                    msgDiv.innerHTML = '<div class="alert alert-success p-2 mb-2">'+(r.message || 'Booking successful!')+'</div>';
+                                                    bookBtn.textContent = "Booked!";
+                                                    setTimeout(window.closePGBookingPopup,1700);
+                                                } else {
+                                                    msgDiv.innerHTML = '<div class="alert alert-danger p-2 mb-2">'+(r.message||'Booking failed!')+'</div>';
+                                                    bookBtn.disabled = false;
+                                                    bookBtn.textContent = "Confirm Booking";
+                                                }
+                                            } else {
+                                                msgDiv.innerHTML = '<div class="alert alert-warning p-2 mb-2">'+(avail.message||'No availability for that date or room/bed!')+'</div>';
+                                                bookBtn.disabled = false;
+                                                bookBtn.textContent = "Confirm Booking";
+                                            }
+                                        } catch(err) {
+                                            msgDiv.innerHTML = '<div class="alert alert-danger p-2 mb-2">Error processing request. Please try again later.</div>';
+                                            bookBtn.disabled = false;
+                                            bookBtn.textContent = "Confirm Booking";
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
+
+                        <style>
+                            .glass-modal-backdrop {
+                                position: fixed !important;
+                                top: 0; left: 0; right: 0; bottom: 0;
+                                width: 100vw; height: 100vh;
+                                background: rgba(54,54,66,0.89);
+                                display: none;
+                                align-items: center;
+                                justify-content: center;
+                                z-index: 1055 !important;
+                            }
+                            .glass-modal.booking-modal-wide {
+                                background-color: rgba(255,255,255,0.98);
+                                border-radius: 20px;
+                                padding: 2em 2.5em 1.5em 2.5em;
+                                box-shadow: 0 8px 24px 4px rgba(0,0,0,0.14);
+                                min-width: 350px;
+                                max-width: 690px;
+                                width: 650px;
+                                position: relative;
+                                z-index: 1100;
+                                display: flex;
+                                flex-direction: column;
+                            }
+                            #modal-form-scroll-wrapper {
+                                overflow-y: auto;
+                                max-height: 75vh;
+                            }
+
+                            @media (max-width: 991px) {
+                                .glass-modal.booking-modal-wide {
+                                    min-width: 0 !important;
+                                    max-width: 97vw;
+                                    width: 97vw !important;
+                                    padding: 1.3em .7em 1.1em .7em;
+                                    border-radius: 0.7em;
+                                }
+                                #modal-form-scroll-wrapper {
+                                    max-height: 72vh;
+                                }
+                            }
+                            @media (max-width: 600px) {
+                                .glass-modal.booking-modal-wide {
+                                    width: 100vw !important;
+                                    min-width: 0;
+                                    max-width: 100vw !important;
+                                    max-height: 100vh !important;
+                                    padding: .9em .2em .8em .2em;
+                                    border-radius: 0;
+                                }
+                                #modal-form-scroll-wrapper {
+                                    max-height: 70vh;
+                                }
+                                .glass-close { top: .2em; right: .25em; }
+                            }
+                            .glass-close {
+                                position: absolute; top: .5em; right:.7em; font-size:2em; color: #333; background: none; border: none;
+                            }
+                            .glass-modal .glass-label {margin-bottom:3px;font-weight:500;}
+                            .glass-modal .glass-input, .glass-modal textarea.glass-input {
+                                margin-bottom:8px;
+                                max-width:100%;
+                                min-width:0;
+                            }
+                        </style>
+                        <!-- END POPUP -->
                     </div>
                 </div>
             </div>
@@ -240,7 +727,6 @@
                                 </p>
                             <% } %>
                         </div>
-  
                     </div>
 
                     <!-- FLOORS, ROOMS, BEDS SECTION -->
@@ -260,7 +746,6 @@
                                     </div>
                                     <div class="card-body">
                                         <%
-                                            
                                             let theRooms = [];
                                             if (floor.allRooms && Array.isArray(floor.allRooms)) {
                                                 theRooms = floor.allRooms;
@@ -301,6 +786,14 @@
                                                                         <span class="badge rounded-pill bg-secondary">Not Available</span>
                                                                     <% } %>
                                                                 </span>
+                                                                <% if(room.isAvailable !== false) { %>
+                                                                <button type="button"
+                                                                    class="book-glass-btn"
+                                                                    style="margin-left:12px; padding:.36em 1.2em; font-size:1.1rem;"
+                                                                    onclick="window.openPGBookingPopup && window.openPGBookingPopup('<%= room._id %>',null,'Room '+(<%= JSON.stringify(room.roomNumber||room.number||(rIdx+1)) %>))">
+                                                                    Book Now
+                                                                </button>
+                                                                <% } %>
                                                             </button>
                                                         </h2>
                                                         <div id="collapse-<%= fIdx %>-<%= rIdx %>" class="accordion-collapse collapse"
@@ -323,7 +816,6 @@
                                                                     <% } %>
                                                                 </div>
                                                                 <%
-                                                                   
                                                                     let theBeds = [];
                                                                     if (room.allBeds && Array.isArray(room.allBeds)) {
                                                                         theBeds = room.allBeds;
@@ -346,6 +838,12 @@
                                                                                                 <span class="badge bg-danger ms-1">Occupied</span>
                                                                                             <% } else { %>
                                                                                                 <span class="badge bg-success ms-1">Available</span>
+                                                                                                <button type="button"
+                                                                                                    class="book-glass-btn"
+                                                                                                    style="margin-left:.6em; padding:.22em .98em; font-size:.95rem;"
+                                                                                                    onclick="window.openPGBookingPopup && window.openPGBookingPopup('<%= room._id %>','<%= bed._id %>','Room '+(<%= JSON.stringify(room.roomNumber||room.number||(rIdx+1)) %>)+', Bed '+(<%= JSON.stringify(bed.bedNumber||bed.number||(bIdx+1)) %>))">
+                                                                                                    Book
+                                                                                                </button>
                                                                                             <% } %>
                                                                                         <% } %>
                                                                                     </div>
@@ -412,7 +910,6 @@
                     </div>
                     <!-- END FLOORS, ROOMS, BEDS SECTION -->
                 </div>
-
                 <div class="col-md-3 offset-md-1">
                     <h6>Amenities</h6>
                     <% if(pg.amenities && Array.isArray(pg.amenities) && pg.amenities.length) { %>
@@ -464,7 +961,6 @@
                             }
                         </style>
                     <% } %>
-               
                 </div>
             </div>
         </div>

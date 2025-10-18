@@ -6987,6 +6987,7 @@ font-size: 15px;
             padding: 2.2rem 1.75rem 1.5rem 1.75rem;
             border: 1.2px solid rgba(255,255,255,0.35);
             animation: popGlassIn .28s cubic-bezier(.4,.65,.42,1.03);
+            z-index: 9999;
         }
 
         @media (max-width: 500px) {
