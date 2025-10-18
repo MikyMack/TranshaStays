@@ -716,19 +716,19 @@ document.addEventListener('DOMContentLoaded', function() {
             // Redirect based on the clicked page
             switch (page) {
                 case 'home':
-                    window.location.href = 'index.html';
+                    window.location.href = '/';
                     break;
                 case 'resort':
-                    window.location.href = 'resorts.html';
+                    window.location.href = '/resorts';
                     break;
                 case 'pg':
-                    window.location.href = 'pg.html';
+                    window.location.href = '/pg';
                     break;
                 case 'nearby':
-                    window.location.href = 'nearby-locations.html';
+                    window.location.href = '/near-by-locations';
                     break;
                 case 'contact':
-                    window.location.href = 'contact.html';
+                    window.location.href = '/contact';
                     break;
                 default:
                     console.log('Page not found');
