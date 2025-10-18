@@ -46,42 +46,36 @@
                     <li class="nav-item "> <a class="nav-link  " href="/" role="button">Home </a>
 
                     </li>
-
-                    <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button"
+                   
+                 <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Resort
                             Accommodations <i class="ti-angle-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="resort-details.html" class="dropdown-item"><span>Garden View Cottage</span></a>
-                            </li>
-                            <li><a href="resort-details.html" class="dropdown-item"><span>Family Pool Villa</span></a>
-                            </li>
-                            <li><a href="resort-details.html" class="dropdown-item"><span>Lake View Cottage</span></a>
-                            </li>
-                            <li><a href="resort-details.html" class="dropdown-item"><span>Premium Hill View
-                                        Suite</span></a></li>
-                            <li><a href="resort-details.html" class="dropdown-item"><span>Luxury Sea View
-                                        Villa</span></a></li>
-                            <li><a href="resort-details.html" class="dropdown-item"><span>Royal Heritage
-                                        Suite</span></a></li>
-
-                        </ul>
+                            <ul class="dropdown-menu">
+                                <% if (Array.isArray(resorts) && resorts.length > 0) { %>
+                                    <% resorts.forEach(function(resort) { %>
+                                        <li>
+                                            <a href="/resortDetails/<%= encodeURIComponent(resort.slug || resort.name) %>" class="dropdown-item">
+                                                <span><%= resort.name %></span>
+                                            </a>
+                                        </li>
+                                    <% }); %>
+                                <% } else { %>
+                                    <li><span class="dropdown-item text-muted">No resorts available</span></li>
+                                <% } %>
+                            </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="nearby-locations.html">Places to Visit Nearby</a>
+                                        <li class="nav-item"><a class="nav-link" href="/near-by-locations">Places to Visit Nearby</a></li>
+                    <li class="nav-item dropdown"> <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Services <i class="ti-angle-down"></i></a>
+                  <ul class="dropdown-menu">
+  <li><a href="/pg" class="dropdown-item active"><span>PG Stay</span></a></li>
+  <li><a href="/spa-wellness" class="dropdown-item"><span>Ayurvedic Spa & Massage</span></a></li>
+</ul>
                     </li>
-                    <li class="nav-item dropdown"> <a class="nav-link active dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Services <i
-                                class="ti-angle-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="pg.html" class="dropdown-item active"><span>PG Stay</span></a></li>
-                            <li><a href="spa-wellness.html" class="dropdown-item"><span>Ayurvedic Spa &
-                                        Massage</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                     <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
 
-
-                    <li class="nav-item"><a class="nav-link" href="blog.html">Blogs</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            
+                                    <li class="nav-item"><a class="nav-link" href="/blogs">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
                 </ul>
             </div>
         </div>
@@ -494,45 +488,44 @@
                             <h3>Get in touch</h3>
                             <p>Kerala, Thiruvananthapuram, India</p>
 
-                            <p class="phone">+91 96058 32333</p>
-                            <p class="mail">info@transhastays.com</p>
-                            <div class="social mt-2">
-                                <a href="https://www.instagram.com/transha_stays?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-                                    target="_blank"><i class="ti-instagram"></i></a>
-                                <a href="#"><i class="ti-twitter"></i></a>
-                                <a href="#"><i class="ti-linkedin"></i></a>
-                            </div>
+                        <p class="phone">+91 96058 32333</p>
+                        <p class="mail">info@transhastays.com</p>
+                        <div class="social mt-2"> 
+                            <a href="https://www.instagram.com/transha_stays?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="ti-instagram"></i></a>
+                            <a href="#"><i class="ti-twitter"></i></a> 
+                            <a href="#"><i class="ti-linkedin"></i></a> 
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="item">
-                            <h3>Quick Links</h3>
-                            <ul class="footer-explore-list list-unstyled">
+                </div>
+                <div class="col-md-4">
+                    <div class="item">
+                        <h3>Quick Links</h3>
+                   <ul class="footer-explore-list list-unstyled">
                                 <li><a href="/">Home</a></li>
-                                <li><a href="resorts.html">Resort Accommodations</a></li>
-                                <li><a href="nearby-locations.html">Places to Visit Nearby</a></li>
-                                <li><a href="services.html">PG Stays</a></li>
-                                <li><a href="services.html">Nooranu Ayurvedic Massage</a></li>
-                                <li><a href="about.html">About</a></li>
-                                <li><a href="blogs.html">Blogs</a></li>
-                                <li><a href="contact.html">Contact</a></li>
+                                <li><a href="/resorts">Resort Accommodations</a></li>
+                                <li><a href="/near-by-locations">Places to Visit Nearby</a></li>
+                                 <li><a href="/pg">PG Stays</a></li>
+                                <li><a href="/spa-wellness">Nooranu Ayurvedic Massage</a></li>
+                                <li><a href="/about">About</a></li>
+                                         <li><a href="/blogs">Blogs</a></li>
+                                <li><a href="/contact">Contact</a></li>
                             </ul>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12">
-                        <p style="text-align: center;">© 2025 Transha Stays. All rights reserved.</p>
-                    </div>
-
+    </div>
+    <div class="bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <p style="text-align: center;">© 2025 Transha Stays. All rights reserved.</p>
                 </div>
+           
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
     <div class="contact-container">
         <div class="contact-btn whatsapp-btn">
             <div class="contact-pulse"></div>
