@@ -144,8 +144,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <h3>Get in Touch</h3>
-                                    <form method="post" class="contact__form"
-                                        action="https://duruthemes.com/demo/html/patara/multipage-light/mail.php">
+                                    <form id="whatsappContactForm" class="contact__form" onsubmit="submitToWhatsApp(event)">
                                         <!-- form message -->
                                         <div class="row">
                                             <div class="col-12">
@@ -156,19 +155,19 @@
                                         <!-- form elements -->
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <input name="name" type="text" placeholder="Your Name *" required>
+                                                <input name="name" id="wa-name" type="text" placeholder="Your Name *" required>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <input name="email" type="email" placeholder="Your Email *" required>
+                                                <input name="email" id="wa-email" type="email" placeholder="Your Email *" required>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <input name="phone" type="text" placeholder="Your Number *" required>
+                                                <input name="phone" id="wa-phone" type="text" placeholder="Your Number *" required>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <input name="subject" type="text" placeholder="Subject *" required>
+                                                <input name="subject" id="wa-subject" type="text" placeholder="Subject *" required>
                                             </div>
                                             <div class="col-md-12 form-group">
-                                                <textarea name="message" id="message" cols="30" rows="4"
+                                                <textarea name="message" id="wa-message" cols="30" rows="4"
                                                     placeholder="Message *" required></textarea>
                                             </div>
                                             <div class="col-md-12 mt-10">
@@ -177,6 +176,39 @@
                                             </div>
                                         </div>
                                     </form>
+                                    <script>
+                                    function submitToWhatsApp(e) {
+                                        e.preventDefault();
+                                        var name = document.getElementById('wa-name').value.trim();
+                                        var email = document.getElementById('wa-email').value.trim();
+                                        var phone = document.getElementById('wa-phone').value.trim();
+                                        var subject = document.getElementById('wa-subject').value.trim();
+                                        var message = document.getElementById('wa-message').value.trim();
+
+                                        var waBody = "*Transha Stays Contact Form*\n" +
+                                            "*Name:* " + name + "\n" +
+                                            "*Email:* " + email + "\n" +
+                                            "*Phone:* " + phone + "\n" +
+                                            "*Subject:* " + subject + "\n" +
+                                            "*Message:* " + message;
+
+                                        var waNumber = "919605832333";
+                                        var encoded = encodeURIComponent(waBody);
+                                        var waUrl = "https://wa.me/" + waNumber + "?text=" + encoded;
+
+                                        window.open(waUrl, "_blank");
+
+                                        // Optionally, show the successful message UI
+                                        var msgDiv = document.querySelector('.alert.contact__msg');
+                                        if(msgDiv) {
+                                            msgDiv.style.display = "block";
+                                            setTimeout(function() { msgDiv.style.display = "none"; }, 4000);
+                                        }
+                                        // Optionally, reset the form
+                                        document.getElementById('whatsappContactForm').reset();
+                                        return false;
+                                    }
+                                    </script>
                                 </div>
                             </div>
                         </div>
