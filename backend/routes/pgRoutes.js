@@ -1,6 +1,7 @@
 
 
 
+const nodemailer = require('nodemailer');
 const express = require('express');
 const router = express.Router();
 const upload = require('../utils/multer');
@@ -8,8 +9,7 @@ const PgProperty = require('../models/pg/PgProperty');
 const PgFloor = require('../models/pg/PgFloor');
 const PgRoom = require('../models/pg/PgRoom');
 const PgBed = require('../models/pg/PgBed');
-const PgTenant = require('../models/pg/PgTenant');
-const PgLease = require('../models/pg/PgLease');
+const PgBooking = require('../models/pg/pgBooking');
 
 
 
@@ -181,135 +181,298 @@ router.get('/bed', async (req, res) => {
 
 
 
-// Create Tenant
-router.post('/tenant/create', async (req, res) => {
-    try {
-        const tenant = new PgTenant(req.body);
-        await tenant.save();
-        res.status(201).json({ success: true, message: 'Tenant created', data: tenant });
-    } catch (err) { res.status(500).json({ success: false, message: err.message }); }
+
+
+
+router.get('/pgAvailability', async (req, res) => {
+  try {
+    const { propertyId } = req.query;
+
+    if (!propertyId)
+      return res.status(400).json({ success: false, message: 'Property ID required' });
+
+    const property = await PgProperty.findById(propertyId)
+      .populate({
+        path: 'floors',
+        populate: {
+          path: 'allRooms',
+          populate: {
+            path: 'allBeds',
+            model: 'PgBed'
+          }
+        }
+      })
+      .lean();
+
+    if (!property)
+      return res.status(404).json({ success: false, message: 'PG property not found' });
+
+    const floorsAvailability = (property.floors || []).map(floor => ({
+      floorNumber: floor.floorNumber,
+      name: floor.name,
+      rooms: (floor.allRooms || []).map(room => ({
+        _id: room._id,
+        roomNumber: room.roomNumber,
+        sharingType: room.sharingType,
+        capacity: room.capacity,
+        pricePerMonth: room.pricePerMonth,
+        depositAmount: room.depositAmount,
+        isAvailable: room.isAvailable,
+        beds: (room.allBeds || []).map(bed => ({
+          _id: bed._id,
+          bedNumber: bed.bedNumber,
+          isOccupied: bed.isOccupied,
+          pricePerMonth: bed.pricePerMonth,
+          depositAmount: bed.depositAmount
+        }))
+      }))
+    }));
+
+    res.json({
+      success: true,
+      available: true,
+      property: property.name,
+      floors: floorsAvailability
+    });
+  } catch (error) {
+    console.error('Error checking PG availability:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
 });
 
 
-// Create Lease (prevent double booking)
-router.post('/lease/create', async (req, res) => {
-    try {
-      const { tenant, bed, startDate, endDate, rentAmount, paymentStatus } = req.body;
-  
-      if (!tenant || !bed || !startDate || !endDate)
-        return res.status(400).json({ success: false, message: 'tenant, bed, startDate and endDate are required' });
-  
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-  
-      // Check for overlapping lease
-      const overlappingLease = await PgLease.findOne({
-        bed: bed,
-        $or: [
-          { startDate: { $lte: end }, endDate: { $gte: start } } // overlap condition
-        ]
-      });
-  
-      if (overlappingLease) {
-        return res.status(400).json({ success: false, message: 'Bed is already booked in the selected date range' });
-      }
-  
-      const lease = new PgLease({ tenant, bed, startDate: start, endDate: end, rentAmount, paymentStatus });
-      await lease.save();
-  
-      res.status(201).json({ success: true, message: 'Lease created successfully', data: lease });
-  
-    } catch (err) {
-      console.error('Lease creation error:', err);
-      res.status(500).json({ success: false, message: err.message });
+router.post('/bookPG', async (req, res) => {
+  try {
+
+    if (typeof req.body !== 'object') {
+      return res.status(400).json({ message: "Invalid body format, expected JSON." });
     }
-  });
-  
 
+    const {
+      propertyId, roomId, bedId,
+      name, phone, email,
+      checkInDate, checkOutDate,
+      totalRent, advanceAmount, advance
+    } = req.body;
 
-// Check Availability with fullyAvailable flag
-router.post('/pgAvailability', async (req, res) => {
-    try {
-      const { propertyId, startDate, endDate } = req.body;
-  
-      if (!propertyId || !startDate || !endDate)
-        return res.status(400).json({ success: false, message: 'propertyId, startDate and endDate are required' });
-  
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-  
-      // Fetch floors for property
-      const floors = await PgFloor.find({ property: propertyId }).lean();
-  
-      const result = [];
-  
-      for (const floor of floors) {
-        // Fetch rooms in floor
-        const rooms = await PgRoom.find({ floor: floor._id }).lean();
-  
-        const roomsAvailability = [];
-  
-        for (const room of rooms) {
-          // Fetch beds in room
-          const beds = await PgBed.find({ room: room._id }).lean();
-  
-          const availableBeds = [];
-  
-          for (const bed of beds) {
-            // Check for overlapping lease
-            const overlappingLease = await PgLease.findOne({
-              bed: bed._id,
-              $or: [
-                { startDate: { $lte: end }, endDate: { $gte: start } }
-              ]
-            });
-  
-            if (!overlappingLease) {
-              availableBeds.push(bed);
-            }
-          }
-  
-          // Room is fully available if all beds are available
-          const fullyAvailable = availableBeds.length === beds.length;
-  
-          roomsAvailability.push({
-            ...room,
-            availableBeds,
-            totalBeds: beds.length,
-            fullyAvailable
-          });
+    const finalPropertyId = propertyId || req.body.property;
+    const finalRoomId = roomId || req.body.room;
+    const finalBedId = bedId || req.body.bed;
+    const finalAdvanceAmount = (advanceAmount !== undefined) ? advanceAmount : (advance !== undefined ? advance : undefined);
+
+    if (!finalPropertyId) {
+      return res.status(400).json({ message: 'Property ID is required', detail: { reqBody: req.body } });
+    }
+    if (!finalRoomId) {
+      return res.status(400).json({ message: 'Room ID is required', detail: { reqBody: req.body } });
+    }
+    if (!checkInDate) {
+      return res.status(400).json({ message: 'Check-in date is required', detail: { reqBody: req.body } });
+    }
+    if (!totalRent) {
+      return res.status(400).json({ message: 'Total rent is required', detail: { reqBody: req.body } });
+    }
+
+    const room = await PgRoom.findById(finalRoomId).populate('beds');
+    if (!room || !room.isAvailable) {
+      return res.status(400).json({ message: 'Room is not available' });
+    }
+
+    let selectedBed = null;
+    if (finalBedId) {
+      selectedBed = await PgBed.findById(finalBedId);
+      if (!selectedBed || selectedBed.isOccupied) {
+        return res.status(400).json({ message: 'Bed is not available' });
+      }
+      selectedBed.isOccupied = true;
+      await selectedBed.save();
+    }
+
+    if (!finalBedId && room.beds && room.beds.length === 0) {
+      room.isAvailable = false;
+      await room.save();
+    }
+
+    const bookingData = {
+      property: finalPropertyId,
+      room: finalRoomId,
+      bed: finalBedId || null,
+      name,
+      phone,
+      email,
+      checkInDate,
+      checkOutDate: checkOutDate || null,
+      totalRent,
+      advanceAmount: finalAdvanceAmount,
+      paymentStatus: Number(finalAdvanceAmount) > 0 ? 'Paid' : 'Pending',
+      bookingStatus: 'Confirmed'
+    };
+
+    const booking = await PgBooking.create(bookingData);
+
+    // Email sending block for user and admin notification
+    if (
+      email && typeof email === 'string' && email.includes('@')
+      ||
+      (typeof process.env.ADMIN_EMAIL === 'string' && process.env.ADMIN_EMAIL.includes('@'))
+    ) {
+
+      let propertyDoc = null;
+      try {
+        propertyDoc = await PgProperty.findById(finalPropertyId);
+      } catch (_) {}
+
+      const propertyName = propertyDoc?.name || 'Our Premium PG';
+      const formattedCheckIn = checkInDate ? new Date(checkInDate).toLocaleDateString() : 'your check-in date';
+      const formattedCheckOut = checkOutDate ? new Date(checkOutDate).toLocaleDateString() : undefined;
+
+      // Compose user mail
+      let subjectUser = `You're In! 🎉 Your PG Booking is Confirmed at ${propertyName}`;
+      let htmlUser = `
+        <div style="font-family:sans-serif;padding:20px;">
+          <h2 style="color:#006699;">Welcome Aboard, ${name || 'PG Guest'}!</h2>
+          <p>We're excited to let you know that your booking at <strong>${propertyName}</strong> is <span style="color:green;"><b>confirmed</b></span>!</p>
+          <ul>
+            <li><b>Check-in Date:</b> ${formattedCheckIn}</li>
+            ${formattedCheckOut ? `<li><b>Check-out Date:</b> ${formattedCheckOut}</li>` : ''}
+            <li><b>Total Rent To Be Paid:</b> ₹${totalRent}</li>
+            ${finalAdvanceAmount ? `<li><b>Advance To be Paid:</b> ₹${finalAdvanceAmount}</li>` : ''}
+            <li><b>Room:</b> ${room.roomNumber || '[Assigned Room]'}</li>
+            ${selectedBed && selectedBed.bedNumber ? `<li><b>Bed:</b> ${selectedBed.bedNumber}</li>` : ''}
+          </ul>
+          <p style="font-size:16px;margin-top:24px;">
+            Have questions or special requests? Just reply to this email or call us on ${propertyDoc?.contactNumber || '+91 96058 32333'}.
+          </p>
+          <div style="background:#eee;padding:14px;border-radius:6px;margin-top:18px;">
+            <b>Pack your bags – your hassle-free stay awaits at <span style="color:#007BA7;">${propertyName}</span>!</b> <br>
+            <span style="color:#555;font-size:13px;">We can't wait to welcome you.</span>
+          </div>
+          <p style="margin-top:24px;">Best regards,<br><b>The ${propertyName} Team</b></p>
+        </div>
+      `;
+
+      // Compose admin mail
+      let subjectAdmin = `PG Booking Alert: New Booking at ${propertyName}`;
+      let htmlAdmin = `
+        <div style="font-family:sans-serif;padding:20px;">
+          <h2 style="color:#ce2525;">New PG Booking Received</h2>
+          <p><b>Property:</b> ${propertyName}</p>
+          <ul>
+            <li><b>Name:</b> ${name || '[Guest]'}</li>
+            <li><b>Phone:</b> ${phone || '[Not provided]'}</li>
+            <li><b>Email:</b> ${email || '[Not provided]'}</li>
+            <li><b>Check-in Date:</b> ${formattedCheckIn}</li>
+            ${formattedCheckOut ? `<li><b>Check-out Date:</b> ${formattedCheckOut}</li>` : ''}
+            <li><b>Total Rent:</b> ₹${totalRent}</li>
+            ${finalAdvanceAmount ? `<li><b>Advance:</b> ₹${finalAdvanceAmount}</li>` : ''}
+            <li><b>Room:</b> ${room.roomNumber || '[Assigned Room]'}</li>
+            ${selectedBed && selectedBed.bedNumber ? `<li><b>Bed:</b> ${selectedBed.bedNumber}</li>` : ''}
+          </ul>
+          <p><b>Booking details:</b> <code style="background:#eee;">${booking._id}</code></p>
+          <p>Logged at: ${new Date().toLocaleString()}</p>
+        </div>
+      `;
+
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.ADMIN_EMAIL,
+          pass: process.env.ADMIN_PASS
         }
-  
-        result.push({
-          ...floor,
-          rooms: roomsAvailability
-        });
+      });
+
+      // Prepare email send promises
+      const emailPromises = [];
+      if (email && typeof email === 'string' && email.includes('@')) {
+        emailPromises.push(
+          transporter.sendMail({
+            from: `"${propertyName}" <${process.env.ADMIN_EMAIL}>`,
+            to: email,
+            subject: subjectUser,
+            html: htmlUser
+          })
+        );
       }
-  
-      res.json({ success: true, propertyId, availability: result });
-  
-    } catch (err) {
-      console.error('Availability check error:', err);
-      res.status(500).json({ success: false, message: err.message });
+      if (
+        typeof process.env.ADMIN_EMAIL === 'string'
+        && process.env.ADMIN_EMAIL.includes('@')
+      ) {
+        emailPromises.push(
+          transporter.sendMail({
+            from: `"${propertyName} Booking Alert" <${process.env.ADMIN_EMAIL}>`,
+            to: process.env.ADMIN_EMAIL,
+            subject: subjectAdmin,
+            html: htmlAdmin
+          })
+        );
+      }
+
+      try {
+        await Promise.all(emailPromises);
+      } catch (mailErr) {
+        console.error('Booking email failed:', mailErr);
+      }
     }
-  });
-  
-  router.post('/admin-booking/pg/update-status', async (req, res) => {
-    try {
-      const { leaseId, status } = req.body; // you can add `status` to PgLease if needed
-  
-      const lease = await PgLease.findByIdAndUpdate(
-        leaseId,
-        { status }, // make sure you add a `status` field in PgLease if not already
-        { new: true }
-      );
-  
-      res.json({ success: true, data: lease });
-    } catch (err) {
-      console.error('PG lease status update error:', err);
-      res.status(500).json({ success: false, message: err.message });
+
+    res.json({ message: 'Booking successful', booking });
+  } catch (error) {
+    console.error('Error booking PG:', error, req.body);
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
+});
+
+
+router.put('/Pgbooking/:id/status', async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+    const { bookingStatus } = req.body;
+
+    if (
+      !bookingStatus ||
+      !['Confirmed', 'Cancelled', 'Completed'].includes(bookingStatus)
+    ) {
+      return res.status(400).json({ success: false, message: 'Invalid or missing bookingStatus' });
     }
-  });
-  
+
+    const booking = await PgBooking.findByIdAndUpdate(
+      bookingId,
+      { bookingStatus },
+      { new: true }
+    );
+
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+
+    res.json({ success: true, message: 'Booking status updated', data: booking });
+  } catch (error) {
+    console.error('Error updating booking status:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+
+router.delete('/PgDeletebooking/:id', async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+
+    const deletedBooking = await PgBooking.findByIdAndDelete(bookingId);
+
+    if (!deletedBooking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+
+    res.json({ success: true, message: 'Booking deleted successfully', data: deletedBooking });
+  } catch (error) {
+    console.error('Error deleting booking:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
 
 module.exports = router;

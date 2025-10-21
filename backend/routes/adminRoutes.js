@@ -12,6 +12,7 @@ const ResortProperty = require('../models/resort/ResortProperty');
 const PgProperty = require('../models/pg/PgProperty');
 const PgLease = require('../models/pg/PgLease');
 const ResortBooking = require('../models/resort/ResortBooking');
+const PgBooking = require('../models/pg/pgBooking');
 
 // Admin Login Page
 app.get('/login', (req, res) => {
@@ -28,60 +29,65 @@ app.get('/dashboard', authMiddleware, async (req, res) => {
     }
 });
 
+
+
 app.get('/admin-booking', authMiddleware, async (req, res) => {
   try {
-   
+    // Resort Bookings
     const bookingStatus = req.query.status; 
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
-    const filter = {};
+    const resortFilter = {};
     if (bookingStatus && ['Pending','Confirmed','CheckedIn','CheckedOut','Cancelled'].includes(bookingStatus)) {
-      filter.bookingStatus = bookingStatus;
+      resortFilter.bookingStatus = bookingStatus;
     }
 
-    const resortBookingQuery = ResortBooking.find(filter)
-      .populate('property', 'name city')
-      .populate('room', 'roomNumber roomType pricePerNight')
+    // Remove populate for 'allBeds' (not in schema - see StrictPopulateError)
+    const resortBookingQuery = ResortBooking.find(resortFilter)
+      .populate({
+        path: 'property',
+      })
+      .populate({
+        path: 'room',
+      })
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit);
 
     const [resortBookings, totalResortBookings] = await Promise.all([
       resortBookingQuery.exec(),
-      ResortBooking.countDocuments(filter)
+      ResortBooking.countDocuments(resortFilter)
     ]);
 
-    const leaseStatus = req.query.leaseStatus; 
-    const leasePage = parseInt(req.query.leasePage) || 1;
-    const leaseLimit = parseInt(req.query.leaseLimit) || 10;
+    // PG Bookings
+    const pgStatus = req.query.pgStatus; 
+    const pgPage = parseInt(req.query.pgPage) || 1;
+    const pgLimit = parseInt(req.query.pgLimit) || 10;
 
-    const pgLeasesFilter = {};
+    const pgFilter = {};
+    if (pgStatus && ['Confirmed', 'Cancelled', 'Completed'].includes(pgStatus)) {
+      pgFilter.bookingStatus = pgStatus;
+    }
 
-    const pgLeasesQuery = PgLease.find(pgLeasesFilter)
-      .populate({
-        path: 'tenant',
-        select: 'name phone email'
-      })
+    // Keep PG populate structure (no issue in context)
+    const pgBookingQuery = PgBooking.find(pgFilter)
       .populate({
         path: 'property',
-        select: 'name city'
       })
       .populate({
         path: 'room',
-        select: 'roomNumber sharingType'
       })
       .populate({
         path: 'bed',
-        select: 'bedNumber pricePerMonth'
       })
       .sort({ createdAt: -1 })
-      .skip((leasePage - 1) * leaseLimit)
-      .limit(leaseLimit);
+      .skip((pgPage - 1) * pgLimit)
+      .limit(pgLimit);
 
-    const [pgLeases, totalPgLeases] = await Promise.all([
-      pgLeasesQuery.exec(),
-      PgLease.countDocuments(pgLeasesFilter)
+    const [pgBookings, totalPgBookings] = await Promise.all([
+      pgBookingQuery.exec(),
+      PgBooking.countDocuments(pgFilter)
     ]);
 
     res.render('admin-bookings', {
@@ -92,12 +98,12 @@ app.get('/admin-booking', authMiddleware, async (req, res) => {
       resortBookingsLimit: limit,
       bookingStatusFilter: bookingStatus || '',
 
-      pgLeases,
-      pgLeasesTotal: totalPgLeases,
-      pgLeasesPage: leasePage,
-      pgLeasesPages: Math.ceil(totalPgLeases / leaseLimit),
-      pgLeasesLimit: leaseLimit,
-      leaseStatusFilter: leaseStatus || ''
+      pgBookings,
+      pgBookingsTotal: totalPgBookings,
+      pgBookingsPage: pgPage,
+      pgBookingsPages: Math.ceil(totalPgBookings / pgLimit),
+      pgBookingsLimit: pgLimit,
+      pgBookingStatusFilter: pgStatus || ''
     });
   } catch (err) {
     console.error('Error fetching bookings:', err);

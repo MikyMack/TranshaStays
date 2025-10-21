@@ -207,10 +207,10 @@
                             </button>
                             <button 
                               class="btn btn-outline-primary mx-2" 
-                              id="btn-pg-leases" 
+                              id="btn-pg-bookings" 
                               style="min-width:150px;border-radius:25px;"
                               onclick="showBookingsTab('pg')">
-                              PG Leases
+                              PG Bookings
                             </button>
                           </div>
 
@@ -387,54 +387,183 @@
                             <% } %>
                           </div>
 
-                          <!-- PG Leases -->
-                          <div id="pg-leases-section" style="display:none;">
-                            <h3>PG Leases</h3>
-                            <div class="table-responsive">
-                              <table class="table table-bordered table-striped align-middle">
-                                <thead class="table-light">
-                                  <tr>
-                                    <th>Property</th>
-                                    <th>Floor</th>
-                                    <th>Room</th>
-                                    <th>Bed</th>
-                                    <th>Tenant</th>
-                                    <th>Start</th>
-                                    <th>End</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <% pgLeases.forEach(lease => { %>
-                                  <tr>
-                                    <td><%= lease.property && lease.property.name ? lease.property.name : '' %></td>
-                                    <td><%= lease.room && lease.room.floor ? lease.room.floor : '' %></td>
-                                    <td><%= lease.room && lease.room.roomNumber ? lease.room.roomNumber : '' %></td>
-                                    <td><%= lease.bed && lease.bed.bedNumber ? lease.bed.bedNumber : '' %></td>
-                                    <td><%= lease.tenant && lease.tenant.name ? lease.tenant.name : '' %></td>
-                                    <td><%= lease.startDate ? lease.startDate.toDateString() : '-' %></td>
-                                    <td><%= lease.endDate ? lease.endDate.toDateString() : '-' %></td>
-                                    <td>
-                                      <span class="badge 
-                                        <%= lease.status==='Active' ? 'bg-success' : 
-                                            lease.status==='Completed' ? 'bg-secondary' : 
-                                            lease.status==='Cancelled' ? 'bg-danger' : 'bg-light text-dark' %>">
-                                        <%= lease.status || 'Active' %>
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <select class="form-select form-select-sm"
-                                        onchange="updatePgStatus('<%= lease._id %>', this.value)">
-                                        <option value="Active" <%= lease.status==='Active'?'selected':'' %>>Active</option>
-                                        <option value="Completed" <%= lease.status==='Completed'?'selected':'' %>>Completed</option>
-                                        <option value="Cancelled" <%= lease.status==='Cancelled'?'selected':'' %>>Cancelled</option>
-                                      </select>
-                                    </td>
-                                  </tr>
-                                  <% }) %>
-                                </tbody>
-                              </table>
+                          <!-- PG Bookings - CARD VIEW (Now with Update/Delete functionality) -->
+                          <div id="pg-bookings-section" style="display:none;">
+                            <h3>PG Bookings</h3>
+                            <div class="row g-4" style="margin-top:10px;">
+                              <% if (pgBookings.length === 0) { %>
+                                <div class="col-12">
+                                  <div class="alert alert-info text-center">No PG bookings to display.</div>
+                                </div>
+                              <% } %>
+                              <% pgBookings.forEach(booking => { %>
+                                <div class="col-12 col-md-6 col-lg-4">
+                                  <div class="card shadow border-0 h-100" style="border-radius:18px;background:#fafbfc;">
+                                    <div class="card-header pb-1 d-flex align-items-center" style="border-top-left-radius:18px;border-top-right-radius:18px;background:#446B2F;color:#fff;">
+                                      <div>
+                                        <strong>
+                                          <i class="ti-home"></i>
+                                          <%= booking.property && (booking.property.name || booking.property.propertyName) 
+                                                ? (booking.property.name || booking.property.propertyName) 
+                                                : '-' %>
+                                        </strong>
+                                      </div>
+                                      <div class="ms-auto">
+                                        <% 
+                                          let statusBadge = '';
+                                          let bookingStatus = booking.bookingStatus || 'Confirmed';
+                                          if (bookingStatus === 'Confirmed') { 
+                                            statusBadge = 'bg-success';
+                                          } else if (bookingStatus === 'Completed') {
+                                            statusBadge = 'bg-secondary';
+                                          } else if (bookingStatus === 'Cancelled') {
+                                            statusBadge = 'bg-danger';
+                                          } else {
+                                            statusBadge = 'bg-light text-dark';
+                                          }
+                                        %>
+                                        <span class="badge <%= statusBadge %>">
+                                          <%= bookingStatus %>
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div class="card-body py-3">
+
+                                      <div class="mb-2">
+                                        <strong>Property:</strong>
+                                        <span>
+                                          <%= booking.property && (booking.property.name || booking.property.propertyName) 
+                                                ? (booking.property.name || booking.property.propertyName) 
+                                                : '-' %>
+                                        </span>
+                                      </div>
+
+                                      <div class="mb-2">
+                                        <strong>Room:</strong>
+                                        <span>
+                                          <% if (booking.room && (booking.room.roomNumber || booking.room.name)) { %>
+                                            <%= booking.room.roomNumber || booking.room.name %>
+                                          <% } else if (booking.room && typeof booking.room === 'string') { %>
+                                            <%= booking.room %>
+                                          <% } else { %>
+                                            -
+                                          <% } %>
+                                        </span>
+                                      </div>
+
+                                      <div class="mb-2">
+                                        <strong>Bed:</strong>
+                                        <span>
+                                          <% if (booking.bed && (booking.bed.bedNumber || booking.bed.name)) { %>
+                                            <%= booking.bed.bedNumber || booking.bed.name %>
+                                          <% } else if (booking.bed && typeof booking.bed === 'string') { %>
+                                            <%= booking.bed %>
+                                          <% } else { %>
+                                            -
+                                          <% } %>
+                                        </span>
+                                      </div>
+
+                                      <div class="mb-2">
+                                        <strong>Guest Name:</strong>
+                                        <i class="ti-user"></i>
+                                        <%= booking.name || '-' %>
+                                      </div>
+
+                                      <div class="mb-2">
+                                        <strong>Phone:</strong>
+                                        <i class="ti-mobile"></i>
+                                        <%= booking.phone || '-' %>
+                                      </div>
+
+                                      <% if (booking.email) { %>
+                                      <div class="mb-2">
+                                        <strong>Email:</strong>
+                                        <i class="ti-email"></i>
+                                        <%= booking.email %>
+                                      </div>
+                                      <% } %>
+
+                                      <div class="mb-2">
+                                        <strong>Check-In:</strong>
+                                        <%= booking.checkInDate ? (new Date(booking.checkInDate)).toLocaleString() : '-' %>
+                                      </div>
+                                      <div class="mb-2">
+                                        <strong>Check-Out:</strong>
+                                        <%= booking.checkOutDate ? (new Date(booking.checkOutDate)).toLocaleString() : '-' %>
+                                      </div>
+                                      <div class="mb-2">
+                                        <strong>Total Rent:</strong>
+                                        <% if (typeof booking.totalRent !== "undefined" && booking.totalRent !== null) { %>
+                                          <span class="badge bg-primary" style="font-size:1em;">₹<%= booking.totalRent %></span>
+                                        <% } else { %>
+                                          -
+                                        <% } %>
+                                      </div>
+                                      <div class="mb-2">
+                                        <strong>Advance Amount:</strong>
+                                        <% let adv = booking.advanceAmount; %>
+                                        <span class="badge bg-info text-dark" style="font-size:1em;">
+                                          ₹<%= (typeof adv !== "undefined" && adv !== null ? adv : 0) %>
+                                        </span>
+                                      </div>
+                                      <div class="mb-2">
+                                        <strong>Payment Status:</strong>
+                                        <span><%= booking.paymentStatus || '-' %></span>
+                                      </div>
+                                      <div class="mb-2">
+                                        <strong>Booking Status:</strong>
+                                        <span><%= booking.bookingStatus || '-' %></span>
+                                      </div>
+                                      <div class="mb-2">
+                                        <strong>Created:</strong>
+                                        <span class="text-muted"><%= booking.createdAt ? (new Date(booking.createdAt)).toLocaleString() : '-' %></span>
+                                      </div>
+                                      <div class="mb-2">
+                                        <strong>Last Update:</strong>
+                                        <span class="text-muted"><%= booking.updatedAt ? (new Date(booking.updatedAt)).toLocaleString() : '-' %></span>
+                                      </div>
+                                    </div>
+                                    <div class="card-footer bg-light pt-2 pb-2" style="border-bottom-left-radius:18px;border-bottom-right-radius:18px;">
+                                      <div>
+                                        <label for="pg-status-<%= booking._id %>" class="pe-2 fw-bold" style="font-size:0.98em;">Change Status:</label>
+                                      </div>
+                                      <div style="min-width:130px; display: flex; gap: 8px; align-items: center;">
+                                        <% 
+                                          // Status select uses backend allowed values: Confirmed, Completed, Cancelled
+                                          const statusVal = booking.bookingStatus || 'Confirmed';
+                                        %>
+                                        <select id="pg-status-<%= booking._id %>" class="form-select form-select-sm"
+                                          style="min-width:110px;display:inline-block;"
+                                          onchange="enablePgUpdateButton('<%= booking._id %>')">
+                                          <option value="Confirmed" <%= (statusVal==='Confirmed') ? 'selected' : '' %>>Confirmed</option>
+                                          <option value="Completed" <%= statusVal==='Completed'?'selected':'' %>>Completed</option>
+                                          <option value="Cancelled" <%= statusVal==='Cancelled'?'selected':'' %>>Cancelled</option>
+                                        </select>
+                                      </div>
+                                      <div class="mt-2 d-flex justify-content-between" style="gap:8px;">
+                                        <button id="pg-save-status-btn-<%= booking._id %>"
+                                          class="btn btn-sm btn-success"
+                                          type="button"
+                                          style="border-radius:18px;padding:3px 14px;font-size:0.98em;flex:1;"
+                                          onclick="updatePgStatus('<%= booking._id %>')"
+                                          disabled
+                                        >Update</button>
+                                        <button
+                                          id="pg-delete-booking-btn-<%= booking._id %>"
+                                          class="btn btn-sm btn-danger"
+                                          type="button"
+                                          style="border-radius:18px;padding:3px 14px;font-size:0.98em;flex:1;"
+                                          onclick="deletePgBooking('<%= booking._id %>')"
+                                          title="Delete this booking"
+                                        >
+                                          <i class="ti-trash"></i> Delete
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <% }) %>
                             </div>
                           </div>
 
@@ -442,7 +571,6 @@
                         <!-- /main-content-wrap -->
                       </div>
                       <script>
-                        // Resort Booking status update logic. Sends POST to /resort/update-status.
                         async function updateResortStatus(bookingId) {
                           const select = document.getElementById('status-' + bookingId);
                           const status = select.value;
@@ -549,7 +677,41 @@
                           }
                         }
 
-                        // Enable update button when select input changes
+                        // PG: Delete booking function
+                        async function deletePgBooking(pgBookingId) {
+                          if(!confirm("Are you sure you want to delete this PG booking? This action cannot be undone.")) return;
+
+                          var btn = document.getElementById('pg-delete-booking-btn-' + pgBookingId);
+                          btn.disabled = true;
+                          btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Delete';
+                          try {
+                            // Use correct backend route as per file_context_0: /PgDeletebooking/:id
+                            const res = await fetch(`/PgDeletebooking/${pgBookingId}`, {
+                              method: 'DELETE',
+                              headers: { 'Content-Type': 'application/json' }
+                            });
+                            const data = await res.json();
+
+                            if (data.success) {
+                              // Remove the entire card after short delay
+                              const card = btn.closest('.card');
+                              card.style.opacity = 0.7;
+                              setTimeout(() => {
+                                card.parentNode.removeChild(card);
+                              }, 500);
+                            } else {
+                              alert("Delete failed: " + (data.message || "Unknown error"));
+                              btn.disabled = false;
+                              btn.innerHTML = '<i class="ti-trash"></i> Delete';
+                            }
+                          } catch (err) {
+                            alert("Something went wrong deleting booking.");
+                            btn.disabled = false;
+                            btn.innerHTML = '<i class="ti-trash"></i> Delete';
+                          }
+                        }
+
+                        // Enable update button when select input changes (Resort & PG)
                         document.addEventListener("DOMContentLoaded", function() {
                           document.querySelectorAll("select[id^='status-']").forEach(function(sel){
                             sel.addEventListener('change', function(e){
@@ -557,7 +719,129 @@
                               document.getElementById('save-status-btn-'+bookingId).disabled = false;
                             });
                           });
+                          // Enable update button when select changes for PG
+                          document.querySelectorAll("select[id^='pg-status-']").forEach(function(sel){
+                            sel.addEventListener('change', function(e){
+                              const bookingId = this.id.replace('pg-status-','');
+                              document.getElementById('pg-save-status-btn-'+bookingId).disabled = false;
+                            });
+                          });
                         });
+
+                        // Helper to enable pg update button
+                        function enablePgUpdateButton(pgBookingId) {
+                          document.getElementById('pg-save-status-btn-'+pgBookingId).disabled = false;
+                        }
+
+                        // Add showBookingsTab function to toggle between the tabs
+                        function showBookingsTab(tab) {
+                          var resortSection = document.getElementById('resort-bookings-section');
+                          var pgSection = document.getElementById('pg-bookings-section');
+                          var resortBtn = document.getElementById('btn-resort-bookings');
+                          var pgBtn = document.getElementById('btn-pg-bookings');
+                          if (tab === 'resort') {
+                            resortSection.style.display = '';
+                            pgSection.style.display = 'none';
+                            resortBtn.classList.add('btn-primary');
+                            resortBtn.classList.remove('btn-outline-primary');
+                            pgBtn.classList.remove('btn-primary');
+                            pgBtn.classList.add('btn-outline-primary');
+                          } else if (tab === 'pg') {
+                            resortSection.style.display = 'none';
+                            pgSection.style.display = '';
+                            resortBtn.classList.remove('btn-primary');
+                            resortBtn.classList.add('btn-outline-primary');
+                            pgBtn.classList.add('btn-primary');
+                            pgBtn.classList.remove('btn-outline-primary');
+                          }
+                        }
+
+                        // PG status update logic
+                        async function updatePgStatus(pgBookingId) {
+                          const select = document.getElementById('pg-status-' + pgBookingId);
+                          const status = select.value;
+                          const button = document.getElementById('pg-save-status-btn-' + pgBookingId);
+                          button.disabled = true;
+                          button.innerText = "Updating...";
+
+                          // Allowed backend statuses: ['Confirmed', 'Cancelled', 'Completed']
+                          // We map frontend options to backend values; treat 'Active' as 'Confirmed'
+                          let backendStatus = status;
+                          if (status === 'Active') {
+                            backendStatus = 'Confirmed';
+                          } else if (status === 'Completed') {
+                            backendStatus = 'Completed';
+                          } else if (status === 'Cancelled') {
+                            backendStatus = 'Cancelled';
+                          } else {
+                            backendStatus = null;
+                          }
+
+                          const allowedStatuses = ['Confirmed', 'Completed', 'Cancelled'];
+                          if (!backendStatus || !allowedStatuses.includes(backendStatus)) {
+                            alert('Invalid booking status selected.');
+                            button.classList.remove('btn-success');
+                            button.classList.add('btn-danger');
+                            button.innerText = "Failed";
+                            setTimeout(() => {
+                              button.innerText = "Update";
+                              button.disabled = false;
+                            }, 1500);
+                            return;
+                          }
+
+                          try {
+                            const res = await fetch(`/Pgbooking/${pgBookingId}/status`, {
+                              method: 'PUT',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ bookingStatus: backendStatus })
+                            });
+                            const data = await res.json();
+
+                            if (data.success) {
+                              button.classList.remove('btn-danger');
+                              button.classList.add('btn-success');
+                              button.innerText = "Updated";
+                              setTimeout(() => {
+                                button.innerText = "Update";
+                                button.disabled = true;
+                              }, 1200);
+
+                              // Optionally update badge in UI for user feedback
+                              const card = button.closest('.card');
+                              const badge = card.querySelector('.card-header .badge');
+                              if (badge) {
+                                // Map backend to frontend label and color
+                                const badgeMap = {
+                                  'Confirmed': { text: 'Active', class: 'bg-success' },
+                                  'Completed': { text: 'Completed', class: 'bg-secondary' },
+                                  'Cancelled': { text: 'Cancelled', class: 'bg-danger' },
+                                };
+                                const badgeInfo = badgeMap[backendStatus] || { text: backendStatus, class: 'bg-light text-dark' };
+                                badge.className = 'badge ' + badgeInfo.class;
+                                badge.textContent = badgeInfo.text;
+                              }
+                            } else {
+                              alert("Update failed: " + (data.message || "Unknown error"));
+                              button.classList.remove('btn-success');
+                              button.classList.add('btn-danger');
+                              button.innerText = "Failed";
+                              setTimeout(() => {
+                                button.innerText = "Update";
+                                button.disabled = false;
+                              }, 1500);
+                            }
+                          } catch (err) {
+                            alert("Something went wrong updating status.");
+                            button.classList.remove('btn-success');
+                            button.classList.add('btn-danger');
+                            button.innerText = "Failed";
+                            setTimeout(() => {
+                              button.innerText = "Update";
+                              button.disabled = false;
+                            }, 1500);
+                          }
+                        }
                       </script>
                       <!-- /main-content-inner -->
 

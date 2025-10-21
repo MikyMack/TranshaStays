@@ -110,14 +110,18 @@ router.get('/pgDetails/:slug', async (req, res) => {
     try {
       const { slug } = req.params;
   
+      // Find property and populate everything (floors → rooms → beds)
       const pg = await PgProperty.findOne({ slug, isActive: true })
         .populate({
           path: 'floors',
+          options: { sort: { floorNumber: 1 } }, // ascending order
           populate: {
             path: 'allRooms',
+            options: { sort: { createdAt: 1 } },
             populate: {
               path: 'allBeds',
-              model: 'PgBed'
+              model: 'PgBed',
+              options: { sort: { bedNumber: 1 } }
             }
           }
         })
@@ -126,13 +130,16 @@ router.get('/pgDetails/:slug', async (req, res) => {
       if (!pg) {
         return res.status(404).send('PG not found');
       }
+  
       const resorts = await ResortProperty.find({ isActive: true })
-      .sort({ createdAt: -1 })
-      .populate('rooms')
-      .lean();
+        .sort({ createdAt: -1 })
+        .populate('rooms')
+        .lean();
+  
       res.render('pgDetails', {
-        title: pg.name || 'PG Details',resorts,
-        pg
+        title: `${pg.name} – PG Details`,
+        pg,
+        resorts
       });
     } catch (error) {
       console.error('Error loading PG details:', error);
