@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/plugins.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
 </head>
 
 <body>
@@ -271,18 +272,18 @@
 
 
     <!-- Detailed Texts and Room Info -->
-    <section class="room-details1 section-padding" data-scroll-index="1" style="background: linear-gradient(120deg, #FAE1B2 0%, #F6F9FC 100%); border-radius: 16px; box-shadow: 0 2px 32px 0 rgba(40,60,120,0.07);">
+    <section class="room-details1 section-padding" data-scroll-index="1" style="background: #f6f0f1; border-radius: 16px; box-shadow: 0 2px 32px 0 rgba(40,60,120,0.07);">
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
                     <% if (property.description) { %>
-                        <div class="mb-4" style="font-size:1.18rem;color:#374151;background:#fff8e8;padding:1rem 1.5rem;border-radius:12px;border-left:4px solid #e29932;margin-bottom:2.1rem;">
+                        <div class="mb-4" style="font-size:1.18rem;color:#374151;padding:1rem 1.5rem;border-radius:12px;margin-bottom:2.1rem;">
                             <%= property.description %>
                         </div>
                     <% } %>
 
                     <% if (property.rooms && property.rooms.length > 0) { %>
-                        <h2 class="mb-4" style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.55rem;color:#e66b04;letter-spacing: 0.05em;text-shadow:0 1.5px 0 #ffd087;">Room Types</h2>
+                        <h2 class="mb-4" style="font-weight:700;font-size:1.55rem;color:#282828;letter-spacing: 0.05em;">Room Types</h2>
                         <div class="row g-4">
                             <% property.rooms.forEach(function(room) { %>
                                 <div class="col-md-6">
@@ -349,7 +350,7 @@
                                             </div>
                                             <% if (Array.isArray(room.amenities) && room.amenities.length > 0) { %>
                                                 <div class="mt-2">
-                                                    <span class="fw-bold" style="font-size:0.98rem;color:#e89404;">Room Amenities:</span>
+                                                    <span class="fw-bold" style="font-size:0.98rem;color:#282828;">Room Amenities:</span>
                                                     <div style="margin:6px 0 0 0;">
                                                         <ul style="display:flex;flex-wrap:wrap;gap:7px 10px;padding:0;list-style:none;margin:0;">
                                                             <% room.amenities.forEach(function(a) { %>
@@ -371,7 +372,7 @@
 
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <h6 style="font-weight:600;color:#2661ad;"><i class="fa fa-arrow-down-circle" style="color:#e66b04;"></i> Check-in Information</h6>
+                            <h6 style="font-weight:600;color:#282828;"><i class="fa fa-arrow-down-circle" style="color:#e66b04;"></i> Check-in Information</h6>
                             <ul class="list-unstyled page-list mb-30">
                                 <li>
                                     <div class="page-list-icon"> <span class="ti-check"></span> </div>
@@ -385,7 +386,7 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <h6 style="font-weight:600;color:#2661ad;"><i class="fa fa-arrow-up-circle" style="color:#e66b04;"></i> Check-out Information</h6>
+                            <h6 style="font-weight:600;color:#282828;"><i class="fa fa-arrow-up-circle" style="color:#e66b04;"></i> Check-out Information</h6>
                             <ul class="list-unstyled page-list mb-30">
                                 <li>
                                     <div class="page-list-icon"> <span class="ti-check"></span> </div>
@@ -401,7 +402,7 @@
 
                         <% if (Array.isArray(property.amenities) && property.amenities.length > 0) { %>
                         <div class="col-md-12">
-                            <h6 style="font-weight:700;color:#e66b04;">Resort Amenities</h6>
+                            <h6 style="font-weight:700;color:#282828;">Resort Amenities</h6>
                             <ul class="list-unstyled page-list mb-30 d-flex flex-wrap" style="gap:10px;">
                                 <% property.amenities.forEach(function(amenity) { %>
                                     <li style="background:#fdf3e1;color:#ba7600;font-size:0.97rem;font-weight:500;padding: 4px 14px;border-radius:14px;box-shadow:0 1px 7px 0 rgba(208,135,46,0.07);display:flex;align-items:center;">
@@ -415,7 +416,7 @@
 
                         <% if (Array.isArray(property.rules) && property.rules.length > 0) { %>
                         <div class="col-md-12">
-                            <h6 style="font-weight:700;color:#185a9d;">Resort Rules &amp; Policies</h6>
+                            <h6 style="font-weight:700;color:#282828;">Resort Rules &amp; Policies</h6>
                             <ul class="list-unstyled page-list mb-30">
                                 <% property.rules.forEach(function(rule) { %>
                                     <li>
@@ -431,14 +432,14 @@
                     </div>
                 </div>
                 <div class="col-md-3 offset-md-1">
-                    <h6 style="font-weight:700;color:#1b1a54;letter-spacing:0.03em;">Quick Details</h6>
+                    <h6 style="font-weight:700;color:#282828;letter-spacing:0.03em;">Quick Details</h6>
                     <ul class="list-unstyled page-list mb-30">
                         <% if (property.city) { %>
                         <li>
                             <div class="page-list-icon"><span class="ti-location-pin" style="color:#e86902;"></span></div>
                             <div class="page-list-text">
                                 <p style="margin-bottom:2px;">Location: 
-                                    <strong style="color:#185a9d;"><%= property.city %></strong>
+                                    <strong style="color:#606060;"><%= property.city %></strong>
                                     <% if(property.state){ %>, <%= property.state %><% } %>
                                     <% if(property.country){ %>, <%= property.country %><% } %>
                                     <% if(property.pincode){ %> - <%= property.pincode %><% } %>
@@ -450,7 +451,7 @@
                         <li>
                             <div class="page-list-icon"><span class="ti-mobile" style="color:#2661ad;"></span></div>
                             <div class="page-list-text" style="font-size:1.05rem;">
-                                <a href="tel:<%= property.contactNumber %>" style="color:#e66b04;font-weight:600;text-decoration:none;"><%= property.contactNumber %></a>
+                                <a href="tel:<%= property.contactNumber %>" style="color:#606060;font-weight:500;text-decoration:none;"><%= property.contactNumber %></a>
                             </div>
                         </li>
                         <% } %>
@@ -458,7 +459,7 @@
                         <li>
                             <div class="page-list-icon"><span class="ti-email" style="color:#439ce7;"></span></div>
                             <div class="page-list-text">
-                                <a href="mailto:<%= property.email %>" style="color:#b07b23;font-weight:500;text-decoration:underline;"><%= property.email %></a>
+                                <a href="mailto:<%= property.email %>" style="color:#606060;font-weight:500;text-decoration:underline;"><%= property.email %></a>
                             </div>
                         </li>
                         <% } %>
@@ -667,11 +668,12 @@
 
                             <p class="phone">+91 96058 32333</p>
                             <p class="mail">info@transhastays.com</p>
-                            <div class="social mt-2">
+                        <div class="social mt-2">
                                 <a href="https://www.instagram.com/transha_stays?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                                     target="_blank"><i class="ti-instagram"></i></a>
-                                <a href="#"><i class="ti-twitter"></i></a>
-                                <a href="#"><i class="ti-linkedin"></i></a>
+                                <a href="https://x.com/transhastays"> <i class="fa-brands fa-x"></i></a>
+                                <a href="https://www.linkedin.com/company/transhastays/"><i class="ti-linkedin"></i></a>
+                                     <a href="https://www.facebook.com/transhastays/"><i class="ti-facebook"></i></a>
                             </div>
                         </div>
                     </div>
