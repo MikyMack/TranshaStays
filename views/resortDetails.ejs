@@ -6,13 +6,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>TRANSHA STAYS | RESORT DETAILS</title>
+    <title>TRANSHA STAYS | APARTMENTS DETAILS</title>
     <link rel="shortcut icon" href="/img/transha/logo.jpeg" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&amp;family=Outfit:wght@300;400&amp;display=swap">
     <link rel="stylesheet" href="/css/plugins.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
 </head>
 
 <body>
@@ -48,8 +49,7 @@
                     </li>
 
                     <li class="nav-item dropdown"> <a class="nav-link active dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Resort
-                            Accommodations <i class="ti-angle-down"></i></a>
+                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">  Premium Apartments <i class="ti-angle-down"></i></a>
                             <ul class="dropdown-menu">
                                 <% if (Array.isArray(resorts) && resorts.length > 0) { %>
                                     <% resorts.forEach(function(resort) { %>
@@ -271,18 +271,18 @@
 
 
     <!-- Detailed Texts and Room Info -->
-    <section class="room-details1 section-padding" data-scroll-index="1" style="background: linear-gradient(120deg, #FAE1B2 0%, #F6F9FC 100%); border-radius: 16px; box-shadow: 0 2px 32px 0 rgba(40,60,120,0.07);">
+    <section class="room-details1 section-padding" data-scroll-index="1" style="background: #f6f0f1; border-radius: 16px; box-shadow: 0 2px 32px 0 rgba(40,60,120,0.07);">
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
                     <% if (property.description) { %>
-                        <div class="mb-4" style="font-size:1.18rem;color:#374151;background:#fff8e8;padding:1rem 1.5rem;border-radius:12px;border-left:4px solid #e29932;margin-bottom:2.1rem;">
+                        <div class="mb-4" style="font-size:1.18rem;color:#374151;padding:1rem 1.5rem;border-radius:12px;margin-bottom:2.1rem;">
                             <%= property.description %>
                         </div>
                     <% } %>
 
                     <% if (property.rooms && property.rooms.length > 0) { %>
-                        <h2 class="mb-4" style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.55rem;color:#e66b04;letter-spacing: 0.05em;text-shadow:0 1.5px 0 #ffd087;">Room Types</h2>
+                        <h2 class="mb-4" style="font-weight:700;font-size:1.55rem;color:#282828;letter-spacing: 0.05em;">Room Types</h2>
                         <div class="row g-4">
                             <% property.rooms.forEach(function(room) { %>
                                 <div class="col-md-6">
@@ -349,7 +349,7 @@
                                             </div>
                                             <% if (Array.isArray(room.amenities) && room.amenities.length > 0) { %>
                                                 <div class="mt-2">
-                                                    <span class="fw-bold" style="font-size:0.98rem;color:#e89404;">Room Amenities:</span>
+                                                    <span class="fw-bold" style="font-size:0.98rem;color:#282828;">Room Amenities:</span>
                                                     <div style="margin:6px 0 0 0;">
                                                         <ul style="display:flex;flex-wrap:wrap;gap:7px 10px;padding:0;list-style:none;margin:0;">
                                                             <% room.amenities.forEach(function(a) { %>
@@ -371,7 +371,7 @@
 
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <h6 style="font-weight:600;color:#2661ad;"><i class="fa fa-arrow-down-circle" style="color:#e66b04;"></i> Check-in Information</h6>
+                            <h6 style="font-weight:600;color:#282828;"><i class="fa fa-arrow-down-circle" style="color:#e66b04;"></i> Check-in Information</h6>
                             <ul class="list-unstyled page-list mb-30">
                                 <li>
                                     <div class="page-list-icon"> <span class="ti-check"></span> </div>
@@ -385,7 +385,7 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <h6 style="font-weight:600;color:#2661ad;"><i class="fa fa-arrow-up-circle" style="color:#e66b04;"></i> Check-out Information</h6>
+                            <h6 style="font-weight:600;color:#282828;"><i class="fa fa-arrow-up-circle" style="color:#e66b04;"></i> Check-out Information</h6>
                             <ul class="list-unstyled page-list mb-30">
                                 <li>
                                     <div class="page-list-icon"> <span class="ti-check"></span> </div>
@@ -401,7 +401,7 @@
 
                         <% if (Array.isArray(property.amenities) && property.amenities.length > 0) { %>
                         <div class="col-md-12">
-                            <h6 style="font-weight:700;color:#e66b04;">Resort Amenities</h6>
+                            <h6 style="font-weight:700;color:#282828;">Resort Amenities</h6>
                             <ul class="list-unstyled page-list mb-30 d-flex flex-wrap" style="gap:10px;">
                                 <% property.amenities.forEach(function(amenity) { %>
                                     <li style="background:#fdf3e1;color:#ba7600;font-size:0.97rem;font-weight:500;padding: 4px 14px;border-radius:14px;box-shadow:0 1px 7px 0 rgba(208,135,46,0.07);display:flex;align-items:center;">
@@ -415,7 +415,7 @@
 
                         <% if (Array.isArray(property.rules) && property.rules.length > 0) { %>
                         <div class="col-md-12">
-                            <h6 style="font-weight:700;color:#185a9d;">Resort Rules &amp; Policies</h6>
+                            <h6 style="font-weight:700;color:#282828;">Resort Rules &amp; Policies</h6>
                             <ul class="list-unstyled page-list mb-30">
                                 <% property.rules.forEach(function(rule) { %>
                                     <li>
@@ -431,14 +431,14 @@
                     </div>
                 </div>
                 <div class="col-md-3 offset-md-1">
-                    <h6 style="font-weight:700;color:#1b1a54;letter-spacing:0.03em;">Quick Details</h6>
+                    <h6 style="font-weight:700;color:#282828;letter-spacing:0.03em;">Quick Details</h6>
                     <ul class="list-unstyled page-list mb-30">
                         <% if (property.city) { %>
                         <li>
                             <div class="page-list-icon"><span class="ti-location-pin" style="color:#e86902;"></span></div>
                             <div class="page-list-text">
                                 <p style="margin-bottom:2px;">Location: 
-                                    <strong style="color:#185a9d;"><%= property.city %></strong>
+                                    <strong style="color:#606060;"><%= property.city %></strong>
                                     <% if(property.state){ %>, <%= property.state %><% } %>
                                     <% if(property.country){ %>, <%= property.country %><% } %>
                                     <% if(property.pincode){ %> - <%= property.pincode %><% } %>
@@ -450,7 +450,7 @@
                         <li>
                             <div class="page-list-icon"><span class="ti-mobile" style="color:#2661ad;"></span></div>
                             <div class="page-list-text" style="font-size:1.05rem;">
-                                <a href="tel:<%= property.contactNumber %>" style="color:#e66b04;font-weight:600;text-decoration:none;"><%= property.contactNumber %></a>
+                                <a href="tel:<%= property.contactNumber %>" style="color:#606060;font-weight:500;text-decoration:none;"><%= property.contactNumber %></a>
                             </div>
                         </li>
                         <% } %>
@@ -458,7 +458,7 @@
                         <li>
                             <div class="page-list-icon"><span class="ti-email" style="color:#439ce7;"></span></div>
                             <div class="page-list-text">
-                                <a href="mailto:<%= property.email %>" style="color:#b07b23;font-weight:500;text-decoration:underline;"><%= property.email %></a>
+                                <a href="mailto:<%= property.email %>" style="color:#606060;font-weight:500;text-decoration:underline;"><%= property.email %></a>
                             </div>
                         </li>
                         <% } %>
@@ -656,9 +656,9 @@
                 <div class="row">
                     <div class="col-md-3 mb-30">
                         <div class="sub-title border-footer-light whte">Transha Stays</div>
-                        <p style="color: white;">Transha Stays offers premium resorts, PG accommodations, and authentic
-                            Noorani Ayurveda massage experiences. Relax, rejuvenate, and enjoy a comfortable stay with
-                            us.</p>
+                     <p style="color: white;">Transha Stays offers premium apartments, PG accommodations, and authentic
+    Noorani Ayurveda massage experiences. Relax, rejuvenate, and enjoy a comfortable stay with us.</p>
+
                     </div>
                     <div class="col-md-4 offset-md-1">
                         <div class="item">
@@ -667,23 +667,24 @@
 
                             <p class="phone">+91 96058 32333</p>
                             <p class="mail">info@transhastays.com</p>
-                            <div class="social mt-2">
+                       <div class="social mt-2">
                                 <a href="https://www.instagram.com/transha_stays?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                                     target="_blank"><i class="ti-instagram"></i></a>
-                                <a href="#"><i class="ti-twitter"></i></a>
-                                <a href="#"><i class="ti-linkedin"></i></a>
+                                <a href="https://x.com/transhastays"> <i class="fa-brands fa-x"></i></a>
+                                <a href="https://www.linkedin.com/company/transhastays/"><i class="ti-linkedin"></i></a>
+                                     <a href="https://www.facebook.com/transhastays/"><i class="ti-facebook"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="item">
                             <h3>Quick Links</h3>
-                           <ul class="footer-explore-list list-unstyled">
+                            <ul class="footer-explore-list list-unstyled">
                                 <li><a href="/">Home</a></li>
-                                <li><a href="/resorts">Resort Accommodations</a></li>
+                                <li><a href="/resorts">Premium Apartments</a></li>
                                 <li><a href="/near-by-locations">Places to Visit Nearby</a></li>
                                  <li><a href="/pg">PG Stays</a></li>
-                                <li><a href="/spa-wellness">Nooranu Ayurvedic Massage</a></li>
+                                <li><a href="/spa-wellness">Noorani Ayurvedic Massage</a></li>
                                 <li><a href="/about">About</a></li>
                                          <li><a href="/blogs">Blogs</a></li>
                                 <li><a href="/contact">Contact</a></li>
@@ -741,7 +742,7 @@
                 </svg>
                 <div class="active__indicator__dot"></div>
             </div>
-            <span class="nav__label__text">Resort</span>
+            <span class="nav__label__text">Apartments</span>
         </div>
 
         <!-- PG -->
