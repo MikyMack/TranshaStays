@@ -640,14 +640,7 @@
                 <% if (Array.isArray(premiumApartment.gallery) && premiumApartment.gallery.length > 1) { %>
                 <div class="gallery-thumbnails">
                     <% premiumApartment.gallery.forEach(function(img, idx) { %>
-                    <img loading="lazy" src="<%= img %>" 
-                         onclick="
-                            var el = document.querySelector('#mainGallery');
-                            if (el && window.bootstrap && bootstrap.Carousel) {
-                              var carousel = bootstrap.Carousel.getOrCreateInstance(el);
-                              carousel.to(<%= idx %>);
-                            }
-                         " 
+                    <img src="<%= img %>" onclick="bootstrap.Carousel.getOrCreateInstance(document.getElementById('mainGallery')).to(<%= idx %>)" 
                          class="gallery-thumb <%= idx === 0 ? 'active' : '' %>" 
                          alt="Thumbnail <%= idx+1 %>">
                     <% }) %>
@@ -759,9 +752,27 @@
                             <div class="card card-apartment">
                                 <div class="card-img-container">
                                     <% if (ap.images && ap.images.length) { %>
-                                        <img loading="lazy" src="<%= ap.images[0] %>" class="card-img-top" alt="<%= ap.apartmentName %>">
-                                        <div class="image-count-badge" onclick="openImageModal('apt-gallery-<%= aptModalCounter %>', 0)">
-                                            <i class="fa fa-images me-1"></i> <%= ap.images.length %>
+                                        <div id="apt-slider-<%= aptModalCounter %>" class="carousel slide" data-bs-ride="false">
+                                            <div class="carousel-inner">
+                                                <% ap.images.forEach(function(img, i){ %>
+                                                    <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                                                        <img src="<%= img %>" class="d-block w-100 card-img-top" alt="<%= ap.apartmentName %> image <%= i+1 %>">
+                                                    </div>
+                                                <% }) %>
+                                            </div>
+                                            <% if (ap.images.length > 1) { %>
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#apt-slider-<%= aptModalCounter %>" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#apt-slider-<%= aptModalCounter %>" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                            <div class="image-count-badge" onclick="bootstrap.Carousel.getOrCreateInstance(document.querySelector('#apt-slider-<%= aptModalCounter %>')).next()">
+                                                <i class="fa fa-images me-1"></i> <%= ap.images.length %>
+                                            </div>
+                                            <% } %>
                                         </div>
                                     <% } else { %>
                                         <img loading="lazy" src="/images/default-apartment.jpg" class="card-img-top" alt="Apartment">
@@ -833,29 +844,8 @@
                                     <% } %>
                                 </div>
                                 
-                                <!-- Apartment Images Modal -->
-                                <div class="modal fade image-modal" id="apt-gallery-<%= aptModalCounter %>" tabindex="-1" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body position-relative">
-                                                <button class="image-nav-btn image-nav-prev" onclick="changeModalImage('apt-gallery-<%= aptModalCounter %>', -1)">
-                                                    <i class="fa fa-chevron-left"></i>
-                                                </button>
-                                                <img loading="lazy" src="<%= ap.images[0] %>" id="img-apt-gallery-<%= aptModalCounter %>" class="img-fluid" alt="Apartment Image">
-                                                <button class="image-nav-btn image-nav-next" onclick="changeModalImage('apt-gallery-<%= aptModalCounter %>', 1)">
-                                                    <i class="fa fa-chevron-right"></i>
-                                                </button>
-                                                <div class="image-counter">
-                                                    <span id="apt-gallery-<%= aptModalCounter %>-counter">1</span> / <%= ap.images.length %>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                              
+                                <!-- Apartment Images Slider replaces modal -->
+                                <!-- Removed modal and gallery script for apartments -->
                                 
                                 <% if (ap.rooms && ap.rooms.length) { %>
                                 <div class="card-footer bg-transparent">
