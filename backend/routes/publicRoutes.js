@@ -233,7 +233,7 @@ router.get('/blogDetail/:title', async (req, res) => {
         .sort({ createdAt: -1 })
         .lean();
 
-        res.render('blogDetails', {
+        res.render('blogdetails', {
             title: blog.metaTitle || blog.title || 'blogDetails',
             blog,
             relatedBlogs,
