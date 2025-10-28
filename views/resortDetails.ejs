@@ -640,7 +640,14 @@
                 <% if (Array.isArray(premiumApartment.gallery) && premiumApartment.gallery.length > 1) { %>
                 <div class="gallery-thumbnails">
                     <% premiumApartment.gallery.forEach(function(img, idx) { %>
-                    <img loading="lazy" src="<%= img %>" onclick="document.querySelector('#mainGallery').carousel.to(<%= idx %>)" 
+                    <img loading="lazy" src="<%= img %>" 
+                         onclick="
+                            var el = document.querySelector('#mainGallery');
+                            if (el && window.bootstrap && bootstrap.Carousel) {
+                              var carousel = bootstrap.Carousel.getOrCreateInstance(el);
+                              carousel.to(<%= idx %>);
+                            }
+                         " 
                          class="gallery-thumb <%= idx === 0 ? 'active' : '' %>" 
                          alt="Thumbnail <%= idx+1 %>">
                     <% }) %>
