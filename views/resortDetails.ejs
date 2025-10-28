@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="zxx">
-
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -13,7 +11,479 @@
     <link rel="stylesheet" href="/css/plugins.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <style>
+        /* Custom Professional Styling */
+        :root {
+            --primary-color: #1b1b55;
+            --secondary-color: #e86b02;
+            --accent-color: #2c5530;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Libre Caslon Display', serif;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+        
+        .property-header {
+            background: linear-gradient(rgba(27, 27, 85, 0.85), rgba(27, 27, 85, 0.75)), 
+                        url('/img/transha/background-pattern.png');
+            background-size: cover;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+        
+        .property-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .property-location {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .property-rating {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .property-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .highlight-badge {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .main-gallery-container {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        
+        .gallery-thumbnails {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .gallery-thumb {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .gallery-thumb:hover, .gallery-thumb.active {
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .booking-card {
+            background: white;
+            border-radius: 7px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .price-display {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .price-period {
+            font-size: 1rem;
+            color: var(--gray-color);
+            font-weight: normal;
+        }
+        
+        .btn-booking {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+            border: none;
+        }
+        
+        .btn-booking:hover {
+            background: #2a2a75;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(27, 27, 85, 0.2);
+        }
+        
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .amenity-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: var(--light-color);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .amenity-item:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .amenity-icon {
+            margin-right: 10px;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+        
+        .card-apartment, .card-room {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 100%;
+        }
+        
+        .card-apartment:hover, .card-room:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-img-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-img-top {
+            height: 220px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .card-apartment:hover .card-img-top, 
+        .card-room:hover .card-img-top {
+            transform: scale(1.05);
+        }
+        
+        .image-count-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .price-badge {
+            background: var(--secondary-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .availability-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white!important;
+        }
+        
+        .accordion-button {
+            padding: 12px 15px;
+            font-weight: 600;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            background-color: rgba(27, 27, 85, 0.05);
+            color: var(--primary-color);
+        }
+        
+        .review-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .review-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .review-stars {
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+        
+        .booking-modal .modal-header {
+            background: var(--primary-color);
+            color: white;
+            border-bottom: none;
+            padding: 20px 25px;
+        }
+        
+        .booking-modal .modal-title {
+            font-size: 1.4rem;
+        }
+        
+        .booking-modal .modal-body {
+            padding: 25px;
+        }
+        
+        .booking-modal .form-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+        
+        .booking-modal .form-control, 
+        .booking-modal .form-select {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .booking-modal .form-control:focus, 
+        .booking-modal .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(27, 27, 85, 0.15);
+        }
+        
+        .booking-modal .btn-submit {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            border: none;
+            transition: var(--transition);
+        }
+        
+        .booking-modal .btn-submit:hover {
+            background: #2a2a75;
+        }
+        
+        .image-modal .modal-content {
+            background: rgba(0, 0, 0, 0.9);
+            border: none;
+            border-radius: 0;
+        }
+        
+        .image-modal .modal-header {
+            border-bottom: none;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
+        }
+        
+        .image-modal .btn-close {
+            filter: invert(1);
+            opacity: 0.8;
+        }
+        
+        .image-modal .modal-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .image-modal img {
+            max-height: 85vh;
+            max-width: 90vw;
+            object-fit: contain;
+        }
+        
+        .image-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            z-index: 10;
+        }
+        
+        .image-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .image-nav-prev {
+            left: 20px;
+        }
+        
+        .image-nav-next {
+            right: 20px;
+        }
+        
+        .image-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .property-title {
+                font-size: 2rem;
+            }
+            
+            .amenities-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .booking-card {
+                position: static;
+                margin-top: 30px;
+            }
+            
+            .image-nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .image-nav-prev {
+                left: 10px;
+            }
+            
+            .image-nav-next {
+                right: 10px;
+            }
+        }
+        
+        /* Animation for page elements */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2a2a75;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,12 +494,14 @@
             <div class="preloader-position loader"> <span></span> </div>
         </div>
     </div>
+    
     <!-- Progress scroll totop -->
     <div class="progress-wrap cursor-pointer">
         <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
             <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
         </svg>
     </div>
+    
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
@@ -45,7 +517,6 @@
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item "> <a class="nav-link  " href="/" role="button">Home </a>
-
                     </li>
 
                     <li class="nav-item dropdown">
@@ -83,1091 +554,697 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-
-
                     <li class="nav-item"><a class="nav-link" href="/blogs">Blogs</a></li>
                     <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <!-- Breadcrumbs -->
-  
 
-    <div class="container mt-5">
-      <div class="row gy-4">
-        <!-- Images Gallery -->
-        <div class="col-lg-7">
-          <div id="mainGallery" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner rounded shadow">
-              <% if (Array.isArray(premiumApartment.gallery) && premiumApartment.gallery.length > 0) { %>
-                <% premiumApartment.gallery.forEach(function(img, idx) { %>
-                  <div class="carousel-item <%= idx === 0 ? 'active' : '' %>">
-                    <img src="<%= img %>" class="d-block w-100 main-resort-photo" style="object-fit:cover;max-height:410px;" alt="Resort Image <%= idx+1 %>">
-                  </div>
-                <% }) %>
-              <% } else { %>
-                <div class="carousel-item active">
-                  <img src="/images/default-apartment.jpg" class="d-block w-100 main-resort-photo" style="object-fit:cover;max-height:410px;" alt="No image">
+    <!-- Property Header -->
+    <div class="property-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="property-title"><%= premiumApartment.propertyTitle %></h1>
+                    <div class="property-location">
+                        <i class="fa fa-map-marker-alt me-2"></i>
+                        <%= premiumApartment.location ? [premiumApartment.location.address, premiumApartment.location.city, premiumApartment.location.state, premiumApartment.location.country].filter(Boolean).join(', ') : '' %>
+                    </div>
+                    <% if (premiumApartment.rating && premiumApartment.rating.average) { %>
+                    <div class="property-rating">
+                        <i class="fa fa-star me-1"></i> 
+                        <span class="me-1"><%= premiumApartment.rating.average %></span>
+                        <span>(<%= premiumApartment.rating.reviewsCount %> Reviews)</span>
+                    </div>
+                    <% } %>
+                    <div class="property-highlights">
+                        <% if (premiumApartment.highlights && premiumApartment.highlights.length) { %>
+                            <% premiumApartment.highlights.forEach(function(h) { %>
+                                <span class="highlight-badge"><i class="fa fa-magic me-1"></i> <%= h %></span>
+                            <% }) %>
+                        <% } %>
+                    </div>
                 </div>
-              <% } %>
             </div>
-            <% if ((premiumApartment.gallery || []).length > 1) { %>
-              <button class="carousel-control-prev" type="button" data-bs-target="#mainGallery" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#mainGallery" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-              </button>
-            <% } %>
-          </div>
-          <!-- Show gallery images as thumbnails -->
-          <% if (Array.isArray(premiumApartment.gallery) && premiumApartment.gallery.length > 1) { %>
-          <div class="d-flex gap-2 mt-2 flex-wrap justify-content-center">
-            <% premiumApartment.gallery.forEach(function(img, idx) { %>
-              <img src="<%= img %>" onclick="document.querySelector('#mainGallery').carousel.to(<%= idx %>)" class="rounded border gallery-thumb" style="height:60px; width:auto; cursor:pointer;object-fit:cover;">
-            <% }) %>
-          </div>
-          <% } %>
         </div>
-        <!-- Details & Booking -->
-        <div class="col-lg-5">
-          <div class="bg-white rounded-4 p-4 mb-3 shadow-sm">
-            <h1 class="mb-2 fw-bold text-primary"><%= premiumApartment.propertyTitle %></h1>
-            <div class="mb-1 text-secondary">
-              <i class="fa fa-map-marker-alt"></i>
-              <small>
-                <%= premiumApartment.location ? [premiumApartment.location.address, premiumApartment.location.city, premiumApartment.location.state, premiumApartment.location.country].filter(Boolean).join(', ') : '' %>
-              </small>
-            </div>
-            <% if (premiumApartment.rating && premiumApartment.rating.average) { %>
-              <div class="mb-2">
-                <span class="badge bg-warning text-dark fs-6">
-                  <i class="fa fa-star"></i> <%= premiumApartment.rating.average %> 
-                </span>
-                <small>(<%= premiumApartment.rating.reviewsCount %> Reviews)</small>
-              </div>
-            <% } %>
-            <div class="mb-2">
-              <% if (premiumApartment.highlights && premiumApartment.highlights.length) { %>
-                <% premiumApartment.highlights.forEach(function(h) { %>
-                  <span class="badge rounded-pill bg-gradient bg-info text-dark me-1 mb-1"><i class="fa fa-magic"></i> <%= h %></span>
-                <% }) %>
-              <% } %>
-            </div>
-            <div class="mb-3 fs-5" style="min-height:70px"><%= premiumApartment.description || '' %></div>
-            <ul class="list-inline mb-2" style="font-size:1.02em">
-              <li class="list-inline-item me-2"><i class="fa fa-clock me-1 text-success"></i>Check-in: <b><%= premiumApartment.checkInTime || '12:00 PM' %></b></li>
-              <li class="list-inline-item me-2"><i class="fa fa-sign-out me-1 text-warning"></i>Check-out: <b><%= premiumApartment.checkOutTime || '11:00 AM' %></b></li>
-              <li class="list-inline-item"><i class="fa fa-calendar me-1 text-secondary"></i>Min Nights: <b><%= premiumApartment.minStayNights %></b></li>
-              <% if (premiumApartment.maxStayNights) { %>
-                <li class="list-inline-item"><i class="fa fa-calendar-times-o me-1 text-danger"></i>Max: <b><%= premiumApartment.maxStayNights %></b></li>
-              <% } %>
-            </ul>
-            <hr>
-            <button class="btn gradient-btn w-100 py-2 fw-bold fs-5" onclick="openBookingModal()">
-              <i class="fa fa-calendar-check-o"></i> Book Now
-            </button>
-          </div>
-          <div class="bg-light rounded-4 p-3 small shadow-sm mb-2">
-            <div><b class="text-dark"><i class="fa fa-user-circle"></i> Host:</b> <%= premiumApartment.host?.name || "Our Team" %></div>
-            <div><i class="fa fa-phone"></i> <a href="tel:<%= premiumApartment.host?.contact %>"><%= premiumApartment.host?.contact %></a></div>
-            <div><i class="fa fa-envelope"></i> <a href="mailto:<%= premiumApartment.host?.email %>"><%= premiumApartment.host?.email %></a></div>
-          </div>
-        </div>
-      </div>
-      <!-- Main Amenities & Info -->
-      <div class="row mt-5 gy-4">
-        <div class="col-md-6">
-          <h3 class="mb-3 text-gradient"><i class="fa fa-check-circle"></i> Amenities</h3>
-          <ul class="row list-unstyled fs-6">
-            <% 
-              let amenities = [];
-              // Merge amenities from all apartments/rooms
-              if (premiumApartment.amenities && premiumApartment.amenities.length) {
-                amenities = premiumApartment.amenities;
-              } else if (Array.isArray(premiumApartment.apartments)) {
-                premiumApartment.apartments.forEach(a => a.amenities && a.amenities.forEach(am => { if(amenities.indexOf(am) === -1) amenities.push(am); }));
-              }
-              if (Array.isArray(premiumApartment.rooms)) {
-                premiumApartment.rooms.forEach(r => r.amenities && r.amenities.forEach(am => { if(amenities.indexOf(am) === -1) amenities.push(am); }));
-              }
-            %>
-            <% (amenities.length ? amenities : []).forEach(function(a, idx) { %>
-              <li class="col-6 col-sm-4 mb-2">
-                <span class="badge bg-light border text-dark w-100 d-flex align-items-center px-2 py-2">
-                  <i class="fa fa-star text-primary me-1"></i> <%= a %>
-                </span>
-              </li>
-            <% }) %>
-            <% if (!amenities.length) { %>
-              <li>No amenities listed.</li>
-            <% } %>
-          </ul>
-        </div>
-        <div class="col-md-6">
-          <h3 class="mb-3 text-gradient"><i class="fa fa-list"></i> Property Rules</h3>
-          <ul class="fs-6">
-            <% if (premiumApartment.rules && premiumApartment.rules.length) { %>
-              <% premiumApartment.rules.forEach(function(rule) { %>
-                <li><i class="fa fa-check text-success"></i> <%= rule %></li>
-              <% }) %>
-            <% } else { %>
-              <li>No specific rules provided.</li>
-            <% } %>
-          </ul>
-        </div>
-      </div>
-      <!-- Apartments and Their Images -->
-      <% 
-        let aptModalCounter = 0;
-        let roomModalCounter = 0;
-      %>
-      <% if (Array.isArray(premiumApartment.apartments) && premiumApartment.apartments.length) { %>
-      <div class="row mt-5">
-        <div class="col-12">
-          <h3 class="mb-4 text-secondary"><i class="fa fa-building"></i> Full Apartments</h3>
-          <div class="row g-4">
-            <% premiumApartment.apartments.forEach(function(ap, apIdx) {  %>
-              <div class="col-lg-6">
-                <div class="card h-100 border-0 shadow-sm rounded-4">
-                  <% if (ap.images && ap.images.length) { %>
-                  <div class="position-relative">
-                    <img 
-                      src="<%= ap.images[0] %>" 
-                      class="card-img-top rounded-top-4 gallery-thumb-apt" 
-                      style="object-fit:cover;max-height:220px;cursor:pointer;"
-                      alt="Apartment"
-                      data-modal-type="apartment"
-                      data-gallery-id="apt-gallery-<%= aptModalCounter %>"
-                      data-gallery-index="0"
-                    >
-                    <!-- Overlay for image count and + (zoom) button -->
-                    <div class="position-absolute bottom-0 end-0 p-2 pt-3 pb-0" style="right:0; z-index:3;">
-                      <span class="badge bg-dark bg-opacity-75 px-2 py-1 fs-6" style="cursor:pointer;" 
-                        onclick="openImageModal('apt-gallery-<%= aptModalCounter %>', 0)">
-                        <i class="fa fa-image"></i> <%= ap.images.length %>
-                        <i class="fa fa-plus-circle ms-2"></i>
-                      </span>
-                    </div>
-                  </div>
-                  <!-- Apartment Images Modal -->
-                  <div 
-                    class="custom-image-modal modal fade" 
-                    id="apt-gallery-<%= aptModalCounter %>" 
-                    tabindex="-1" 
-                    aria-hidden="true"
-                    data-bs-backdrop="static"
-                  >
-                    <div class="modal-dialog modal-fullscreen">
-                      <div class="modal-content bg-black bg-opacity-90 position-relative">
-                        <button 
-                          type="button" 
-                          class="btn btn-link text-white position-absolute top-0 end-0 fs-1 m-3 z-2" 
-                          onclick="closeImageModal('apt-gallery-<%= aptModalCounter %>')"
-                          style="z-index:1052">
-                          <i class="fa fa-times-circle"></i>
-                        </button>
-                        <div class="modal-body d-flex align-items-center justify-content-center p-0">
-                          <div 
-                            class="d-flex flex-column w-100 align-items-center justify-content-center overflow-hidden"
-                            style="height:100vh;"
-                            ontouchstart="handleTouchStart(event, 'apt-gallery-<%= aptModalCounter %>')"
-                            ontouchend="handleTouchEnd(event, 'apt-gallery-<%= aptModalCounter %>')"
-                          >
-                            <button 
-                              class="btn btn-link text-white fs-2 position-absolute start-0 top-50 translate-middle-y px-2" 
-                              onclick="changeModalImage('apt-gallery-<%= aptModalCounter %>', -1)">
-                              <i class="fa fa-chevron-left"></i>
-                            </button>
-                            <img 
-                              src="<%= ap.images[0] %>" 
-                              class="img-fluid rounded shadow"
-                              id="img-apt-gallery-<%= aptModalCounter %>"
-                              style="max-height:85vh;max-width:94vw; object-fit: contain;">
-                            <button 
-                              class="btn btn-link text-white fs-2 position-absolute end-0 top-50 translate-middle-y px-2" 
-                              onclick="changeModalImage('apt-gallery-<%= aptModalCounter %>', 1)">
-                              <i class="fa fa-chevron-right"></i>
-                            </button>
-                            <div 
-                              class="text-center text-white small position-absolute bottom-0 start-50 translate-middle-x pb-3 px-3 d-flex align-items-center"
-                              style="background:rgba(20,16,16,.4);border-radius:12px;">
-                              <span id="apt-gallery-<%= aptModalCounter %>-caption">
-                                <%= ap.images[0] ? (ap.images[0].split('/').pop()) : '' %>
-                              </span>
-                              <span class="ms-2">( <span id="apt-gallery-<%= aptModalCounter %>-counter">1</span> / <%= ap.images.length %> )</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <script>
-                    window._aptGalleries = window._aptGalleries || {};
-                    window._aptGalleries['apt-gallery-<%= aptModalCounter %>'] = <%- JSON.stringify(ap.images) %>;
-                  </script>
-                  <% } else { %>
-                    <img 
-                      src="/images/default-apartment.jpg" 
-                      class="card-img-top rounded-top-4" 
-                      style="object-fit:cover;max-height:220px;" 
-                      alt="Apartment"
-                    >
-                  <% } %>
-                  <div class="card-body">
-                    <h5 class="card-title text-primary"><%= ap.apartmentName %></h5>
-                    <p><span class="badge bg-info text-dark">₹<%= ap.pricePerNight %>/night</span></p>
-                    <table class="table table-sm small">
-                      <tr>
-                        <td>Total Rooms:</td>
-                        <td><%= ap.totalRooms %></td>
-                      </tr>
-                      <tr>
-                        <td>Max Guests:</td>
-                        <td><%= ap.maxGuests || "--" %></td>
-                      </tr>
-                      <tr>
-                        <td>Status:</td>
-                        <td>
-                          <% if (ap.isAvailable) { %>
-                            <span class="badge bg-success">Available</span>
-                          <% } else { %>
-                            <span class="badge bg-danger">Not Available</span>
-                          <% } %>
-                        </td>
-                      </tr>
-                    </table>
-                    <% if (ap.amenities && ap.amenities.length) { %>
-                    <div class="my-2">
-                      <% ap.amenities.slice(0,5).forEach(function(am) { %>
-                        <span class="badge bg-light border text-dark me-1"><i class="fa fa-dot-circle-o text-primary"></i> <%= am %></span>
-                      <% }) %>
-                    </div>
-                    <% } %>
-                    <% if (ap.description) { %>
-                    <p class="small text-muted"><%= ap.description %></p>
-                    <% } %>
-                  </div>
-                  <% if (ap.rooms && ap.rooms.length) { %>
-                  <div class="px-3 pb-2">
-                    <div class="accordion accordion-flush" id="apRoomsAccordion-<%= ap._id %>">
-                      <div class="accordion-item">
-                        <h2 class="accordion-header" id="head-<%= ap._id %>">
-                          <button class="accordion-button collapsed py-1 small" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= ap._id %>">
-                            <i class="fa fa-bed me-1"></i> Show Apartment Rooms Details
-                          </button>
-                        </h2>
-                        <div id="collapse-<%= ap._id %>" class="accordion-collapse collapse" data-bs-parent="#apRoomsAccordion-<%= ap._id %>">
-                          <div class="accordion-body p-2">
-                            <div class="list-group">
-                              <% ap.rooms.forEach(function(r, ridx) { %>
-                                <div class="list-group-item d-flex flex-wrap align-items-start mb-2 rounded border">
-                                  <% if (r.images && r.images[0]) { %>
-                                    <div class="position-relative">
-                                      <img 
-                                        src="<%= r.images[0] %>" 
-                                        style="height:50px;width:70px;object-fit:cover; cursor:pointer;" 
-                                        class="me-2 rounded gallery-thumb-room"
-                                        data-modal-type="room"
-                                        data-gallery-id="room-gallery-ap<%= apIdx %>-<%= ridx %>"
-                                        data-gallery-index="0"
-                                        alt="Room"
-                                      >
-                                      <span class="position-absolute bottom-0 end-0 px-1 pb-1" style="font-size:.94em; color:#fff; background:rgba(33,33,33,.6); border-radius:7px; cursor:pointer;"
-                                        onclick="openImageModal('room-gallery-ap<%= apIdx %>-<%= ridx %>',0)">
-                                        <i class="fa fa-images"></i> <%= r.images.length %> <i class="fa fa-plus ms-1"></i>
-                                      </span>
-                                    </div>
-                                    <!-- Room-in-apartment Image Modal -->
-                                    <div 
-                                      class="custom-image-modal modal fade"
-                                      id="room-gallery-ap<%= apIdx %>-<%= ridx %>"
-                                      tabindex="-1"
-                                      aria-hidden="true"
-                                      data-bs-backdrop="static"
-                                    >
-                                      <div class="modal-dialog modal-fullscreen">
-                                        <div class="modal-content bg-black bg-opacity-90 position-relative">
-                                          <button 
-                                            type="button" 
-                                            class="btn btn-link text-white position-absolute top-0 end-0 fs-1 m-3 z-2" 
-                                            onclick="closeImageModal('room-gallery-ap<%= apIdx %>-<%= ridx %>')"
-                                            style="z-index:1052">
-                                            <i class="fa fa-times-circle"></i>
-                                          </button>
-                                          <div class="modal-body d-flex align-items-center justify-content-center p-0">
-                                            <div 
-                                              class="d-flex flex-column w-100 align-items-center justify-content-center overflow-hidden"
-                                              style="height:100vh;"
-                                              ontouchstart="handleTouchStart(event, 'room-gallery-ap<%= apIdx %>-<%= ridx %>')"
-                                              ontouchend="handleTouchEnd(event, 'room-gallery-ap<%= apIdx %>-<%= ridx %>')"
-                                            >
-                                              <button 
-                                                class="btn btn-link text-white fs-2 position-absolute start-0 top-50 translate-middle-y px-2" 
-                                                onclick="changeModalImage('room-gallery-ap<%= apIdx %>-<%= ridx %>', -1)">
-                                                <i class="fa fa-chevron-left"></i>
-                                              </button>
-                                              <img 
-                                                src="<%= r.images[0] %>"
-                                                class="img-fluid rounded shadow"
-                                                id="img-room-gallery-ap<%= apIdx %>-<%= ridx %>"
-                                                style="max-height:85vh;max-width:94vw; object-fit: contain;"
-                                              >
-                                              <button 
-                                                class="btn btn-link text-white fs-2 position-absolute end-0 top-50 translate-middle-y px-2" 
-                                                onclick="changeModalImage('room-gallery-ap<%= apIdx %>-<%= ridx %>', 1)">
-                                                <i class="fa fa-chevron-right"></i>
-                                              </button>
-                                              <div 
-                                                class="text-center text-white small position-absolute bottom-0 start-50 translate-middle-x pb-3 px-3 d-flex align-items-center"
-                                                style="background:rgba(20,16,16,.4);border-radius:12px;">
-                                                <span id="room-gallery-ap<%= apIdx %>-<%= ridx %>-caption">
-                                                  <%= r.images[0] ? (r.images[0].split('/').pop()) : '' %>
-                                                </span>
-                                                <span class="ms-2">( <span id="room-gallery-ap<%= apIdx %>-<%= ridx %>-counter">1</span> / <%= r.images.length %> )</span>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <script>
-                                      window._roomGalleries = window._roomGalleries || {};
-                                      window._roomGalleries['room-gallery-ap<%= apIdx %>-<%= ridx %>'] = <%- JSON.stringify(r.images) %>;
-                                    </script>
-                                  <% } %>
-                                  <div>
-                                    <b><%= r.roomName %> <span class="text-secondary small"><%= r.roomType %></span></b>
-                                    <div>₹<%= r.pricePerNight %>/night | Bed: <%= r.bedType || '-' %> | Cap: <%= r.capacity %></div>
-                                    <span class="badge <%= r.isAvailable ? 'bg-success' : 'bg-danger' %>"><%= r.isAvailable ? 'Available' : 'Not Available' %></span>
-                                    <span class="badge bg-light text-dark border ms-1"><%= (r.amenities||[]).join(', ') %></span>
-                                    <% if (r.description) { %>
-                                    <div class="text-muted small mt-1"><%= r.description %></div>
-                                    <% } %>
-                                  </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="p-md-5 p-2 fade-in">
+        <div class="row">
+            <!-- Images Gallery -->
+            <div class="col-lg-8">
+                <div class="main-gallery-container">
+                    <div id="mainGallery" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <% if (Array.isArray(premiumApartment.gallery) && premiumApartment.gallery.length > 0) { %>
+                                <% premiumApartment.gallery.forEach(function(img, idx) { %>
+                                <div class="carousel-item <%= idx === 0 ? 'active' : '' %>">
+                                    <img src="<%= img %>" class="d-block w-100" style="height: 450px; object-fit: cover;" alt="Resort Image <%= idx+1 %>">
                                 </div>
-                              <% }) %>
-                            </div>
-                          </div>
+                                <% }) %>
+                            <% } else { %>
+                                <div class="carousel-item active">
+                                    <img src="/images/default-apartment.jpg" class="d-block w-100" style="height: 450px; object-fit: cover;" alt="No image">
+                                </div>
+                            <% } %>
                         </div>
-                      </div>
+                        <% if ((premiumApartment.gallery || []).length > 1) { %>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#mainGallery" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#mainGallery" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        <% } %>
                     </div>
-                  </div>
-                  <% } %>
                 </div>
-              </div>
-              <% aptModalCounter++; %>
-            <% }) %>
-          </div>
-        </div>
-      </div>
-      <% } %>
-
-      <!-- Standalone Room List -->
-      <% if (Array.isArray(premiumApartment.rooms) && premiumApartment.rooms.length) { %>
-      <div class="row mt-5">
-        <div class="col-12">
-          <h3 class="mb-4 text-secondary"><i class="fa fa-bed"></i> Standalone Rooms</h3>
-          <div class="row g-4">
-            <% premiumApartment.rooms.forEach(function(r, ridx) { %>
-              <div class="col-md-6 col-lg-4">
-                <div class="card shadow-sm rounded-4 border-0 h-100">
-                  <% if (r.images && r.images[0]) { %>
-                    <div class="position-relative">
-                      <img 
-                        src="<%= r.images[0] %>" 
-                        class="card-img-top rounded-top-4 gallery-thumb-room" 
-                        style="object-fit:cover;max-height:160px; cursor:pointer;" 
-                        alt="Room"
-                        data-modal-type="room"
-                        data-gallery-id="room-gallery-main-<%= ridx %>"
-                        data-gallery-index="0"
-                        onclick="openImageModal('room-gallery-main-<%= ridx %>',0)"
-                      >
-                      <span class="position-absolute bottom-0 end-0 px-2 py-1" 
-                        style="font-size:1em; color:#fff; background:rgba(33,33,33,.7); border-radius:9px; right: 2%; bottom: 7px; cursor:pointer;"
-                        onclick="openImageModal('room-gallery-main-<%= ridx %>',0)">
-                        <i class="fa fa-images"></i> <%= r.images.length %> 
-                        <i class="fa fa-plus ms-1"></i>
-                      </span>
-                    </div>
-                    <!-- Standalone Room Modal -->
-                    <div 
-                      class="custom-image-modal modal fade" 
-                      id="room-gallery-main-<%= ridx %>" 
-                      tabindex="-1" 
-                      aria-hidden="true"
-                      data-bs-backdrop="static"
-                    >
-                      <div class="modal-dialog modal-fullscreen">
-                        <div class="modal-content bg-black bg-opacity-90 position-relative">
-                          <button 
-                            type="button" 
-                            class="btn btn-link text-white position-absolute top-0 end-0 fs-1 m-3 z-2" 
-                            onclick="closeImageModal('room-gallery-main-<%= ridx %>')"
-                            style="z-index:1052">
-                            <i class="fa fa-times-circle"></i>
-                          </button>
-                          <div class="modal-body d-flex align-items-center justify-content-center p-0">
-                            <div 
-                              class="d-flex flex-column w-100 align-items-center justify-content-center overflow-hidden"
-                              style="height:100vh;"
-                              ontouchstart="handleTouchStart(event, 'room-gallery-main-<%= ridx %>')"
-                              ontouchend="handleTouchEnd(event, 'room-gallery-main-<%= ridx %>')"
-                            >
-                              <button 
-                                class="btn btn-link text-white fs-2 position-absolute start-0 top-50 translate-middle-y px-2" 
-                                onclick="changeModalImage('room-gallery-main-<%= ridx %>', -1)">
-                                <i class="fa fa-chevron-left"></i>
-                              </button>
-                              <img 
-                                src="<%= r.images[0] %>"
-                                class="img-fluid rounded shadow"
-                                id="img-room-gallery-main-<%= ridx %>"
-                                style="max-height:85vh;max-width:94vw; object-fit: contain;"
-                              >
-                              <button 
-                                class="btn btn-link text-white fs-2 position-absolute end-0 top-50 translate-middle-y px-2" 
-                                onclick="changeModalImage('room-gallery-main-<%= ridx %>', 1)">
-                                <i class="fa fa-chevron-right"></i>
-                              </button>
-                              <div 
-                                class="text-center text-white small position-absolute bottom-0 start-50 translate-middle-x pb-3 px-3 d-flex align-items-center"
-                                style="background:rgba(20,16,16,.4);border-radius:12px;">
-                                <span id="room-gallery-main-<%= ridx %>-caption">
-                                  <%= r.images[0] ? (r.images[0].split('/').pop()) : '' %>
-                                </span>
-                                <span class="ms-2">( <span id="room-gallery-main-<%= ridx %>-counter">1</span> / <%= r.images.length %> )</span>
-                              </div>
+                
+                <!-- Gallery thumbnails -->
+                <% if (Array.isArray(premiumApartment.gallery) && premiumApartment.gallery.length > 1) { %>
+                <div class="gallery-thumbnails">
+                    <% premiumApartment.gallery.forEach(function(img, idx) { %>
+                    <img src="<%= img %>" onclick="document.querySelector('#mainGallery').carousel.to(<%= idx %>)" 
+                         class="gallery-thumb <%= idx === 0 ? 'active' : '' %>" 
+                         alt="Thumbnail <%= idx+1 %>">
+                    <% }) %>
+                </div>
+                <% } %>
+                
+                <!-- Property Description -->
+                <div class="mt-5">
+                    <h3 class="section-title">About This Property</h3>
+                    <p class="fs-6"><%= premiumApartment.description || 'No description available.' %></p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fa fa-clock me-3 text-success fa-lg"></i>
+                                <div>
+                                    <div class="fw-bold">Check-in</div>
+                                    <div><%= premiumApartment.checkInTime || '12:00 PM' %></div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fa fa-sign-out me-3 text-warning fa-lg"></i>
+                                <div>
+                                    <div class="fw-bold">Check-out</div>
+                                    <div><%= premiumApartment.checkOutTime || '11:00 AM' %></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fa fa-calendar me-3 text-secondary fa-lg"></i>
+                                <div>
+                                    <div class="fw-bold">Minimum Stay</div>
+                                    <div><%= premiumApartment.minStayNights %> nights</div>
+                                </div>
+                            </div>
+                        </div>
+                        <% if (premiumApartment.maxStayNights) { %>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fa fa-calendar-times-o me-3 text-danger fa-lg"></i>
+                                <div>
+                                    <div class="fw-bold">Maximum Stay</div>
+                                    <div><%= premiumApartment.maxStayNights %> nights</div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
                     </div>
-                    <script>
-                      window._roomGalleries = window._roomGalleries || {};
-                      window._roomGalleries['room-gallery-main-<%= ridx %>'] = <%- JSON.stringify(r.images) %>;
-                    </script>
-                  <% } else { %>
-                    <img src="/images/default-room.jpg" class="card-img-top rounded-top-4" style="object-fit:cover;max-height:160px;" alt="Room">
-                  <% } %>
-                  <div class="card-body">
-                    <h6 class="card-title fw-bold text-info"><%= r.roomName %> <span class="text-secondary small">- <%= r.roomType %></span></h6>
-                    <div>
-                      <span class="badge bg-secondary"><i class="fa fa-bed"></i> <%= r.bedType || '-' %></span>
-                      <span class="badge bg-light text-dark border ms-1"><i class="fa fa-users"></i> <%= r.capacity || '-' %> Guests</span>
-                      <span class="badge bg-info ms-1">₹<%= r.pricePerNight %>/night</span>
+                </div>
+                
+                <!-- Amenities -->
+                <div class="mt-5">
+                    <h3 class="section-title">Amenities</h3>
+                    <div class="amenities-grid">
+                        <% 
+                        let amenities = [];
+                        // Merge amenities from all apartments/rooms
+                        if (premiumApartment.amenities && premiumApartment.amenities.length) {
+                            amenities = premiumApartment.amenities;
+                        } else if (Array.isArray(premiumApartment.apartments)) {
+                            premiumApartment.apartments.forEach(a => a.amenities && a.amenities.forEach(am => { if(amenities.indexOf(am) === -1) amenities.push(am); }));
+                        }
+                        if (Array.isArray(premiumApartment.rooms)) {
+                            premiumApartment.rooms.forEach(r => r.amenities && r.amenities.forEach(am => { if(amenities.indexOf(am) === -1) amenities.push(am); }));
+                        }
+                        %>
+                        <% (amenities.length ? amenities : []).forEach(function(a, idx) { %>
+                            <div class="amenity-item">
+                                <i class="amenity-icon fa fa-check-circle"></i>
+                                <span><%= a %></span>
+                            </div>
+                        <% }) %>
+                        <% if (!amenities.length) { %>
+                            <p>No amenities listed.</p>
+                        <% } %>
                     </div>
-                    <div class="mt-2 mb-1">
-                      <% (r.amenities||[]).slice(0,4).forEach(function(am) { %>
-                        <span class="badge bg-light border text-dark me-1"><%= am %></span>
-                      <% }) %>
+                </div>
+                
+                <!-- Property Rules -->
+                <div class="mt-5">
+                    <h3 class="section-title">Property Rules</h3>
+                    <ul class="list-unstyled">
+                        <% if (premiumApartment.rules && premiumApartment.rules.length) { %>
+                            <% premiumApartment.rules.forEach(function(rule) { %>
+                                <li class="mb-2">
+                                    <i class="fa fa-check text-success me-2"></i> 
+                                    <%= rule %>
+                                </li>
+                            <% }) %>
+                        <% } else { %>
+                            <li>No specific rules provided.</li>
+                        <% } %>
+                    </ul>
+                </div>
+                
+                <!-- Apartments and Their Images -->
+                <% 
+                let aptModalCounter = 0;
+                let roomModalCounter = 0;
+                %>
+                <% if (Array.isArray(premiumApartment.apartments) && premiumApartment.apartments.length) { %>
+                <div class="mt-5">
+                    <h3 class="section-title">Full Apartments</h3>
+                    <div class="row g-4">
+                        <% premiumApartment.apartments.forEach(function(ap, apIdx) {  %>
+                        <div class="col-lg-6">
+                            <div class="card card-apartment">
+                                <div class="card-img-container">
+                                    <% if (ap.images && ap.images.length) { %>
+                                        <img src="<%= ap.images[0] %>" class="card-img-top" alt="<%= ap.apartmentName %>">
+                                        <div class="image-count-badge" onclick="openImageModal('apt-gallery-<%= aptModalCounter %>', 0)">
+                                            <i class="fa fa-images me-1"></i> <%= ap.images.length %>
+                                        </div>
+                                    <% } else { %>
+                                        <img src="/images/default-apartment.jpg" class="card-img-top" alt="Apartment">
+                                    <% } %>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= ap.apartmentName %></h5>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="price-badge">₹<%= ap.pricePerNight %>/night</span>
+                                        <span class="availability-badge <%= ap.isAvailable ? 'bg-success' : 'bg-danger' %>">
+                                            <%= ap.isAvailable ? 'Available' : 'Not Available' %>
+                                        </span>
+                                    </div>
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td>Total Rooms:</td>
+                                            <td><%= ap.totalRooms %></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Max Guests:</td>
+                                            <td><%= ap.maxGuests || "--" %></td>
+                                        </tr>
+                                    </table>
+                                    <% if (ap.amenities && ap.amenities.length) { %>
+                                    <div class="mt-3">
+                                        <% ap.amenities.slice(0,3).forEach(function(am) { %>
+                                            <span class="badge bg-light text-dark me-1 mb-1"><%= am %></span>
+                                        <% }) %>
+                                        <% if (ap.amenities.length > 3) { %>
+                                            <span class="badge bg-secondary">+<%= ap.amenities.length - 3 %> more</span>
+                                        <% } %>
+                                    </div>
+                                    <% } %>
+                                    <% if (ap.description) { %>
+                                    <p class="small text-muted mt-2"><%= ap.description %></p>
+                                    <% } %>
+                                </div>
+                                
+                                <!-- Apartment Images Modal -->
+                                <div class="modal fade image-modal" id="apt-gallery-<%= aptModalCounter %>" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body position-relative">
+                                                <button class="image-nav-btn image-nav-prev" onclick="changeModalImage('apt-gallery-<%= aptModalCounter %>', -1)">
+                                                    <i class="fa fa-chevron-left"></i>
+                                                </button>
+                                                <img src="<%= ap.images[0] %>" id="img-apt-gallery-<%= aptModalCounter %>" class="img-fluid" alt="Apartment Image">
+                                                <button class="image-nav-btn image-nav-next" onclick="changeModalImage('apt-gallery-<%= aptModalCounter %>', 1)">
+                                                    <i class="fa fa-chevron-right"></i>
+                                                </button>
+                                                <div class="image-counter">
+                                                    <span id="apt-gallery-<%= aptModalCounter %>-counter">1</span> / <%= ap.images.length %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    window._aptGalleries = window._aptGalleries || {};
+                                    window._aptGalleries['apt-gallery-<%= aptModalCounter %>'] = <%- JSON.stringify(ap.images) %>;
+                                </script>
+                                
+                                <% if (ap.rooms && ap.rooms.length) { %>
+                                <div class="card-footer bg-transparent">
+                                    <div class="accordion" id="apRoomsAccordion-<%= ap._id %>">
+                                        <div class="accordion-item border-0">
+                                            <h2 class="accordion-header" id="head-<%= ap._id %>">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= ap._id %>">
+                                                    <i class="fa fa-bed me-2"></i> Show Apartment Rooms Details
+                                                </button>
+                                            </h2>
+                                            <div id="collapse-<%= ap._id %>" class="accordion-collapse collapse" data-bs-parent="#apRoomsAccordion-<%= ap._id %>">
+                                                <div class="accordion-body p-0 pt-3">
+                                                    <div class="list-group list-group-flush">
+                                                        <% ap.rooms.forEach(function(r, ridx) { %>
+                                                            <div class="list-group-item d-flex align-items-start p-3">
+                                                                <% if (r.images && r.images[0]) { %>
+                                                                    <div class="position-relative me-3">
+                                                                        <img src="<%= r.images[0] %>" style="width: 80px; height: 60px; object-fit: cover;" class="rounded me-2" alt="Room">
+                                                                        <span class="position-absolute bottom-0 end-0 badge bg-dark bg-opacity-75" 
+                                                                              onclick="openImageModal('room-gallery-ap<%= apIdx %>-<%= ridx %>',0)"
+                                                                              style="cursor: pointer; font-size: 0.7rem;">
+                                                                            <i class="fa fa-images"></i> <%= r.images.length %>
+                                                                        </span>
+                                                                    </div>
+                                                                <% } %>
+                                                                <div class="flex-grow-1">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <h6 class="mb-1"><%= r.roomName %></h6>
+                                                                        <small class="text-muted"><%= r.roomType %></small>
+                                                                    </div>
+                                                                    <div class="mb-1">₹<%= r.pricePerNight %>/night | Bed: <%= r.bedType || '-' %> | Capacity: <%= r.capacity %></div>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <span class="badge <%= r.isAvailable ? 'bg-success' : 'bg-danger' %> me-2">
+                                                                            <%= r.isAvailable ? 'Available' : 'Not Available' %>
+                                                                        </span>
+                                                                        <small class="text-muted"><%= (r.amenities||[]).join(', ') %></small>
+                                                                    </div>
+                                                                    <% if (r.description) { %>
+                                                                    <p class="small text-muted mt-1 mb-0"><%= r.description %></p>
+                                                                    <% } %>
+                                                                </div>
+                                                            </div>
+                                                        <% }) %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                            </div>
+                        </div>
+                        <% aptModalCounter++; %>
+                        <% }) %>
                     </div>
-                    <span class="badge <%= r.isAvailable ? 'bg-success' : 'bg-danger' %>"><%= r.isAvailable ? 'Available' : 'Not Available' %></span>
-                    <% if (r.description) { %>
-                    <div class="text-muted small mt-1"><%= r.description %></div>
+                </div>
+                <% } %>
+                
+                <!-- Standalone Room List -->
+                <% if (Array.isArray(premiumApartment.rooms) && premiumApartment.rooms.length) { %>
+                <div class="mt-5">
+                    <h3 class="section-title">Standalone Rooms</h3>
+                    <div class="row g-4">
+                        <% premiumApartment.rooms.forEach(function(r, ridx) { %>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card card-room h-100">
+                                <div class="card-img-container">
+                                    <% if (r.images && r.images[0]) { %>
+                                        <img src="<%= r.images[0] %>" class="card-img-top" alt="<%= r.roomName %>">
+                                        <div class="image-count-badge" onclick="openImageModal('room-gallery-main-<%= ridx %>',0)">
+                                            <i class="fa fa-images me-1"></i> <%= r.images.length %>
+                                        </div>
+                                    <% } else { %>
+                                        <img src="/images/default-room.jpg" class="card-img-top" alt="Room">
+                                    <% } %>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= r.roomName %></h5>
+                                    <p class="text-muted small mb-2"><%= r.roomType %></p>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="price-badge">₹<%= r.pricePerNight %>/night</span>
+                                        <span class="availability-badge <%= r.isAvailable ? 'bg-success' : 'bg-danger' %>">
+                                            <%= r.isAvailable ? 'Available' : 'Not Available' %>
+                                        </span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="badge bg-light text-dark me-1">
+                                            <i class="fa fa-bed"></i> <%= r.bedType || '-' %>
+                                        </span>
+                                        <span class="badge bg-light text-dark">
+                                            <i class="fa fa-users"></i> <%= r.capacity %> Guests
+                                        </span>
+                                    </div>
+                                    <% if (r.amenities && r.amenities.length) { %>
+                                    <div class="mt-2">
+                                        <% r.amenities.slice(0,3).forEach(function(am) { %>
+                                            <span class="badge bg-light text-dark me-1 mb-1"><%= am %></span>
+                                        <% }) %>
+                                        <% if (r.amenities.length > 3) { %>
+                                            <span class="badge bg-secondary">+<%= r.amenities.length - 3 %> more</span>
+                                        <% } %>
+                                    </div>
+                                    <% } %>
+                                    <% if (r.description) { %>
+                                    <p class="small text-muted mt-2"><%= r.description %></p>
+                                    <% } %>
+                                </div>
+                                
+                                <!-- Standalone Room Modal -->
+                                <div class="modal fade image-modal" id="room-gallery-main-<%= ridx %>" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body position-relative">
+                                                <button class="image-nav-btn image-nav-prev" onclick="changeModalImage('room-gallery-main-<%= ridx %>', -1)">
+                                                    <i class="fa fa-chevron-left"></i>
+                                                </button>
+                                                <img src="<%= r.images[0] %>" id="img-room-gallery-main-<%= ridx %>" class="img-fluid" alt="Room Image">
+                                                <button class="image-nav-btn image-nav-next" onclick="changeModalImage('room-gallery-main-<%= ridx %>', 1)">
+                                                    <i class="fa fa-chevron-right"></i>
+                                                </button>
+                                                <div class="image-counter">
+                                                    <span id="room-gallery-main-<%= ridx %>-counter">1</span> / <%= r.images.length %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    window._roomGalleries = window._roomGalleries || {};
+                                    window._roomGalleries['room-gallery-main-<%= ridx %>'] = <%- JSON.stringify(r.images) %>;
+                                </script>
+                            </div>
+                        </div>
+                        <% roomModalCounter++; %>
+                        <% }) %>
+                    </div>
+                </div>
+                <% } %>
+                
+                <!-- Tax & Fees & Cancellation -->
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fa fa-money me-2"></i>Taxes & Fees</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">Cleaning Fee: <b>₹<%= premiumApartment.taxesAndFees?.cleaningFee || 0 %></b></li>
+                                    <li class="mb-2">Service Fee: <b>₹<%= premiumApartment.taxesAndFees?.serviceFee || 0 %></b></li>
+                                    <li>Tax: <b><%= premiumApartment.taxesAndFees?.taxPercent || 0 %>%</b></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fa fa-ban me-2"></i>Cancellation Policy</h5>
+                                <p class="mb-0"><%= premiumApartment.cancellationPolicy || "Contact property for details." %></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reviews -->
+                <div class="mt-5 mb-2">
+                    <h3 class="section-title">Guest Reviews</h3>
+                    <% if (premiumApartment.reviews && premiumApartment.reviews.length) { %>
+                        <% premiumApartment.reviews.slice(0,5).forEach(function (r) { %>
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-avatar">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="review-stars">
+                                        <% for (let i = 1; i <= 5; i++) { %>
+                                            <i class="fa fa-star<%= i <= r.rating ? '' : '-o' %>"></i>
+                                        <% } %>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-0"><%= r.name || "Anonymous" %></h6>
+                                        <small class="text-muted"><%= r.date ? new Date(r.date).toLocaleDateString() : '' %></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mb-0"><%= r.comment %></p>
+                        </div>
+                        <% }) %>
+                        <% if (premiumApartment.reviews.length > 5) { %>
+                            <div class="text-center mt-3">
+                                <button class="btn btn-outline-primary">Load More Reviews (<%= premiumApartment.reviews.length - 5 %>)</button>
+                            </div>
+                        <% } %>
+                    <% } else { %>
+                        <div class="alert alert-info">No reviews yet. Be the first to book and review!</div>
                     <% } %>
-                  </div>
+                    
+                    <!-- Review Form -->
+                    <div class="mt-4">
+                        <button style="border-color: #1b1b55; color: #1b1b55;" class="btn btn-outline-primary" id="showReviewFormBtn" type="button">
+                            <i class="fa fa-plus me-2"></i> Submit Your Review
+                        </button>
+                        
+                        <div class="card mt-3 shadow-sm" id="reviewFormCard" style="display:none;">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Submit a Review</h5>
+                                <form id="reviewForm">
+                                    <div class="mb-3">
+                                        <label for="reviewerName" class="form-label">Your Name (optional)</label>
+                                        <input type="text" class="form-control" id="reviewerName" name="name" maxlength="40">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Your Rating <span class="text-danger">*</span></label>
+                                        <div id="starInputs">
+                                            <% for(let i=1;i<=5;i++){ %>
+                                                <input type="radio" class="btn-check" name="rating" id="star<%=i%>" value="<%=i%>">
+                                                <label class="btn btn-outline-warning px-2 py-0" for="star<%=i%>">
+                                                    <i class="fa fa-star"></i>
+                                                </label>
+                                            <% } %>
+                                        </div>
+                                        <div class="form-text">Tap to select</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="reviewComment" class="form-label">Comment <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" id="reviewComment" name="comment" rows="3" required maxlength="500"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                                    <button type="button" class="btn btn-link ms-2" id="cancelReviewBtn">Cancel</button>
+                                    <div id="reviewFormMsg" class="mt-2 small"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <% roomModalCounter++; %>
-            <% }) %>
-          </div>
-        </div>
-      </div>
-      <% } %>
-
-      <!-- Gallery Modal JS & Swipe Logic -->
-      <script>
-        // Modals can share this logic
-        function openImageModal(galleryId, startIdx) {
-          var modal = document.getElementById(galleryId);
-          if(!modal) return;
-          var imgList =
-            (window._aptGalleries && window._aptGalleries[galleryId]) ||
-            (window._roomGalleries && window._roomGalleries[galleryId]) ||
-            [];
-          window.activeGalleryId = galleryId;
-          window.activeGalleryImgs = imgList;
-          window.activeGalleryIdx = (typeof startIdx !== 'undefined' && startIdx >= 0 && startIdx < imgList.length) ? startIdx : 0;
-          changeModalImage(galleryId, 0, true);
-
-          var bsModal = new bootstrap.Modal(modal);
-          bsModal.show();
-          // Save for closing elsewhere
-          modal._bsModal = bsModal;
-        }
-
-        function closeImageModal(galleryId) {
-          var modal = document.getElementById(galleryId);
-          if (modal && modal._bsModal) modal._bsModal.hide();
-        }
-
-        function changeModalImage(galleryId, delta, absoluteSet) {
-          var imgs =
-            (window._aptGalleries && window._aptGalleries[galleryId]) ||
-            (window._roomGalleries && window._roomGalleries[galleryId]) ||
-            [];
-          if (!imgs.length) return;
-          if (typeof window.activeGalleryIdx === 'undefined' || window.activeGalleryId !== galleryId) window.activeGalleryIdx = 0;
-          if (absoluteSet === true) {
-            // do not change idx
-          } else {
-            window.activeGalleryIdx = (window.activeGalleryIdx + delta + imgs.length) % imgs.length;
-          }
-          var idx = window.activeGalleryIdx;
-          // Modal image element id convention
-          var imgEl = document.getElementById('img-' + galleryId);
-          if (imgEl) imgEl.src = imgs[idx];
-          var captionEl = document.getElementById(galleryId + '-caption');
-          if (captionEl) captionEl.textContent = imgs[idx] ? imgs[idx].split('/').pop() : '';
-          var counterEl = document.getElementById(galleryId + '-counter');
-          if (counterEl) counterEl.textContent = (idx+1);
-        }
-
-        // Touch Swipe Logic
-        let touchStartX = null;
-        let touchEndX = null;
-        function handleTouchStart(e, galleryId) {
-          touchStartX = e.changedTouches[0].screenX;
-        }
-        function handleTouchEnd(e, galleryId) {
-          touchEndX = e.changedTouches[0].screenX;
-          if (touchStartX && touchEndX && Math.abs(touchEndX - touchStartX) > 50) {
-            // Swipe left -> next
-            if (touchEndX < touchStartX) {
-              changeModalImage(galleryId, 1);
-            }
-            // Swipe right -> prev
-            else if (touchEndX > touchStartX) {
-              changeModalImage(galleryId, -1);
-            }
-          }
-          touchStartX = touchEndX = null;
-        }
-        // Keyboard navigation for active modal:
-        document.addEventListener('keydown', function(e) {
-          if (!window.activeGalleryId) return;
-          if (e.key === 'ArrowLeft') changeModalImage(window.activeGalleryId, -1);
-          if (e.key === 'ArrowRight') changeModalImage(window.activeGalleryId, 1);
-          if (e.key === 'Escape') closeImageModal(window.activeGalleryId);
-        });
-      </script>
-      <!-- Tax & Fees & Cancellation -->
-      <div class="row mt-4 gy-4">
-        <div class="col-md-4">
-          <div class="bg-light border rounded-3 h-100 p-3 small shadow">
-            <h6 class="mb-2"><i class="fa fa-money"></i> Taxes & Fees</h6>
-            <div>Cleaning Fee: <b>₹<%= premiumApartment.taxesAndFees?.cleaningFee || 0 %></b></div>
-            <div>Service Fee: <b>₹<%= premiumApartment.taxesAndFees?.serviceFee || 0 %></b></div>
-            <div>Tax: <b><%= premiumApartment.taxesAndFees?.taxPercent || 0 %>%</b></div>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="bg-light border rounded-3 h-100 p-3 small shadow">
-            <h6 class="mb-2"><i class="fa fa-ban"></i> Cancellation Policy</h6>
-            <div><%= premiumApartment.cancellationPolicy || "Contact property for details." %></div>
-          </div>
-        </div>
-      </div>
-      <!-- Reviews -->
-      <div class="row mt-5 mb-5">
-        <div class="col-12">
-          <h3 class="mb-3"><i class="fa fa-comments"></i> Reviews</h3>
-          <% if (premiumApartment.reviews && premiumApartment.reviews.length) { %>
-            <% premiumApartment.reviews.slice(0,5).forEach(function (r) { %>
-              <div class="border rounded-4 p-3 mb-3 bg-light d-md-flex align-items-start">
-                <div class="me-3 mb-2 text-primary" style="font-size:2rem;">
-                  <i class="fa fa-user-circle"></i>
-                </div>
-                <div class="flex-grow-1">
-                  <div>
-                    <% for (let i = 1; i <= 5; i++) { %>
-                      <i class="fa fa-star<%= i <= r.rating ? '' : '-o' %> text-warning"></i>
-                    <% } %>
-                    <b class="ms-2"><%= r.name || "Anonymous" %></b>
-                    <span class="float-end text-muted small"><%= r.date ? new Date(r.date).toLocaleDateString() : '' %></span>
-                  </div>
-                  <div class="fs-6"><%= r.comment %></div>
-                </div>
-              </div>
-            <% }) %>
-            <% if (premiumApartment.reviews.length > 5) { %>
-              <div class="text-secondary small">And <%= premiumApartment.reviews.length - 5 %> more reviews...</div>
-            <% } %>
-          <% } else { %>
-            <div class="alert alert-info">No reviews yet. Be the first to book and review!</div>
-          <% } %>
-
-          <!-- Show submit review button, display form only on click -->
-          <div class="mt-4 mb-2">
-            <button class="btn btn-outline-primary" id="showReviewFormBtn" type="button">
-              <i class="fa fa-plus"></i> Submit your review
-            </button>
-          </div>
-          <div class="card shadow-sm mb-3" id="reviewFormCard" style="display:none;">
-            <div class="card-body">
-              <h5 class="card-title mb-3">Submit a Review</h5>
-              <form id="reviewForm">
-                <div class="mb-3">
-                  <label for="reviewerName" class="form-label">Your Name (optional)</label>
-                  <input type="text" class="form-control" id="reviewerName" name="name" maxlength="40">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Your Rating <span class="text-danger">*</span></label>
-                  <div id="starInputs">
-                    <% for(let i=1;i<=5;i++){ %>
-                      <input type="radio" class="btn-check" name="rating" id="star<%=i%>" value="<%=i%>">
-                      <label class="btn btn-outline-warning px-2 py-0" for="star<%=i%>">
-                        <i class="fa fa-star"></i>
-                      </label>
-                    <% } %>
-                  </div>
-                  <div class="form-text">Tap to select</div>
-                </div>
-                <div class="mb-3">
-                  <label for="reviewComment" class="form-label">Comment <span class="text-danger">*</span></label>
-                  <textarea class="form-control" id="reviewComment" name="comment" rows="2" required maxlength="500"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit Review</button>
-                <button type="button" class="btn btn-link ms-2" id="cancelReviewBtn">Cancel</button>
-                <div id="reviewFormMsg" class="mt-2 small"></div>
-              </form>
             </div>
-          </div>
-          <script>
-            // Show the review form when the button is clicked
-            document.getElementById("showReviewFormBtn").addEventListener("click", function(){
-              document.getElementById("reviewFormCard").style.display = "block";
-              this.style.display = "none";
-            });
-            // Cancel button hides the form and shows the button again
-            document.getElementById("cancelReviewBtn").addEventListener("click", function(e) {
-              document.getElementById("reviewFormCard").style.display = "none";
-              document.getElementById("showReviewFormBtn").style.display = "inline-block";
-            });
-            // Handle form submission
-            document.getElementById("reviewForm").addEventListener("submit", async function(event) {
-              event.preventDefault();
-              const form = event.target;
-              const name = form.name.value.trim();
-              const rating = form.rating.value;
-              const comment = form.comment.value.trim();
-              const msgDiv = document.getElementById("reviewFormMsg");
-              msgDiv.textContent = "";
-              if (!rating || !comment) {
-                msgDiv.textContent = "Rating and comment are required.";
-                msgDiv.className = "mt-2 small text-danger";
-                return;
-              }
-              try {
-                msgDiv.textContent = "Submitting...";
-                msgDiv.className = "mt-2 small text-info";
-                const resp = await fetch("/apartments/<%= premiumApartment._id %>/reviews", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                  },
-                  body: JSON.stringify({ name, rating: Number(rating), comment })
-                });
-                const data = await resp.json();
-                if (data.success) {
-                  msgDiv.textContent = "Review submitted! Reloading...";
-                  msgDiv.className = "mt-2 small text-success";
-                  setTimeout(() => window.location.reload(), 1200);
-                } else {
-                  msgDiv.textContent = data.message || "Error submitting review.";
-                  msgDiv.className = "mt-2 small text-danger";
-                }
-              } catch (e) {
-                msgDiv.textContent = "Error submitting review.";
-                msgDiv.className = "mt-2 small text-danger";
-              }
-            });
-          </script>
+            
+            <!-- Sidebar with Booking Card -->
+            <div class="col-lg-4">
+                <div class="booking-card">
+                    <div class="price-display">
+                        <% 
+                        // Calculate average price for display
+                        let avgPrice = 0;
+                        let count = 0;
+                        
+                        if (Array.isArray(premiumApartment.apartments) && premiumApartment.apartments.length) {
+                            premiumApartment.apartments.forEach(ap => {
+                                if (ap.pricePerNight) {
+                                    avgPrice += ap.pricePerNight;
+                                    count++;
+                                }
+                            });
+                        }
+                        
+                        if (Array.isArray(premiumApartment.rooms) && premiumApartment.rooms.length) {
+                            premiumApartment.rooms.forEach(r => {
+                                if (r.pricePerNight) {
+                                    avgPrice += r.pricePerNight;
+                                    count++;
+                                }
+                            });
+                        }
+                        
+                        if (count > 0) {
+                            avgPrice = Math.round(avgPrice / count);
+                        }
+                        %>
+                        ₹<%= avgPrice %> <span class="price-period">/ night</span>
+                    </div>
+                    
+                    <button style="color: white;" class="btn btn-booking mb-4" onclick="openBookingModal()">
+                        <i class="fa fa-calendar-check-o me-2"></i> Check Availability
+                    </button>
+                    
+                    <div class="card border-0 bg-light">
+                        <div class="card-body">
+                            <h6 class="card-title"><i class="fa fa-user-circle me-2"></i>Host Information</h6>
+                            <p class="mb-1"><strong><%= premiumApartment.host?.name || "Our Team" %></strong></p>
+                            <p class="mb-1">
+                                <i class="fa fa-phone me-2"></i>
+                                <a href="tel:<%= premiumApartment.host?.contact %>" class="text-decoration-none"><%= premiumApartment.host?.contact %></a>
+                            </p>
+                            <p class="mb-0">
+                                <i class="fa fa-envelope me-2"></i>
+                                <a href="mailto:<%= premiumApartment.host?.email %>" class="text-decoration-none"><%= premiumApartment.host?.email %></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <!-- Booking Modal Popup (Bootstrap Modal) -->
-    <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <form id="apartmentBookingForm" class="needs-validation" novalidate autocomplete="off">
-            <div class="modal-header bg-gradient-to-tr from-primary to-info text-white">
-              <h5 class="modal-title" id="bookingModalLabel">
-                <i class="fa fa-calendar-check-o"></i> Book at <%= premiumApartment.propertyTitle %>
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body pt-2">
-              <!-- Booking Type Selection -->
-              <div class="mb-3">
-                <label class="form-label">Booking Type</label>
-                <select name="bookingType" class="form-select" id="bookingType" required onchange="onBookingTypeChange()">
-                  <% if (Array.isArray(premiumApartment.apartments) && premiumApartment.apartments.length) { %>
-                    <option value="Full Apartment">Full Apartment</option>
-                  <% } %>
-                  <% if (Array.isArray(premiumApartment.rooms) && premiumApartment.rooms.length) { %>
-                    <option value="Room">Standalone Room</option>
-                  <% } %>
-                </select>
-                <div class="invalid-feedback">Please select a booking type</div>
-              </div>
+    <!-- Booking Modal -->
+    <div class="modal fade booking-modal" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form id="apartmentBookingForm" class="needs-validation" novalidate autocomplete="off">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bookingModalLabel">
+                            <i class="fa fa-calendar-check-o me-2"></i> Book at <%= premiumApartment.propertyTitle %>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Booking Type Selection -->
+                        <div class="mb-3">
+                            <label class="form-label">Booking Type</label>
+                            <select name="bookingType" class="form-select" id="bookingType" required onchange="onBookingTypeChange()">
+                                <% if (Array.isArray(premiumApartment.apartments) && premiumApartment.apartments.length) { %>
+                                    <option value="Full Apartment">Full Apartment</option>
+                                <% } %>
+                                <% if (Array.isArray(premiumApartment.rooms) && premiumApartment.rooms.length) { %>
+                                    <option value="Room">Standalone Room</option>
+                                <% } %>
+                            </select>
+                            <div class="invalid-feedback">Please select a booking type</div>
+                        </div>
 
-              <!-- Only ONE hidden input for apartmentId, with both name and id -->
-              <input type="hidden" id="apartmentId" name="apartmentId" value="<%= premiumApartment._id %>">
+                        <!-- Hidden input for apartmentId -->
+                        <input type="hidden" id="apartmentId" name="apartmentId" value="<%= premiumApartment._id %>">
 
-              <!-- Full Apartment Select -->
-              <div class="mb-3" id="fullApartmentSection" style="display:none;">
-                <label class="form-label">Choose Apartment</label>
-                <select class="form-select" name="fullApartmentId" id="fullApartmentId" required>
-                  <option value="">-- Select Apartment --</option>
-                  <% 
-                    let fullApartmentHasOption = false;
-                    // Display all apartments, regardless of isAvailable field value
-                    if (Array.isArray(premiumApartment.apartments) && premiumApartment.apartments.length) {
-                      premiumApartment.apartments.forEach(function (ap) { 
-                        fullApartmentHasOption = true;
-                  %>
-                      <option value="<%= ap._id %>">
-                        <%= ap.apartmentName %>
-                        (₹<%= ap.pricePerNight %> /night)
-                        <% if (ap.maxGuests) { %> | Max Guests: <%= ap.maxGuests %> <% } %>
-                        <% if (ap.totalRooms) { %> | <%= ap.totalRooms %> Rooms <% } %>
-                        <% if (ap.isAvailable === false) { %> - Not available <% } %>
-                      </option>
-                  <% 
-                      }); 
-                    }
-                  %>
-                </select>
-                <% if (!fullApartmentHasOption) { %>
-                  <div class="text-danger small pt-2">No apartments configured for booking.</div>
-                <% } %>
-                <div class="invalid-feedback">Please select an apartment</div>
-              </div>
+                        <!-- Full Apartment Select -->
+                        <div class="mb-3" id="fullApartmentSection" style="display:none;">
+                            <label class="form-label">Choose Apartment</label>
+                            <select class="form-select" name="fullApartmentId" id="fullApartmentId" required>
+                                <option value="">-- Select Apartment --</option>
+                                <% 
+                                let fullApartmentHasOption = false;
+                                if (Array.isArray(premiumApartment.apartments) && premiumApartment.apartments.length) {
+                                    premiumApartment.apartments.forEach(function (ap) { 
+                                        fullApartmentHasOption = true;
+                                %>
+                                    <option value="<%= ap._id %>">
+                                        <%= ap.apartmentName %>
+                                        (₹<%= ap.pricePerNight %> /night)
+                                        <% if (ap.maxGuests) { %> | Max Guests: <%= ap.maxGuests %> <% } %>
+                                        <% if (ap.totalRooms) { %> | <%= ap.totalRooms %> Rooms <% } %>
+                                        <% if (ap.isAvailable === false) { %> - Not available <% } %>
+                                    </option>
+                                <% 
+                                    }); 
+                                }
+                                %>
+                            </select>
+                            <% if (!fullApartmentHasOption) { %>
+                                <div class="text-danger small pt-2">No apartments configured for booking.</div>
+                            <% } %>
+                            <div class="invalid-feedback">Please select an apartment</div>
+                        </div>
 
-              <!-- Room Select -->
-              <div class="mb-3" id="roomSection" style="display:none;">
-                <label class="form-label">Choose Room(s)</label>
-                <select class="form-select" name="roomIds" id="roomIds" multiple>
-                  <% 
-                    let roomHasOption = false;
-                    if (Array.isArray(premiumApartment.rooms) && premiumApartment.rooms.length) {
-                      premiumApartment.rooms.forEach(function (r) { 
-                        roomHasOption = true; 
-                  %>
-                      <option value="<%= r._id %>">
-                        <%= r.roomName %> | <%= r.roomType %> | ₹<%= r.pricePerNight %>/night
-                        <% if (r.isAvailable === false) { %> - Not available <% } %>
-                      </option>
-                  <% 
-                      }); 
-                    }
-                  %>
-                </select>
-                <% if (!roomHasOption) { %>
-                  <div class="text-danger small pt-2">No rooms configured for booking.</div>
-                <% } %>
-                <div class="form-text">Hold <b>Ctrl/⌘</b> to select more than one.</div>
-                <div class="invalid-feedback">Please select at least one room</div>
-              </div>
-              <div class="row g-2">
-                <div class="col-sm-6">
-                  <label class="form-label"><i class="fa fa-user"></i> Name</label>
-                  <input required type="text" class="form-control" name="name" id="name" placeholder="Your full name">
-                  <div class="invalid-feedback">Please enter your name</div>
-                </div>
-                <div class="col-sm-6">
-                  <label class="form-label"><i class="fa fa-phone"></i> Phone</label>
-                  <input required type="tel" class="form-control" name="phone" id="phone" placeholder="Your phone number" pattern="^[0-9\-\+\s]{8,16}$">
-                  <div class="invalid-feedback">Please enter a valid phone number</div>
-                </div>
-                <div class="col-12">
-                  <label class="form-label"><i class="fa fa-envelope"></i> Email</label>
-                  <input required type="email" class="form-control" name="email" id="email" placeholder="Your email address">
-                  <div class="invalid-feedback">Please enter your email</div>
-                </div>
-              </div>
-              <div class="mb-2 row align-items-end mt-1">
-                <div class="col-md-4 mb-2">
-                  <label class="form-label"><i class="fa fa-calendar"></i> Check-in</label>
-                  <input required type="date" class="form-control" name="checkInDate" id="checkInDate" min="<%= new Date().toISOString().split('T')[0] %>">
-                  <div class="invalid-feedback">Enter check-in date</div>
-                </div>
-                <div class="col-md-4 mb-2">
-                  <label class="form-label"><i class="fa fa-calendar"></i> Check-out</label>
-                  <input required type="date" class="form-control" name="checkOutDate" id="checkOutDate">
-                  <div class="invalid-feedback">Enter check-out date</div>
-                </div>
-                <div class="col-md-4 mb-2">
-                  <label class="form-label"><i class="fa fa-users"></i> Total Guests</label>
-                  <input required min="1" max="20" type="number" class="form-control" name="totalGuests" id="totalGuests" value="1">
-                  <div class="invalid-feedback">Enter guest count</div>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label"><i class="fa fa-sticky-note"></i> Special Requests</label>
-                <textarea class="form-control" name="specialRequests" id="specialRequests" rows="1"
-                  placeholder="Add any requests (optional)"></textarea>
-              </div>
-              <input type="hidden" name="totalNights" id="totalNightsInput">
-              <input type="hidden" name="totalPrice" id="totalPriceInput">
-              <div id="bookingPriceDetails" class="alert alert-info d-none"></div>
-              <div id="formBookingMsg" class="alert d-none mt-2"></div>
+                        <!-- Room Select -->
+                        <div class="mb-3" id="roomSection" style="display:none;">
+                            <label class="form-label">Choose Room(s)</label>
+                            <select class="form-select" name="roomIds" id="roomIds" multiple>
+                                <% 
+                                let roomHasOption = false;
+                                if (Array.isArray(premiumApartment.rooms) && premiumApartment.rooms.length) {
+                                    premiumApartment.rooms.forEach(function (r) { 
+                                        roomHasOption = true; 
+                                %>
+                                    <option value="<%= r._id %>">
+                                        <%= r.roomName %> | <%= r.roomType %> | ₹<%= r.pricePerNight %>/night
+                                        <% if (r.isAvailable === false) { %> - Not available <% } %>
+                                    </option>
+                                <% 
+                                    }); 
+                                }
+                                %>
+                            </select>
+                            <% if (!roomHasOption) { %>
+                                <div class="text-danger small pt-2">No rooms configured for booking.</div>
+                            <% } %>
+                            <div class="form-text">Hold <b>Ctrl/⌘</b> to select more than one.</div>
+                            <div class="invalid-feedback">Please select at least one room</div>
+                        </div>
+                        
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label class="form-label"><i class="fa fa-user me-2"></i>Name</label>
+                                <input required type="text" class="form-control" name="name" id="name" placeholder="Your full name">
+                                <div class="invalid-feedback">Please enter your name</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label"><i class="fa fa-phone me-2"></i>Phone</label>
+                                <input required type="tel" class="form-control" name="phone" id="phone" placeholder="Your phone number" pattern="^[0-9\-\+\s]{8,16}$">
+                                <div class="invalid-feedback">Please enter a valid phone number</div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label"><i class="fa fa-envelope me-2"></i>Email</label>
+                                <input required type="email" class="form-control" name="email" id="email" placeholder="Your email address">
+                                <div class="invalid-feedback">Please enter your email</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-3 mt-1">
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fa fa-calendar me-2"></i>Check-in</label>
+                                <input required type="date" class="form-control" name="checkInDate" id="checkInDate" min="<%= new Date().toISOString().split('T')[0] %>">
+                                <div class="invalid-feedback">Enter check-in date</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fa fa-calendar me-2"></i>Check-out</label>
+                                <input required type="date" class="form-control" name="checkOutDate" id="checkOutDate">
+                                <div class="invalid-feedback">Enter check-out date</div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label"><i class="fa fa-users me-2"></i>Total Guests</label>
+                                <input required min="1" max="20" type="number" class="form-control" name="totalGuests" id="totalGuests" value="1">
+                                <div class="invalid-feedback">Enter guest count</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fa fa-sticky-note me-2"></i>Special Requests</label>
+                            <textarea class="form-control" name="specialRequests" id="specialRequests" rows="2"
+                                placeholder="Add any requests (optional)"></textarea>
+                        </div>
+                        
+                        <input type="hidden" name="totalNights" id="totalNightsInput">
+                        <input type="hidden" name="totalPrice" id="totalPriceInput">
+                        <div id="bookingPriceDetails" class="alert alert-info d-none"></div>
+                        <div id="formBookingMsg" class="alert d-none mt-2"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-submit">
+                            <i class="fa fa-check me-2"></i> Confirm Booking Request
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer py-3">
-              <button type="submit" class="btn btn-success btn-lg w-100 gradient-btn">
-                <i class="fa fa-check"></i> Confirm Booking
-              </button>
-            </div>
-          </form>
         </div>
-      </div>
     </div>
- 
-    <!-- Scripts for Modal & Booking Form -->
-    <script>
-      if (window.bootstrap) {
-        document.querySelectorAll('.gallery-thumb').forEach((el, i) => {
-          el.addEventListener('click', () => {
-            var bsCarousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('mainGallery'));
-            bsCarousel.to(i);
-          });
-        });
-      }
 
-      function openBookingModal() {
-        var modal = new bootstrap.Modal(document.getElementById('bookingModal'));
-        modal.show();
-        setTimeout(onBookingTypeChange, 100);
-      }
-
-      function onBookingTypeChange() {
-        var t = document.getElementById('bookingType');
-        if (!t) return;
-        if (t.value === 'Full Apartment') {
-          document.getElementById('fullApartmentSection').style.display = '';
-          document.getElementById('roomSection').style.display = 'none';
-          document.getElementById('fullApartmentId').required = true;
-          document.getElementById('roomIds').required = false;
-        } else {
-          document.getElementById('fullApartmentSection').style.display = 'none';
-          document.getElementById('roomSection').style.display = '';
-          document.getElementById('fullApartmentId').required = false;
-          document.getElementById('roomIds').required = true;
-        }
-        updateBookingPrice();
-      }
-
-      var __APARTMENTS__ = <%- JSON.stringify(
-        (Array.isArray(premiumApartment.apartments) ? premiumApartment.apartments : []).map(a => ({_id: (''+a._id), pricePerNight: a.pricePerNight}))
-      ) %>;
-      var __ROOMS__ = <%- JSON.stringify(
-        (Array.isArray(premiumApartment.rooms) ? premiumApartment.rooms : []).map(r => ({_id: (''+r._id), pricePerNight: r.pricePerNight}))
-      ) %>;
-
-      function updateBookingPrice() {
-        var checkIn = document.getElementById('checkInDate')?.value;
-        var checkOut = document.getElementById('checkOutDate')?.value;
-        var type = document.getElementById('bookingType')?.value;
-        var totalNights = 0;
-        var price = 0;
-        var priceText = "";
-        if (checkIn && checkOut) {
-          var inD = new Date(checkIn), outD = new Date(checkOut);
-          totalNights = Math.max(0, Math.ceil((outD - inD) / (1000 * 3600 * 24)));
-        }
-        document.getElementById('totalNightsInput').value = totalNights;
-
-        if (totalNights>0) {
-          if (type === 'Full Apartment') {
-            var aptSel = document.getElementById('fullApartmentId');
-            if (aptSel && aptSel.value) {
-              var selected = __APARTMENTS__.find(a => a._id === aptSel.value);
-              if (selected) price = selected.pricePerNight * totalNights;
-            }
-            priceText = "<b>Total:</b> ₹" + price + " for " + totalNights + " night" + (totalNights>1?"s":"");
-          } else {
-            var rSel = document.getElementById('roomIds');
-            if (rSel && rSel.selectedOptions) {
-              for (let opt of rSel.selectedOptions) {
-                var selected = __ROOMS__.find(r => r._id === opt.value);
-                if (selected) price += selected.pricePerNight * totalNights;
-              }
-            }
-            priceText = "<b>Total:</b> ₹" + price + " for " + totalNights + " night" + (totalNights>1?"s":"");
-          }
-        }
-        document.getElementById('totalPriceInput').value = price;
-        var d = document.getElementById('bookingPriceDetails');
-        if (totalNights === 0 || !price) {
-          d.classList.add("d-none");
-        } else {
-          d.classList.remove("d-none");
-          d.innerHTML = priceText + " <small class='d-block mt-1 text-muted'>* Final price may vary with taxes/fees. Our team will confirm.</small>";
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', function () {
-        var form = document.getElementById('apartmentBookingForm');
-        var checkIn = document.getElementById('checkInDate');
-        var checkOut = document.getElementById('checkOutDate');
-        var bookingTypeSelect = document.getElementById('bookingType');
-        var fullApartmentSelect = document.getElementById('fullApartmentId');
-        var roomSelect = document.getElementById('roomIds');
-        var priceSelectNodes = [bookingTypeSelect, fullApartmentSelect, roomSelect, checkIn, checkOut];
-
-        priceSelectNodes.forEach(function(node){
-          if (node) node.addEventListener('change', updateBookingPrice);
-        });
-
-        document.getElementById('bookingModal').addEventListener('show.bs.modal', onBookingTypeChange);
-
-        if (form) {
-          form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            form.classList.add('was-validated');
-
-            // Always pick apartmentId from the unique input
-            var apartmentIdValue = document.getElementById('apartmentId') ? document.getElementById('apartmentId').value : '';
-
-            // Validate Full Apartment selection
-            var selectedFullApartmentId = '';
-            if (bookingTypeSelect.value === 'Full Apartment') {
-              selectedFullApartmentId = fullApartmentSelect.value;
-              if (!selectedFullApartmentId) {
-                fullApartmentSelect.classList.add('is-invalid');
-                return;
-              } else {
-                fullApartmentSelect.classList.remove('is-invalid');
-              }
-            }
-
-            // Validate room selection
-            var selectedRoomIds = [];
-            if (bookingTypeSelect.value === 'Room') {
-              selectedRoomIds = roomSelect.selectedOptions ? Array.from(roomSelect.selectedOptions).map(opt => opt.value) : [];
-              if (!selectedRoomIds.length) {
-                roomSelect.classList.add('is-invalid');
-                return;
-              } else {
-                roomSelect.classList.remove('is-invalid');
-              }
-            }
-
-            // Validate required dates
-            var checkInDate = checkIn.value;
-            var checkOutDate = checkOut.value;
-            if (!checkInDate || !checkOutDate || new Date(checkOutDate) <= new Date(checkInDate)) {
-              checkIn.classList.add('is-invalid');
-              checkOut.classList.add('is-invalid');
-              alert("Please select valid check-in/check-out dates.");
-              return;
-            } else {
-              checkIn.classList.remove('is-invalid');
-              checkOut.classList.remove('is-invalid');
-            }
-
-            // Prepare data for backend API
-            var data = {
-              apartmentId: apartmentIdValue,
-              bookingType: bookingTypeSelect.value,
-              guestDetails: {
-                name: form.name.value,
-                phone: form.phone.value,
-                email: form.email.value,
-              },
-              checkInDate: checkIn.value,
-              checkOutDate: checkOut.value,
-              totalGuests: form.totalGuests.value,
-              specialRequests: form.specialRequests.value,
-              totalNights: form.totalNights.value,
-              totalPrice: form.totalPrice.value
-            };
-
-            if (data.bookingType === 'Full Apartment') {
-              data.fullApartmentId = selectedFullApartmentId;
-            }
-            if (data.bookingType === 'Room') {
-              data.roomIds = selectedRoomIds;
-            }
-
-            var btn = form.querySelector('button[type="submit"]');
-            btn.disabled = true;
-            var msg = document.getElementById('formBookingMsg');
-            msg.classList.remove('alert-success','alert-danger','d-none');
-            msg.classList.add('alert-info');
-            msg.innerText = "Submitting booking...";
-
-            try {
-              const resp = await fetch('/premium-apartment-booking', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-              });
-              const result = await resp.json();
-
-              if (resp.ok && result.success) {
-                msg.classList.remove('alert-info');
-                msg.classList.add('alert-success');
-                msg.innerHTML = "<i class='fa fa-check-circle'></i> Booking submitted! Our team will contact you to confirm.";
-                setTimeout(()=>{
-                  bootstrap.Modal.getOrCreateInstance(document.getElementById('bookingModal')).hide();
-                },1200);
-                form.reset();
-                form.classList.remove('was-validated');
-              } else {
-                msg.classList.remove('alert-info');
-                msg.classList.add('alert-danger');
-                msg.innerHTML = "Booking failed: " + (result.message || "Unknown error");
-              }
-            } catch (err) {
-              msg.classList.remove('alert-info');
-              msg.classList.add('alert-danger');
-              msg.innerHTML = "Booking failed. Please try again.";
-            }
-            btn.disabled = false;
-          });
-        }
-      });
-    </script>
-
-       <!-- Responsive adjustments & Custom CSS -->
-       <style>
-        .main-resort-photo {
-          border-radius: 24px 24px 12px 12px;
-          margin-bottom: 7px;
-          box-shadow:0 2px 16px #2d537b12;
-        }
-        .gradient-btn {
-          background: linear-gradient(45deg,#44d9e6,#62a7fa 60%);
-          border: none !important;
-          color: #222 !important;
-          transition: .15s;
-        }
-        .gradient-btn:hover,
-        .gradient-btn:focus {background: linear-gradient(45deg,#4af390,#309af3 80%); color: #18191a !important;}
-        .text-gradient { background: linear-gradient(90deg,#44d9e6,#62a7fa); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-        .gallery-thumb { transition:box-shadow .2s, border-color .2s;}
-        .gallery-thumb:hover { box-shadow:0 0 6px #44d9e672,0 0 2px #44d9e6; border-color: #44d9e6 !important;}
-        .accordion-button:not(.collapsed) { background: #44d9e618; color: #222; }
-        @media (max-width:991.98px){
-          .main-resort-photo{max-height:210px;}
-        }
-        @media (max-width:767.98px){
-          .container{padding-left:4px;padding-right:4px;}
-          .main-resort-photo{max-height:135px;}
-        }
-        @media (max-width:575.98px) {
-          h1, h4, h3 { font-size: 1.18rem; }
-          .modal-lg { max-width: 98% !important; }
-          .main-resort-photo { max-height:84px;}
-        }
-      </style>
     <!-- Footer -->
     <footer class="footer">
         <div class="top">
@@ -1221,11 +1298,12 @@
                     <div class="col-lg-12 col-md-12">
                         <p style="text-align: center;">© 2025 Transha Stays. All rights reserved.</p>
                     </div>
-
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- Contact Buttons -->
     <div class="contact-container">
         <div class="contact-btn whatsapp-btn">
             <div class="contact-pulse"></div>
@@ -1239,6 +1317,8 @@
             <span class="contact-label">Call +91 96058 32333</span>
         </div>
     </div>
+
+    <!-- Mobile Bottom Navbar -->
     <nav class="mobile__bottom__navbar">
         <!-- Home -->
         <div class="nav__item__container " data-page="home">
@@ -1303,6 +1383,7 @@
             <span class="nav__label__text">Contact</span>
         </div>
     </nav>
+
     <!-- jQuery -->
     <script src="/js/jquery-3.6.3.min.js"></script>
     <script src="/js/jquery-migrate-3.0.0.min.js"></script>
@@ -1323,6 +1404,344 @@
     <script src="/js/smooth-scroll.min.js"></script>
     <script src="/js/wow.min.js"></script>
     <script src="/js/custom.js"></script>
-</body>
 
+    <!-- Custom JavaScript -->
+    <script>
+        // Gallery thumbnail active state
+        document.addEventListener('DOMContentLoaded', function() {
+            const thumbs = document.querySelectorAll('.gallery-thumb');
+            thumbs.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    thumbs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+
+        // Image Modal Functions
+        function openImageModal(galleryId, startIdx) {
+            var modal = document.getElementById(galleryId);
+            if(!modal) return;
+            var imgList =
+                (window._aptGalleries && window._aptGalleries[galleryId]) ||
+                (window._roomGalleries && window._roomGalleries[galleryId]) ||
+                [];
+            window.activeGalleryId = galleryId;
+            window.activeGalleryImgs = imgList;
+            window.activeGalleryIdx = (typeof startIdx !== 'undefined' && startIdx >= 0 && startIdx < imgList.length) ? startIdx : 0;
+            changeModalImage(galleryId, 0, true);
+
+            var bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            // Save for closing elsewhere
+            modal._bsModal = bsModal;
+        }
+
+        function closeImageModal(galleryId) {
+            var modal = document.getElementById(galleryId);
+            if (modal && modal._bsModal) modal._bsModal.hide();
+        }
+
+        function changeModalImage(galleryId, delta, absoluteSet) {
+            var imgs =
+                (window._aptGalleries && window._aptGalleries[galleryId]) ||
+                (window._roomGalleries && window._roomGalleries[galleryId]) ||
+                [];
+            if (!imgs.length) return;
+            if (typeof window.activeGalleryIdx === 'undefined' || window.activeGalleryId !== galleryId) window.activeGalleryIdx = 0;
+            if (absoluteSet === true) {
+                // do not change idx
+            } else {
+                window.activeGalleryIdx = (window.activeGalleryIdx + delta + imgs.length) % imgs.length;
+            }
+            var idx = window.activeGalleryIdx;
+            // Modal image element id convention
+            var imgEl = document.getElementById('img-' + galleryId);
+            if (imgEl) imgEl.src = imgs[idx];
+            var counterEl = document.getElementById(galleryId + '-counter');
+            if (counterEl) counterEl.textContent = (idx+1);
+        }
+
+        // Touch Swipe Logic
+        let touchStartX = null;
+        let touchEndX = null;
+        function handleTouchStart(e, galleryId) {
+            touchStartX = e.changedTouches[0].screenX;
+        }
+        function handleTouchEnd(e, galleryId) {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX && touchEndX && Math.abs(touchEndX - touchStartX) > 50) {
+                // Swipe left -> next
+                if (touchEndX < touchStartX) {
+                    changeModalImage(galleryId, 1);
+                }
+                // Swipe right -> prev
+                else if (touchEndX > touchStartX) {
+                    changeModalImage(galleryId, -1);
+                }
+            }
+            touchStartX = touchEndX = null;
+        }
+        
+        // Keyboard navigation for active modal:
+        document.addEventListener('keydown', function(e) {
+            if (!window.activeGalleryId) return;
+            if (e.key === 'ArrowLeft') changeModalImage(window.activeGalleryId, -1);
+            if (e.key === 'ArrowRight') changeModalImage(window.activeGalleryId, 1);
+            if (e.key === 'Escape') closeImageModal(window.activeGalleryId);
+        });
+
+        // Booking Modal Functions
+        function openBookingModal() {
+            var modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+            modal.show();
+            setTimeout(onBookingTypeChange, 100);
+        }
+
+        function onBookingTypeChange() {
+            var t = document.getElementById('bookingType');
+            if (!t) return;
+            if (t.value === 'Full Apartment') {
+                document.getElementById('fullApartmentSection').style.display = '';
+                document.getElementById('roomSection').style.display = 'none';
+                document.getElementById('fullApartmentId').required = true;
+                document.getElementById('roomIds').required = false;
+            } else {
+                document.getElementById('fullApartmentSection').style.display = 'none';
+                document.getElementById('roomSection').style.display = '';
+                document.getElementById('fullApartmentId').required = false;
+                document.getElementById('roomIds').required = true;
+            }
+            updateBookingPrice();
+        }
+
+        var __APARTMENTS__ = <%- JSON.stringify(
+            (Array.isArray(premiumApartment.apartments) ? premiumApartment.apartments : []).map(a => ({_id: (''+a._id), pricePerNight: a.pricePerNight}))
+        ) %>;
+        var __ROOMS__ = <%- JSON.stringify(
+            (Array.isArray(premiumApartment.rooms) ? premiumApartment.rooms : []).map(r => ({_id: (''+r._id), pricePerNight: r.pricePerNight}))
+        ) %>;
+
+        function updateBookingPrice() {
+            var checkIn = document.getElementById('checkInDate')?.value;
+            var checkOut = document.getElementById('checkOutDate')?.value;
+            var type = document.getElementById('bookingType')?.value;
+            var totalNights = 0;
+            var price = 0;
+            var priceText = "";
+            if (checkIn && checkOut) {
+                var inD = new Date(checkIn), outD = new Date(checkOut);
+                totalNights = Math.max(0, Math.ceil((outD - inD) / (1000 * 3600 * 24)));
+            }
+            document.getElementById('totalNightsInput').value = totalNights;
+
+            if (totalNights>0) {
+                if (type === 'Full Apartment') {
+                    var aptSel = document.getElementById('fullApartmentId');
+                    if (aptSel && aptSel.value) {
+                        var selected = __APARTMENTS__.find(a => a._id === aptSel.value);
+                        if (selected) price = selected.pricePerNight * totalNights;
+                    }
+                    priceText = "<b>Total:</b> ₹" + price + " for " + totalNights + " night" + (totalNights>1?"s":"");
+                } else {
+                    var rSel = document.getElementById('roomIds');
+                    if (rSel && rSel.selectedOptions) {
+                        for (let opt of rSel.selectedOptions) {
+                            var selected = __ROOMS__.find(r => r._id === opt.value);
+                            if (selected) price += selected.pricePerNight * totalNights;
+                        }
+                    }
+                    priceText = "<b>Total:</b> ₹" + price + " for " + totalNights + " night" + (totalNights>1?"s":"");
+                }
+            }
+            document.getElementById('totalPriceInput').value = price;
+            var d = document.getElementById('bookingPriceDetails');
+            if (totalNights === 0 || !price) {
+                d.classList.add("d-none");
+            } else {
+                d.classList.remove("d-none");
+                d.innerHTML = priceText + " <small class='d-block mt-1 text-muted'>* Final price may vary with taxes/fees. Our team will confirm.</small>";
+            }
+        }
+
+        // Booking Form Submission
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('apartmentBookingForm');
+            var checkIn = document.getElementById('checkInDate');
+            var checkOut = document.getElementById('checkOutDate');
+            var bookingTypeSelect = document.getElementById('bookingType');
+            var fullApartmentSelect = document.getElementById('fullApartmentId');
+            var roomSelect = document.getElementById('roomIds');
+            var priceSelectNodes = [bookingTypeSelect, fullApartmentSelect, roomSelect, checkIn, checkOut];
+
+            priceSelectNodes.forEach(function(node){
+                if (node) node.addEventListener('change', updateBookingPrice);
+            });
+
+            document.getElementById('bookingModal').addEventListener('show.bs.modal', onBookingTypeChange);
+
+            if (form) {
+                form.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    form.classList.add('was-validated');
+
+                    // Always pick apartmentId from the unique input
+                    var apartmentIdValue = document.getElementById('apartmentId') ? document.getElementById('apartmentId').value : '';
+
+                    // Validate Full Apartment selection
+                    var selectedFullApartmentId = '';
+                    if (bookingTypeSelect.value === 'Full Apartment') {
+                        selectedFullApartmentId = fullApartmentSelect.value;
+                        if (!selectedFullApartmentId) {
+                            fullApartmentSelect.classList.add('is-invalid');
+                            return;
+                        } else {
+                            fullApartmentSelect.classList.remove('is-invalid');
+                        }
+                    }
+
+                    // Validate room selection
+                    var selectedRoomIds = [];
+                    if (bookingTypeSelect.value === 'Room') {
+                        selectedRoomIds = roomSelect.selectedOptions ? Array.from(roomSelect.selectedOptions).map(opt => opt.value) : [];
+                        if (!selectedRoomIds.length) {
+                            roomSelect.classList.add('is-invalid');
+                            return;
+                        } else {
+                            roomSelect.classList.remove('is-invalid');
+                        }
+                    }
+
+                    // Validate required dates
+                    var checkInDate = checkIn.value;
+                    var checkOutDate = checkOut.value;
+                    if (!checkInDate || !checkOutDate || new Date(checkOutDate) <= new Date(checkInDate)) {
+                        checkIn.classList.add('is-invalid');
+                        checkOut.classList.add('is-invalid');
+                        alert("Please select valid check-in/check-out dates.");
+                        return;
+                    } else {
+                        checkIn.classList.remove('is-invalid');
+                        checkOut.classList.remove('is-invalid');
+                    }
+
+                    // Prepare data for backend API
+                    var data = {
+                        apartmentId: apartmentIdValue,
+                        bookingType: bookingTypeSelect.value,
+                        guestDetails: {
+                            name: form.name.value,
+                            phone: form.phone.value,
+                            email: form.email.value,
+                        },
+                        checkInDate: checkIn.value,
+                        checkOutDate: checkOut.value,
+                        totalGuests: form.totalGuests.value,
+                        specialRequests: form.specialRequests.value,
+                        totalNights: form.totalNights.value,
+                        totalPrice: form.totalPrice.value
+                    };
+
+                    if (data.bookingType === 'Full Apartment') {
+                        data.fullApartmentId = selectedFullApartmentId;
+                    }
+                    if (data.bookingType === 'Room') {
+                        data.roomIds = selectedRoomIds;
+                    }
+
+                    var btn = form.querySelector('button[type="submit"]');
+                    btn.disabled = true;
+                    var msg = document.getElementById('formBookingMsg');
+                    msg.classList.remove('alert-success','alert-danger','d-none');
+                    msg.classList.add('alert-info');
+                    msg.innerText = "Submitting booking...";
+
+                    try {
+                        const resp = await fetch('/premium-apartment-booking', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        });
+                        const result = await resp.json();
+
+                        if (resp.ok && result.success) {
+                            msg.classList.remove('alert-info');
+                            msg.classList.add('alert-success');
+                            msg.innerHTML = "<i class='fa fa-check-circle'></i> Booking submitted! Our team will contact you to confirm.";
+                            setTimeout(()=>{
+                                bootstrap.Modal.getOrCreateInstance(document.getElementById('bookingModal')).hide();
+                            },1200);
+                            form.reset();
+                            form.classList.remove('was-validated');
+                        } else {
+                            msg.classList.remove('alert-info');
+                            msg.classList.add('alert-danger');
+                            msg.innerHTML = "Booking failed: " + (result.message || "Unknown error");
+                        }
+                    } catch (err) {
+                        msg.classList.remove('alert-info');
+                        msg.classList.add('alert-danger');
+                        msg.innerHTML = "Booking failed. Please try again.";
+                    }
+                    btn.disabled = false;
+                });
+            }
+        });
+
+        // Review Form Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show the review form when the button is clicked
+            document.getElementById("showReviewFormBtn").addEventListener("click", function(){
+                document.getElementById("reviewFormCard").style.display = "block";
+                this.style.display = "none";
+            });
+            
+            // Cancel button hides the form and shows the button again
+            document.getElementById("cancelReviewBtn").addEventListener("click", function(e) {
+                document.getElementById("reviewFormCard").style.display = "none";
+                document.getElementById("showReviewFormBtn").style.display = "inline-block";
+            });
+            
+            // Handle form submission
+            document.getElementById("reviewForm").addEventListener("submit", async function(event) {
+                event.preventDefault();
+                const form = event.target;
+                const name = form.name.value.trim();
+                const rating = form.rating.value;
+                const comment = form.comment.value.trim();
+                const msgDiv = document.getElementById("reviewFormMsg");
+                msgDiv.textContent = "";
+                if (!rating || !comment) {
+                    msgDiv.textContent = "Rating and comment are required.";
+                    msgDiv.className = "mt-2 small text-danger";
+                    return;
+                }
+                try {
+                    msgDiv.textContent = "Submitting...";
+                    msgDiv.className = "mt-2 small text-info";
+                    const resp = await fetch("/apartments/<%= premiumApartment._id %>/reviews", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify({ name, rating: Number(rating), comment })
+                    });
+                    const data = await resp.json();
+                    if (data.success) {
+                        msgDiv.textContent = "Review submitted! Reloading...";
+                        msgDiv.className = "mt-2 small text-success";
+                        setTimeout(() => window.location.reload(), 1200);
+                    } else {
+                        msgDiv.textContent = data.message || "Error submitting review.";
+                        msgDiv.className = "mt-2 small text-danger";
+                    }
+                } catch (e) {
+                    msgDiv.textContent = "Error submitting review.";
+                    msgDiv.className = "mt-2 small text-danger";
+                }
+            });
+        });
+    </script>
+</body>
 </html>
