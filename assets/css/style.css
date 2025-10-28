@@ -914,7 +914,7 @@ color: #e66b04;
 }
 .navbar .navbar-nav .nav-link {
     font-family: 'Outfit', sans-serif;
-    font-size: 15px;
+    font-size: 17px;
     color: #1b1b1b;
     margin: 1px;
     -webkit-transition: all .4s;
@@ -922,6 +922,7 @@ color: #e66b04;
     padding-right: 12px;
     padding-left: 12px;
     letter-spacing: 0px;
+    font-weight: 600;
 }
 .navbar .navbar-nav .nav-link.nav-color {
     color: #1b1b1b;
