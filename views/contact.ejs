@@ -47,21 +47,28 @@
 
                     </li>
 
-                    <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"> Premium Apartments <i class="ti-angle-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <% if (Array.isArray(resorts) && resorts.length > 0) { %>
-                                    <% resorts.forEach(function(resort) { %>
-                                        <li>
-                                            <a href="/resortDetails/<%= encodeURIComponent(resort.slug || resort.name) %>" class="dropdown-item">
-                                                <span><%= resort.name %></span>
-                                            </a>
-                                        </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            data-bs-auto-close="outside" aria-expanded="false">
+                            Premium Apartments <i class="ti-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <% if (Array.isArray(premiumApartments) && premiumApartments.length> 0) { %>
+                                <% premiumApartments.forEach(function(apartment) { %>
+                                    <li>
+                                        <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>"
+                                            class="dropdown-item">
+                                            <span>
+                                                <%= apartment.propertyTitle %>
+                                            </span>
+                                        </a>
+                                    </li>
                                     <% }); %>
-                                <% } else { %>
-                                    <li><span class="dropdown-item text-muted">No resorts available</span></li>
-                                <% } %>
-                            </ul>
+                                        <% } else { %>
+                                            <li><span class="dropdown-item text-muted">No premium apartments
+                                                    available</span></li>
+                                            <% } %>
+                        </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="/near-by-locations">Places to Visit Nearby</a>
                     </li>
