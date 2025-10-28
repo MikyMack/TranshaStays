@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/css/plugins.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         /* Custom Professional Styling */
         :root {
@@ -56,7 +57,7 @@
         .property-header {
             background: linear-gradient(rgba(27, 27, 85, 0.85), rgba(27, 27, 85, 0.75)), 
                         url('/img/transha/background-pattern.png');
-            background-size: cover;
+            background-size: contain;
             color: white;
             padding: 40px 0;
             margin-bottom: 40px;
@@ -487,13 +488,6 @@
 </head>
 
 <body>
-    <!-- Preloader -->
-    <div class="preloader-bg"></div>
-    <div id="preloader">
-        <div id="preloader-status">
-            <div class="preloader-position loader"> <span></span> </div>
-        </div>
-    </div>
     
     <!-- Progress scroll totop -->
     <div class="progress-wrap cursor-pointer">
@@ -507,7 +501,7 @@
         <div class="container">
             <!-- Logo -->
             <div class="logo-wrapper">
-                <a class="logo" href="/"> <img src="/img/transha/logo.png" class="logo-img" alt=""> </a>
+                <a class="logo" href="/"> <img loading="lazy" src="/img/transha/logo.png" class="logo-img" alt=""> </a>
             </div>
             <!-- Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
@@ -601,12 +595,12 @@
                             <% if (Array.isArray(premiumApartment.gallery) && premiumApartment.gallery.length > 0) { %>
                                 <% premiumApartment.gallery.forEach(function(img, idx) { %>
                                 <div class="carousel-item <%= idx === 0 ? 'active' : '' %>">
-                                    <img src="<%= img %>" class="d-block w-100" style="height: 450px; object-fit: cover;" alt="Resort Image <%= idx+1 %>">
+                                    <img loading="lazy" src="<%= img %>" class="d-block w-100" style="height: 450px; object-fit: cover;" alt="Resort Image <%= idx+1 %>">
                                 </div>
                                 <% }) %>
                             <% } else { %>
                                 <div class="carousel-item active">
-                                    <img src="/images/default-apartment.jpg" class="d-block w-100" style="height: 450px; object-fit: cover;" alt="No image">
+                                    <img loading="lazy" src="/images/default-apartment.jpg" class="d-block w-100" style="height: 450px; object-fit: cover;" alt="No image">
                                 </div>
                             <% } %>
                         </div>
@@ -627,7 +621,7 @@
                 <% if (Array.isArray(premiumApartment.gallery) && premiumApartment.gallery.length > 1) { %>
                 <div class="gallery-thumbnails">
                     <% premiumApartment.gallery.forEach(function(img, idx) { %>
-                    <img src="<%= img %>" onclick="document.querySelector('#mainGallery').carousel.to(<%= idx %>)" 
+                    <img loading="lazy" src="<%= img %>" onclick="document.querySelector('#mainGallery').carousel.to(<%= idx %>)" 
                          class="gallery-thumb <%= idx === 0 ? 'active' : '' %>" 
                          alt="Thumbnail <%= idx+1 %>">
                     <% }) %>
@@ -687,7 +681,6 @@
                     <div class="amenities-grid">
                         <% 
                         let amenities = [];
-                        // Merge amenities from all apartments/rooms
                         if (premiumApartment.amenities && premiumApartment.amenities.length) {
                             amenities = premiumApartment.amenities;
                         } else if (Array.isArray(premiumApartment.apartments)) {
@@ -740,12 +733,12 @@
                             <div class="card card-apartment">
                                 <div class="card-img-container">
                                     <% if (ap.images && ap.images.length) { %>
-                                        <img src="<%= ap.images[0] %>" class="card-img-top" alt="<%= ap.apartmentName %>">
+                                        <img loading="lazy" src="<%= ap.images[0] %>" class="card-img-top" alt="<%= ap.apartmentName %>">
                                         <div class="image-count-badge" onclick="openImageModal('apt-gallery-<%= aptModalCounter %>', 0)">
                                             <i class="fa fa-images me-1"></i> <%= ap.images.length %>
                                         </div>
                                     <% } else { %>
-                                        <img src="/images/default-apartment.jpg" class="card-img-top" alt="Apartment">
+                                        <img loading="lazy" src="/images/default-apartment.jpg" class="card-img-top" alt="Apartment">
                                     <% } %>
                                 </div>
                                 <div class="card-body">
@@ -776,8 +769,41 @@
                                         <% } %>
                                     </div>
                                     <% } %>
-                                    <% if (ap.description) { %>
-                                    <p class="small text-muted mt-2"><%= ap.description %></p>
+                                    <% if (ap.description) { 
+                                        const descMaxLen = 120;
+                                        const hasLongDesc = ap.description.length > descMaxLen;
+                                        const shortDesc = hasLongDesc ? ap.description.slice(0, descMaxLen) : ap.description;
+                                        const restDesc = hasLongDesc ? ap.description.slice(descMaxLen) : '';
+                                    %>
+                                    <p class="small text-muted mt-2">
+                                        <span id="ap-desc-short-<%= apIdx %>">
+                                            <%= shortDesc %>
+                                            <% if (hasLongDesc) { %>
+                                                ... <a href="javascript:void(0);" class="desc-toggle" onclick="toggleAptDesc(<%= apIdx %>, true)" style="color: #018d0f;">Read more</a>
+                                            <% } %>
+                                        </span>
+                                        <% if (hasLongDesc) { %>
+                                        <span id="ap-desc-full-<%= apIdx %>" style="display:none;">
+                                            <%= shortDesc + restDesc %>
+                                            <a href="javascript:void(0);" class="desc-toggle" onclick="toggleAptDesc(<%= apIdx %>, false)" style="color: #ff0000;">Read less</a>
+                                        </span>
+                                        <% } %>
+                                    </p>
+                                    <script>
+                                        function toggleAptDesc(idx, show) {
+                                            var shortSpan = document.getElementById('ap-desc-short-' + idx);
+                                            var fullSpan = document.getElementById('ap-desc-full-' + idx);
+                                            if (shortSpan && fullSpan) {
+                                                if (show) {
+                                                    shortSpan.style.display = "none";
+                                                    fullSpan.style.display = "";
+                                                } else {
+                                                    shortSpan.style.display = "";
+                                                    fullSpan.style.display = "none";
+                                                }
+                                            }
+                                        }
+                                    </script>
                                     <% } %>
                                 </div>
                                 
@@ -792,7 +818,7 @@
                                                 <button class="image-nav-btn image-nav-prev" onclick="changeModalImage('apt-gallery-<%= aptModalCounter %>', -1)">
                                                     <i class="fa fa-chevron-left"></i>
                                                 </button>
-                                                <img src="<%= ap.images[0] %>" id="img-apt-gallery-<%= aptModalCounter %>" class="img-fluid" alt="Apartment Image">
+                                                <img loading="lazy" src="<%= ap.images[0] %>" id="img-apt-gallery-<%= aptModalCounter %>" class="img-fluid" alt="Apartment Image">
                                                 <button class="image-nav-btn image-nav-next" onclick="changeModalImage('apt-gallery-<%= aptModalCounter %>', 1)">
                                                     <i class="fa fa-chevron-right"></i>
                                                 </button>
@@ -803,10 +829,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <script>
-                                    window._aptGalleries = window._aptGalleries || {};
-                                    window._aptGalleries['apt-gallery-<%= aptModalCounter %>'] = <%- JSON.stringify(ap.images) %>;
-                                </script>
+                              
                                 
                                 <% if (ap.rooms && ap.rooms.length) { %>
                                 <div class="card-footer bg-transparent">
@@ -824,7 +847,7 @@
                                                             <div class="list-group-item d-flex align-items-start p-3">
                                                                 <% if (r.images && r.images[0]) { %>
                                                                     <div class="position-relative me-3">
-                                                                        <img src="<%= r.images[0] %>" style="width: 80px; height: 60px; object-fit: cover;" class="rounded me-2" alt="Room">
+                                                                        <img loading="lazy" src="<%= r.images[0] %>" style="width: 80px; height: 60px; object-fit: cover;" class="rounded me-2" alt="Room">
                                                                         <span class="position-absolute bottom-0 end-0 badge bg-dark bg-opacity-75" 
                                                                               onclick="openImageModal('room-gallery-ap<%= apIdx %>-<%= ridx %>',0)"
                                                                               style="cursor: pointer; font-size: 0.7rem;">
@@ -844,9 +867,42 @@
                                                                         </span>
                                                                         <small class="text-muted"><%= (r.amenities||[]).join(', ') %></small>
                                                                     </div>
-                                                                    <% if (r.description) { %>
-                                                                    <p class="small text-muted mt-1 mb-0"><%= r.description %></p>
+                                                                    <% if (r.description) { 
+                                                                        const descMaxLen = 120;
+                                                                        const hasLongDesc = r.description.length > descMaxLen;
+                                                                        const shortDesc = hasLongDesc ? r.description.slice(0, descMaxLen) : r.description;
+                                                                        const restDesc = hasLongDesc ? r.description.slice(descMaxLen) : '';
+                                                                    %>
+                                                                    <p class="small text-muted mt-2">
+                                                                        <span id="desc-short-<%= ridx %>">
+                                                                            <%= shortDesc %>
+                                                                            <% if (hasLongDesc) { %>
+                                                                                ... <a href="javascript:void(0);" class="desc-toggle" onclick="toggleRoomDesc(<%= ridx %>, true)">Read more</a>
+                                                                            <% } %>
+                                                                        </span>
+                                                                        <% if (hasLongDesc) { %>
+                                                                        <span id="desc-full-<%= ridx %>" style="display:none;">
+                                                                            <%= shortDesc + restDesc %>
+                                                                            <a href="javascript:void(0);" class="desc-toggle" onclick="toggleRoomDesc(<%= ridx %>, false)">Read less</a>
+                                                                        </span>
+                                                                        <% } %>
+                                                                    </p>
                                                                     <% } %>
+                                                                    <script>
+                                                                        function toggleRoomDesc(idx, show) {
+                                                                            var shortSpan = document.getElementById('desc-short-' + idx);
+                                                                            var fullSpan = document.getElementById('desc-full-' + idx);
+                                                                            if (shortSpan && fullSpan) {
+                                                                                if (show) {
+                                                                                    shortSpan.style.display = "none";
+                                                                                    fullSpan.style.display = "";
+                                                                                } else {
+                                                                                    shortSpan.style.display = "";
+                                                                                    fullSpan.style.display = "none";
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    </script>
                                                                 </div>
                                                             </div>
                                                         <% }) %>
@@ -875,12 +931,12 @@
                             <div class="card card-room h-100">
                                 <div class="card-img-container">
                                     <% if (r.images && r.images[0]) { %>
-                                        <img src="<%= r.images[0] %>" class="card-img-top" alt="<%= r.roomName %>">
+                                        <img loading="lazy" src="<%= r.images[0] %>" class="card-img-top" alt="<%= r.roomName %>">
                                         <div class="image-count-badge" onclick="openImageModal('room-gallery-main-<%= ridx %>',0)">
                                             <i class="fa fa-images me-1"></i> <%= r.images.length %>
                                         </div>
                                     <% } else { %>
-                                        <img src="/images/default-room.jpg" class="card-img-top" alt="Room">
+                                        <img loading="lazy" src="/images/default-room.jpg" class="card-img-top" alt="Room">
                                     <% } %>
                                 </div>
                                 <div class="card-body">
@@ -910,9 +966,42 @@
                                         <% } %>
                                     </div>
                                     <% } %>
-                                    <% if (r.description) { %>
-                                    <p class="small text-muted mt-2"><%= r.description %></p>
+                                    <% if (r.description) { 
+                                        const descMaxLen = 120;
+                                        const hasLongDesc = r.description.length > descMaxLen;
+                                        const shortDesc = hasLongDesc ? r.description.slice(0, descMaxLen) : r.description;
+                                        const restDesc = hasLongDesc ? r.description.slice(descMaxLen) : '';
+                                    %>
+                                    <p class="small text-muted mt-2">
+                                        <span id="desc-short-<%= ridx %>">
+                                            <%= shortDesc %>
+                                            <% if (hasLongDesc) { %>
+                                                ... <a href="javascript:void(0);" class="desc-toggle" onclick="toggleRoomDesc(<%= ridx %>, true)">Read more</a>
+                                            <% } %>
+                                        </span>
+                                        <% if (hasLongDesc) { %>
+                                        <span id="desc-full-<%= ridx %>" style="display:none;">
+                                            <%= shortDesc + restDesc %>
+                                            <a href="javascript:void(0);" class="desc-toggle" onclick="toggleRoomDesc(<%= ridx %>, false)">Read less</a>
+                                        </span>
+                                        <% } %>
+                                    </p>
                                     <% } %>
+                                    <script>
+                                        function toggleRoomDesc(idx, show) {
+                                            var shortSpan = document.getElementById('desc-short-' + idx);
+                                            var fullSpan = document.getElementById('desc-full-' + idx);
+                                            if (shortSpan && fullSpan) {
+                                                if (show) {
+                                                    shortSpan.style.display = "none";
+                                                    fullSpan.style.display = "";
+                                                } else {
+                                                    shortSpan.style.display = "";
+                                                    fullSpan.style.display = "none";
+                                                }
+                                            }
+                                        }
+                                    </script>
                                 </div>
                                 
                                 <!-- Standalone Room Modal -->
@@ -926,7 +1015,7 @@
                                                 <button class="image-nav-btn image-nav-prev" onclick="changeModalImage('room-gallery-main-<%= ridx %>', -1)">
                                                     <i class="fa fa-chevron-left"></i>
                                                 </button>
-                                                <img src="<%= r.images[0] %>" id="img-room-gallery-main-<%= ridx %>" class="img-fluid" alt="Room Image">
+                                                <img loading="lazy" src="<%= r.images[0] %>" id="img-room-gallery-main-<%= ridx %>" class="img-fluid" alt="Room Image">
                                                 <button class="image-nav-btn image-nav-next" onclick="changeModalImage('room-gallery-main-<%= ridx %>', 1)">
                                                     <i class="fa fa-chevron-right"></i>
                                                 </button>
@@ -1103,7 +1192,7 @@
             </div>
         </div>
     </div>
-
+  
     <!-- Booking Modal -->
     <div class="modal fade booking-modal" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -1418,8 +1507,8 @@
             });
         });
 
-        // Image Modal Functions
-        function openImageModal(galleryId, startIdx) {
+           // Image Modal Functions
+           function openImageModal(galleryId, startIdx) {
             var modal = document.getElementById(galleryId);
             if(!modal) return;
             var imgList =
@@ -1490,7 +1579,7 @@
             if (e.key === 'ArrowRight') changeModalImage(window.activeGalleryId, 1);
             if (e.key === 'Escape') closeImageModal(window.activeGalleryId);
         });
-
+     
         // Booking Modal Functions
         function openBookingModal() {
             var modal = new bootstrap.Modal(document.getElementById('bookingModal'));
