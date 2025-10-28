@@ -358,6 +358,25 @@
             border: none;
             border-radius: 0;
         }
+        /* Prevent modal shake/jitter due to scrollbar and transform animations */
+        .modal {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            will-change: opacity;
+        }
+        .modal-open {
+            /* Keep layout width stable when scrollbar toggles */
+            padding-right: 0 !important;
+        }
+        .modal.fade.image-modal .modal-dialog {
+            transition: none !important; /* disable slide/scale animation that causes shake */
+        }
+        .image-modal .modal-dialog {
+            margin: 0 auto; /* center without horizontal jump */
+        }
+        .image-modal .modal-body {
+            overflow: hidden; /* avoid inner scrollbars flicker */
+        }
         
         .image-modal .modal-header {
             border-bottom: none;
@@ -398,7 +417,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            transition: var(--transition);
+
             z-index: 10;
         }
         
@@ -627,7 +646,7 @@
                 <% if (Array.isArray(premiumApartment.gallery) && premiumApartment.gallery.length > 1) { %>
                 <div class="gallery-thumbnails">
                     <% premiumApartment.gallery.forEach(function(img, idx) { %>
-                    <img src="<%= img %>" onclick="document.querySelector('#mainGallery').carousel.to(<%= idx %>)" 
+                    <img src="<%= img %>" onclick="bootstrap.Carousel.getOrCreateInstance(document.getElementById('mainGallery')).to(<%= idx %>)" 
                          class="gallery-thumb <%= idx === 0 ? 'active' : '' %>" 
                          alt="Thumbnail <%= idx+1 %>">
                     <% }) %>
@@ -740,9 +759,27 @@
                             <div class="card card-apartment">
                                 <div class="card-img-container">
                                     <% if (ap.images && ap.images.length) { %>
-                                        <img src="<%= ap.images[0] %>" class="card-img-top" alt="<%= ap.apartmentName %>">
-                                        <div class="image-count-badge" onclick="openImageModal('apt-gallery-<%= aptModalCounter %>', 0)">
-                                            <i class="fa fa-images me-1"></i> <%= ap.images.length %>
+                                        <div id="apt-slider-<%= aptModalCounter %>" class="carousel slide" data-bs-ride="false">
+                                            <div class="carousel-inner">
+                                                <% ap.images.forEach(function(img, i){ %>
+                                                    <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                                                        <img src="<%= img %>" class="d-block w-100 card-img-top" alt="<%= ap.apartmentName %> image <%= i+1 %>">
+                                                    </div>
+                                                <% }) %>
+                                            </div>
+                                            <% if (ap.images.length > 1) { %>
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#apt-slider-<%= aptModalCounter %>" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#apt-slider-<%= aptModalCounter %>" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                            <div class="image-count-badge" onclick="bootstrap.Carousel.getOrCreateInstance(document.querySelector('#apt-slider-<%= aptModalCounter %>')).next()">
+                                                <i class="fa fa-images me-1"></i> <%= ap.images.length %>
+                                            </div>
+                                            <% } %>
                                         </div>
                                     <% } else { %>
                                         <img src="/images/default-apartment.jpg" class="card-img-top" alt="Apartment">
@@ -781,32 +818,8 @@
                                     <% } %>
                                 </div>
                                 
-                                <!-- Apartment Images Modal -->
-                                <div class="modal fade image-modal" id="apt-gallery-<%= aptModalCounter %>" tabindex="-1" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body position-relative">
-                                                <button class="image-nav-btn image-nav-prev" onclick="changeModalImage('apt-gallery-<%= aptModalCounter %>', -1)">
-                                                    <i class="fa fa-chevron-left"></i>
-                                                </button>
-                                                <img src="<%= ap.images[0] %>" id="img-apt-gallery-<%= aptModalCounter %>" class="img-fluid" alt="Apartment Image">
-                                                <button class="image-nav-btn image-nav-next" onclick="changeModalImage('apt-gallery-<%= aptModalCounter %>', 1)">
-                                                    <i class="fa fa-chevron-right"></i>
-                                                </button>
-                                                <div class="image-counter">
-                                                    <span id="apt-gallery-<%= aptModalCounter %>-counter">1</span> / <%= ap.images.length %>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <script>
-                                    window._aptGalleries = window._aptGalleries || {};
-                                    window._aptGalleries['apt-gallery-<%= aptModalCounter %>'] = <%- JSON.stringify(ap.images) %>;
-                                </script>
+                                <!-- Apartment Images Slider replaces modal -->
+                                <!-- Removed modal and gallery script for apartments -->
                                 
                                 <% if (ap.rooms && ap.rooms.length) { %>
                                 <div class="card-footer bg-transparent">
@@ -1431,7 +1444,33 @@
             window.activeGalleryIdx = (typeof startIdx !== 'undefined' && startIdx >= 0 && startIdx < imgList.length) ? startIdx : 0;
             changeModalImage(galleryId, 0, true);
 
-            var bsModal = new bootstrap.Modal(modal);
+            // Create modal with options to prevent focus/scroll enforcement jitter
+            var bsModal = new bootstrap.Modal(modal, {
+                backdrop: true,
+                keyboard: true,
+                focus: false
+            });
+
+            // Lock body width to prevent layout shift when scrollbar disappears
+            var body = document.body;
+            var prevOverflow = body.style.overflow;
+            var prevPaddingRight = body.style.paddingRight;
+            var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            if (scrollbarWidth > 0) {
+                body.style.paddingRight = '0px';
+            }
+            body.style.overflow = 'hidden';
+
+            modal.addEventListener('hidden.bs.modal', function onHidden(){
+                body.style.overflow = prevOverflow;
+                body.style.paddingRight = prevPaddingRight;
+                modal.removeEventListener('hidden.bs.modal', onHidden);
+                // Clear active gallery when closed
+                if (window.activeGalleryId === galleryId) {
+                    window.activeGalleryId = null;
+                }
+            });
+
             bsModal.show();
             // Save for closing elsewhere
             modal._bsModal = bsModal;
