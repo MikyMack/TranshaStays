@@ -5,30 +5,12 @@ const mongoose = require('mongoose');
 const Blog = require('../models/Blog');
 const Testimonial = require('../models/Testimonial');
 const MainBanner = require('../models/MainBanner');
-const ResortProperty = require('../models/resort/ResortProperty');
-const PgProperty = require('../models/pg/PgProperty');
-const PgFloor = require('../models/pg/PgFloor');
-const PgRoom = require('../models/pg/PgRoom');
-const PgBed = require('../models/pg/PgBed');
+const PremiumApartment = require('../models/PremiumApartment');
+const PayingGuest = require('../models/PayingGuest');
+
 
 router.get('/', async (req, res) => {
     try {
-      const resorts = await ResortProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate('rooms')
-        .lean();
-
-      const pgs = await PgProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate({
-          path: 'floors',
-          populate: {
-            path: 'allRooms',
-            model: 'PgRoom'
-          }
-        })
-        .lean();
-
       const testimonials = await Testimonial.find({ isActive: true }).sort({ createdAt: -1 }).lean();
 
       const blogs = await Blog.find()
@@ -36,31 +18,44 @@ router.get('/', async (req, res) => {
         .limit(3)
         .lean();
 
+      const mainBanners = await MainBanner.find({ isActive: true })
+        .sort({ createdAt: -1 })
+        .limit(3)
+        .lean();
+
+      const premiumApartments = await PremiumApartment.find({ isActive: true })
+        .sort({ createdAt: -1 })
+        .lean();
+
+      const payingGuest = await PayingGuest.find()
+        .sort({ createdAt: -1 }).limit(16)
+        .lean();
+
       res.render('index', {
         title: 'Home',
-        resorts,
-        pgs,
         testimonials,
-        blogs
+        blogs,
+        mainBanners,
+        premiumApartments,
+        payingGuest
       });
 
     } catch (error) {
       console.error(error);
       res.status(500).send('Error loading Home page data');
     }
-  });
+});
   
 
 router.get('/about', async (req, res) => {
     try {
-        const resorts = await ResortProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate('rooms')
-        .lean();
+      const premiumApartments = await PremiumApartment.find({ isActive: true })
+      .sort({ createdAt: -1 })
+      .lean();
         const testimonials = await Testimonial.find({ isActive: true }).sort({ createdAt: -1 }).lean();
 
         res.render('about', {
-            title: 'About us',resorts , testimonials
+            title: 'About us',premiumApartments , testimonials
         });
     } catch (error) {
         console.error(error);
@@ -69,12 +64,11 @@ router.get('/about', async (req, res) => {
 });
 router.get('/spa-wellness', async (req, res) => {
     try {
-        const resorts = await ResortProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate('rooms')
-        .lean();
+      const premiumApartments = await PremiumApartment.find({ isActive: true })
+      .sort({ createdAt: -1 })
+      .lean();
         res.render('spa-wellness', {
-            title: 'spa-wellness',resorts
+            title: 'spa-wellness',premiumApartments
         });
     } catch (error) {
         console.error(error);
@@ -83,75 +77,50 @@ router.get('/spa-wellness', async (req, res) => {
 });
 router.get('/pg', async (req, res) => {
     try {
-        const resorts = await ResortProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate('rooms')
-        .lean();
+        const premiumApartments = await PremiumApartment.find({ isActive: true })
+            .sort({ createdAt: -1 })
+            .lean();
 
-      const pgs = await PgProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate({
-          path: 'floors',
-          populate: {
-            path: 'allRooms',
-            model: 'PgRoom'
-          }
-        })
-        .lean();
+        // Pagination parameters
+        let { page = 1, limit = 12 } = req.query;
+        page = parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
+        limit = parseInt(limit, 10) > 0 ? parseInt(limit, 10) : 12;
+
+        // Count total PGs
+        const totalPGs = await PayingGuest.countDocuments();
+        const totalPages = Math.ceil(totalPGs / limit);
+
+        // Fetch paginated PGs
+        const payingGuest = await PayingGuest.find()
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .lean();
+
         res.render('pg', {
-            title: 'pg',pgs,resorts
+            title: 'pg',
+            premiumApartments,
+            payingGuest,
+            pagination: {
+                page,
+                limit,
+                totalPages,
+                totalPGs,
+                hasPrev: page > 1,
+                hasNext: page < totalPages
+            }
         });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error loading pg page data');
     }
 });
-router.get('/pgDetails/:slug', async (req, res) => {
-    try {
-      const { slug } = req.params;
-  
-      // Find property and populate everything (floors → rooms → beds)
-      const pg = await PgProperty.findOne({ slug, isActive: true })
-        .populate({
-          path: 'floors',
-          options: { sort: { floorNumber: 1 } }, // ascending order
-          populate: {
-            path: 'allRooms',
-            options: { sort: { createdAt: 1 } },
-            populate: {
-              path: 'allBeds',
-              model: 'PgBed',
-              options: { sort: { bedNumber: 1 } }
-            }
-          }
-        })
-        .lean();
-  
-      if (!pg) {
-        return res.status(404).send('PG not found');
-      }
-  
-      const resorts = await ResortProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate('rooms')
-        .lean();
-  
-      res.render('pgDetails', {
-        title: `${pg.name} – PG Details`,
-        pg,
-        resorts
-      });
-    } catch (error) {
-      console.error('Error loading PG details:', error);
-      res.status(500).send('Error loading PG details');
-    }
-  });
+
 router.get('/blogs', async (req, res) => {
     try {
-        const resorts = await ResortProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate('rooms')
-        .lean();
+      const premiumApartments = await PremiumApartment.find({ isActive: true })
+      .sort({ createdAt: -1 })
+      .lean();
         const { page = 1, limit = 10 } = req.query;
 
         // Fetch blogs with pagination
@@ -165,7 +134,7 @@ router.get('/blogs', async (req, res) => {
             title: 'Blogs',
             blogs: blogs,
             currentPage: parseInt(page),
-            totalPages: Math.ceil(totalBlogs / limit), resorts
+            totalPages: Math.ceil(totalBlogs / limit), premiumApartments
         });
     } catch (error) {
         console.error(error);
@@ -175,12 +144,11 @@ router.get('/blogs', async (req, res) => {
 
 router.get('/contact', async (req, res) => {
     try {
-        const resorts = await ResortProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate('rooms')
-        .lean();
+      const premiumApartments = await PremiumApartment.find({ isActive: true })
+      .sort({ createdAt: -1 })
+      .lean();
         res.render('contact', {
-            title: 'Contact Us',resorts
+            title: 'Contact Us',premiumApartments
         });
     } catch (error) {
         console.error(error);
@@ -189,13 +157,12 @@ router.get('/contact', async (req, res) => {
 });
 router.get('/resorts', async (req, res) => {
     try {
-        const resorts = await ResortProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate('rooms')
-        .lean();
+      const premiumApartments = await PremiumApartment.find({ isActive: true })
+      .sort({ createdAt: -1 })
+      .lean();
 
         res.render('resorts', {
-            title: 'resorts',resorts
+            title: 'resorts',premiumApartments
         });
     } catch (error) {
         console.error(error);
@@ -204,12 +171,11 @@ router.get('/resorts', async (req, res) => {
 });
 router.get('/near-by-locations', async (req, res) => {
     try {
-        const resorts = await ResortProperty.find({ isActive: true })
-        .sort({ createdAt: -1 })
-        .populate('rooms')
-        .lean();
+      const premiumApartments = await PremiumApartment.find({ isActive: true })
+      .sort({ createdAt: -1 })
+      .lean();
         res.render('near-by-locations', {
-            title: 'near-by-locations',resorts
+            title: 'near-by-locations',premiumApartments
         });
     } catch (error) {
         console.error(error);
@@ -218,36 +184,34 @@ router.get('/near-by-locations', async (req, res) => {
 });
 
 // Package details page
-router.get('/resortDetails/:title', async (req, res) => {
+router.get('/apartmentDetails/:title', async (req, res) => {
     try {
         const slugOrName = decodeURIComponent(req.params.title);
-        const resort = await ResortProperty.findOne({
+
+        const premiumApartment = await PremiumApartment.findOne({
             $or: [
                 { slug: slugOrName },
-                { name: slugOrName }
+                { propertyTitle: slugOrName }
             ],
             isActive: true
-        })
-        .populate('rooms')
-        .lean();
+        }).lean();
 
-        if (!resort) {
-            return res.status(404).send('Resort not found');
+        if (!premiumApartment) {
+            return res.status(404).send('Premium Apartment not found');
         }
 
-        const resorts = await ResortProperty.find({ isActive: true })
+        const premiumApartments = await PremiumApartment.find({ isActive: true })
             .sort({ createdAt: -1 })
-            .populate('rooms')
             .lean();
 
         res.render('resortDetails', {
-            title: resort.metaTitle || resort.name || 'Resort Details',
-            resort,
-            resorts 
+            title: premiumApartment.metaTitle || premiumApartment.propertyTitle || 'Premium Apartment Details',
+            premiumApartment,
+            premiumApartments
         });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error loading resortDetails page data');
+        res.status(500).send('Error loading premiumApartmentDetails page data');
     }
 });
 
@@ -265,16 +229,15 @@ router.get('/blogDetail/:title', async (req, res) => {
             metaKeywords: { $in: blog.metaKeywords }
         }).limit(3).lean();
 
-        const resorts = await ResortProperty.find({ isActive: true })
+        const premiumApartments = await PremiumApartment.find({ isActive: true })
         .sort({ createdAt: -1 })
-        .populate('rooms')
         .lean();
 
         res.render('blogDetails', {
             title: blog.metaTitle || blog.title || 'blogDetails',
             blog,
             relatedBlogs,
-            resorts
+            premiumApartments
         });
     } catch (error) {
         console.error(error);

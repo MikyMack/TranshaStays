@@ -46,21 +46,28 @@
 
                     </li>
 
-                    <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">    Premium Apartments <i class="ti-angle-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <% if (Array.isArray(resorts) && resorts.length > 0) { %>
-                                    <% resorts.forEach(function(resort) { %>
-                                        <li>
-                                            <a href="/resortDetails/<%= encodeURIComponent(resort.slug || resort.name) %>" class="dropdown-item">
-                                                <span><%= resort.name %></span>
-                                            </a>
-                                        </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            data-bs-auto-close="outside" aria-expanded="false">
+                            Premium Apartments <i class="ti-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <% if (Array.isArray(premiumApartments) && premiumApartments.length> 0) { %>
+                                <% premiumApartments.forEach(function(apartment) { %>
+                                    <li>
+                                        <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>"
+                                            class="dropdown-item">
+                                            <span>
+                                                <%= apartment.propertyTitle %>
+                                            </span>
+                                        </a>
+                                    </li>
                                     <% }); %>
-                                <% } else { %>
-                                    <li><span class="dropdown-item text-muted">No resorts available</span></li>
-                                <% } %>
-                            </ul>
+                                        <% } else { %>
+                                            <li><span class="dropdown-item text-muted">No premium apartments
+                                                    available</span></li>
+                                            <% } %>
+                        </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="/near-by-locations">Places to Visit Nearby</a>
                     </li>
@@ -100,47 +107,120 @@
     <section class="rooms1 section-padding pb-60" data-scroll-index="1">
         <div class="container">
             <div class="row">
-                <% if (Array.isArray(pgs) && pgs.length > 0) { %>
-                    <% pgs.forEach(function(pg) { 
-                        var pgImg = (Array.isArray(pg.images) && pg.images.length > 0) ? pg.images[0] : 'img/rooms/pg-placeholder.jpg';
-                    %>
-                    <div class="col-md-6 mb-60">
-                        <div class="rooms1-single">
-                            <div class="rooms1-img">
-                                <img src="<%= pgImg %>" alt="<%= pg.name %>">
-                            </div>
-                            <div class="rooms1-content active">
-                                <div class="row">
-                                    <div class="col-md-12 col-lg-6">
-                                        <div class="rooms1-title">
-                                            <a href="/pgDetails/<%= encodeURIComponent(pg.slug || pg.name) %>">
-                                                <%= pg.name %>
-                                            </a>
-                                        </div>
-                                        <div class="rooms1-tagline">
-                                            <%= pg.address ? pg.address + ', ' : '' %>
-                                            <%= pg.city ? pg.city + ', ' : '' %>
-                                            <%= pg.state ? pg.state : '' %>
-                                        </div>
+            <% if (Array.isArray(payingGuest) && payingGuest.length > 0) { %>
+                <% payingGuest.forEach(function(pg, idx) { 
+                    var images = (Array.isArray(pg.images) && pg.images.length > 0) ? pg.images : ['/img/rooms/pg-placeholder.jpg'];
+                    var pgImg = images[0];
+                    var moreImagesCount = images.length > 1 ? images.length - 1 : 0;
+                    var isAvailable = pg.isAvailable !== false;
+                    var location = pg.location || {};
+                    var title = pg.title || '';
+                    var address = location.address || '';
+                    var city = location.city || '';
+                    var state = location.state || '';
+                    var pincode = location.pincode || '';
+                    var country = location.country || 'India';
+                    var whatsappMsg = encodeURIComponent(
+                        "Hello, I'm interested in your PG accommodation: " + title +
+                        (address ? " at " + address : "") +
+                        (city ? ", " + city : "") +
+                        (state ? ", " + state : "")
+                    );
+                    var whatsappUrl = "https://wa.me/919605832333?text=" + whatsappMsg;
+                    var popupId = "pgImgPopup_" + idx;
+                    var carouselId = "pgImgPopup_" + idx + "Carousel";
+                %>
+                <div class="col-md-6 mb-60">
+                    <div class="rooms1-single">
+                        <div class="rooms1-img position-relative" style="width:100%; height:270px; overflow:hidden; border-radius:12px; background:#f2f2f2;">
+                            <!-- Additional Images count (top left)-->
+                            <% if (moreImagesCount > 0) { %>
+                                <button 
+                                    type="button"
+                                    class="btn btn-dark bg-opacity-75 rounded-pill position-absolute"
+                                    style="top:14px; left:16px; font-weight:500; font-size:1em; z-index:2; padding:3px 12px;"
+                                    data-bs-toggle="modal" data-bs-target="#<%= popupId %>">
+                                    <i class="fa fa-images me-1"></i>+<%= moreImagesCount %>
+                                </button>
+                            <% } %>
+                            <!-- Availability Badge (top right) -->
+                            <span class="badge <%= isAvailable ? 'bg-success' : 'bg-secondary' %> position-absolute px-3 py-2"
+                                style="top:14px; right:16px; font-size:0.95em; z-index:2;">
+                                <%= isAvailable ? 'Available' : 'Not Available' %>
+                            </span>
+                            <!-- Main Image -->
+                            <img src="<%= pgImg %>" alt="<%= title %>" class="w-100 h-100" style="object-fit:cover; border-radius:12px; height:270px; width:100%;">
+                        </div>
+                        <div class="rooms1-content active">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <div class="rooms1-title mb-2 fw-bold fs-5">
+                                        <%= title %>
                                     </div>
-                                    <div class="col-md-12 col-lg-6">
-                                        <div class="book">
-                                            <div>
-                                                <a href="/pgDetails/<%= encodeURIComponent(pg.slug || pg.name) %>" class="butn-dark2"><span>More Details</span></a>
-                                            </div>
-                                            <div><span>from</span><span class="price">₹1000</span></div>
-                                        </div>
+                                    <div class="rooms1-tagline text-secondary mb-1">
+                                        <% if(address){ %><%= address %><% } %>
+                                        <% if(city){ %><% if(address){ %>, <% } %><%= city %><% } %>
+                                        <% if(state){ %><% if(address || city){ %>, <% } %><%= state %><% } %>
+                                        <% if(pincode){ %><% if(address || city || state){ %>, <% } %><%= pincode %><% } %>
+                                        <% if(country){ %><% if(address || city || state || pincode){ %>, <% } %><%= country %><% } %>
                                     </div>
+                                </div>
+                                <div class="col-12 d-flex flex-wrap align-items-center gap-3 mt-2 mb-2">
+                                    <a href="<%= whatsappUrl %>" class="butn-dark2" target="_blank" rel="noopener">
+                                        <span>
+                                            <i class="fab fa-whatsapp me-1"></i>
+                                            Contact Now
+                                        </span>
+                                    </a>
+                                    <span class="badge text-bg-light px-3 py-2" style="font-size:1em;">
+                                        <i class="fa fa-map-marker-alt me-1"></i> <%= city || state || country %>
+                                    </span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="badge <%= isAvailable ? 'bg-success' : 'bg-secondary' %>">
+                                        <%= isAvailable ? 'Available' : 'Not Available' %>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <% }); %>
-                <% } else { %>
-                    <div class="col-12">
-                        <p class="text-center text-muted">No PG accommodations available at the moment.</p>
+                </div>
+                <!-- Modal for images popup -->
+                <div class="modal fade" id="<%= popupId %>" tabindex="-1" aria-labelledby="<%= popupId %>Label" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content bg-dark text-white position-relative">
+                      <button type="button" class="btn-close btn-close-white position-absolute" style="top:12px; right:18px; z-index:2;" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <div class="modal-body py-0 px-0">
+                        <div id="<%= carouselId %>" class="carousel slide" data-bs-interval="false">
+                          <div class="carousel-inner">
+                            <% images.forEach(function(img, imgIdx) { %>
+                              <div class="carousel-item <%= imgIdx === 0 ? 'active' : '' %>">
+                                <img src="<%= img %>" class="d-block w-100" style="max-height:430px; object-fit:contain; background:#181818;">
+                              </div>
+                            <% }); %>
+                          </div>
+                          <% if(images.length > 1) { %>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#<%= carouselId %>" data-bs-slide="prev">
+                              <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#<%= carouselId %>" data-bs-slide="next">
+                              <span class="carousel-control-next-icon"></span>
+                            </button>
+                          <% } %>
+                        </div>
+                        <div class="text-center mt-2" style="font-size:1rem;">
+                          <%= title %>
+                        </div>
+                      </div>
                     </div>
-                <% } %>
+                  </div>
+                </div>
+                <% }); %>
+            <% } else { %>
+                <div class="col-12">
+                    <p class="text-center text-muted">No PG accommodations available at the moment.</p>
+                </div>
+            <% } %>
             </div>
         </div>
     </section>

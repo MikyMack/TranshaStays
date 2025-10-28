@@ -4,15 +4,14 @@ const mainbanner = require("../models/MainBanner")
 const app = express();
 const cloudinary = require('../utils/cloudinary');
 const upload = require('../utils/multer');
-const ResortRoom = require('../models/resort/ResortRoom');
+
 
 const authMiddleware = require('../middleware/auth'); 
 const authController =require('../controllers/authController');
-const ResortProperty = require('../models/resort/ResortProperty');
-const PgProperty = require('../models/pg/PgProperty');
-const PgLease = require('../models/pg/PgLease');
-const ResortBooking = require('../models/resort/ResortBooking');
-const PgBooking = require('../models/pg/pgBooking');
+const PayingGuest = require('../models/PayingGuest');
+
+const PremiumApartmentBooking = require('../models/PremiumApartmentBooking');
+
 
 // Admin Login Page
 app.get('/login', (req, res) => {
@@ -30,84 +29,62 @@ app.get('/dashboard', authMiddleware, async (req, res) => {
 });
 
 
-
-app.get('/admin-booking', authMiddleware, async (req, res) => {
+app.get("/admin-booking", authMiddleware, async (req, res) => {
   try {
-    // Resort Bookings
-    const bookingStatus = req.query.status; 
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-
-    const resortFilter = {};
-    if (bookingStatus && ['Pending','Confirmed','CheckedIn','CheckedOut','Cancelled'].includes(bookingStatus)) {
-      resortFilter.bookingStatus = bookingStatus;
-    }
-
-    // Remove populate for 'allBeds' (not in schema - see StrictPopulateError)
-    const resortBookingQuery = ResortBooking.find(resortFilter)
+    const bookings = await PremiumApartmentBooking.find()
       .populate({
-        path: 'property',
-      })
-      .populate({
-        path: 'room',
+        path: "apartment",
+        select: "propertyTitle location apartments",
       })
       .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit);
+      .lean();
 
-    const [resortBookings, totalResortBookings] = await Promise.all([
-      resortBookingQuery.exec(),
-      ResortBooking.countDocuments(resortFilter)
-    ]);
+    const detailedBookings = bookings.map((booking) => {
+      const apartment = booking.apartment;
 
-    // PG Bookings
-    const pgStatus = req.query.pgStatus; 
-    const pgPage = parseInt(req.query.pgPage) || 1;
-    const pgLimit = parseInt(req.query.pgLimit) || 10;
+      if (!apartment) {
+        booking.propertyName = "N/A";
+      } else {
+        booking.propertyName = apartment.propertyTitle || "Unnamed Property";
+      }
 
-    const pgFilter = {};
-    if (pgStatus && ['Confirmed', 'Cancelled', 'Completed'].includes(pgStatus)) {
-      pgFilter.bookingStatus = pgStatus;
-    }
+      // ✅ PUT THE NEW CODE HERE ↓
+      if (booking.bookingType === "Full Apartment" && booking.fullApartmentId) {
+        const fullApartment = apartment?.apartments?.find(
+          (apt) => apt._id?.toString() === booking.fullApartmentId?.toString()
+        );
 
-    // Keep PG populate structure (no issue in context)
-    const pgBookingQuery = PgBooking.find(pgFilter)
-      .populate({
-        path: 'property',
-      })
-      .populate({
-        path: 'room',
-      })
-      .populate({
-        path: 'bed',
-      })
-      .sort({ createdAt: -1 })
-      .skip((pgPage - 1) * pgLimit)
-      .limit(pgLimit);
+        if (fullApartment) {
+          booking.fullApartmentDetails = {
+            name: fullApartment.apartmentName || fullApartment.name || "Unnamed Apartment",
+            pricePerNight: fullApartment.pricePerNight || 0,
+            totalRooms: fullApartment.rooms?.length || 0,
+            rooms: fullApartment.rooms || [],
+          };
+        } else {
+          booking.fullApartmentDetails = null;
+        }
+      }
 
-    const [pgBookings, totalPgBookings] = await Promise.all([
-      pgBookingQuery.exec(),
-      PgBooking.countDocuments(pgFilter)
-    ]);
+      // 🚪 If room(s)
+      if (booking.bookingType === "Room" && booking.roomIds?.length > 0) {
+        const allRooms = [
+          ...(apartment.rooms || []),
+          ...(apartment.apartments?.flatMap((a) => a.rooms) || []),
+        ];
 
-    res.render('admin-bookings', {
-      resortBookings,
-      resortBookingsTotal: totalResortBookings,
-      resortBookingsPage: page,
-      resortBookingsPages: Math.ceil(totalResortBookings / limit),
-      resortBookingsLimit: limit,
-      bookingStatusFilter: bookingStatus || '',
+        booking.roomDetails = allRooms.filter((room) =>
+          booking.roomIds.map((id) => id.toString()).includes(room._id.toString())
+        );
+      }
 
-      pgBookings,
-      pgBookingsTotal: totalPgBookings,
-      pgBookingsPage: pgPage,
-      pgBookingsPages: Math.ceil(totalPgBookings / pgLimit),
-      pgBookingsLimit: pgLimit,
-      pgBookingStatusFilter: pgStatus || ''
+      return booking;
     });
+
+    res.render("admin-bookings", { bookings: detailedBookings });
   } catch (err) {
-    console.error('Error fetching bookings:', err);
-    res.status(500).send('Server Error');
+    console.error("Error fetching bookings:", err);
+    res.status(500).send("Server Error");
   }
 });
 
@@ -115,10 +92,8 @@ app.get('/admin-booking', authMiddleware, async (req, res) => {
 
 app.get('/admin-resort', authMiddleware, async (req, res) => {
   try {
-    const resorts = await ResortProperty.find()
-    .populate('rooms')
-    .sort({ createdAt: -1 });
-    res.render('admin-resort', { resorts });
+   
+    res.render('admin-resort');
   } catch (err) {
     console.error('Error fetching resorts or rooms:', err);
     res.status(500).send('Server Error');
@@ -126,17 +101,8 @@ app.get('/admin-resort', authMiddleware, async (req, res) => {
 });
 app.get('/admin-pg', authMiddleware, async (req, res) => {
   try {
-    const properties = await PgProperty.find()
-      .sort({ createdAt: -1 })
-      .populate({
-        path: 'floors',        
-        populate: {
-          path: 'allRooms',    
-          populate: { path: 'allBeds' } 
-        }
-      });
-
-    res.render('admin-pg', { properties });
+    const payingGuests = await PayingGuest.find().sort({ createdAt: -1 });
+    res.render('admin-pg', { payingGuests });
   } catch (err) {
     console.error('Error fetching PG properties:', err);
     res.status(500).send('Server Error');

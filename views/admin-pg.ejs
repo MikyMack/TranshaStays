@@ -75,7 +75,7 @@
                                     <li class="menu-item">
                                         <a href="/admin-resort" class="menu-item-button">
                                             <div class="icon"><i class="icon-layers"></i></div>
-                                            <div class="text">Resort Management</div>
+                                            <div class="text">Apartments Management</div>
                                         </a>
 
                                     </li>
@@ -90,6 +90,13 @@
                                         <a href="/admin-booking" class="menu-item-button">
                                             <div class="icon"><i class="icon-layers"></i></div>
                                             <div class="text">Booking Management</div>
+                                        </a>
+
+                                    </li>
+                                    <li class="menu-item  ">
+                                        <a href="/admin-mainbanner" class="menu-item-button">
+                                            <div class="icon"><i class="icon-layers"></i></div>
+                                            <div class="text">Banner Management</div>
                                         </a>
 
                                     </li>
@@ -195,982 +202,425 @@
                     <div class="main-content">
                         <!-- main-content-wrap -->
                         <div class="main-content-inner">
-                            <!-- main-content-wrap -->
-                            <div class="main-content-wrap">
-                                <div class="flex items-center flex-wrap justify-between gap20 mb-30">
-                                    <h3>PG Properties Overview</h3>
-                                    <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
-                                        <li>
-                                            <a href="/dashboard">
-                                                <div class="text-tiny">Dashboard</div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <i class="icon-chevron-right"></i>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="text-tiny">Accommodation</div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <i class="icon-chevron-right"></i>
-                                        </li>
-                                        <li>
-                                            <div class="text-tiny">PG Room Management</div>
-                                        </li>
-                                    </ul>
-                                </div>
 
-                                <div class="wg-box">
-                                    <div class="title-box">
-                                        <i class="icon-home"></i>
-                                        <div class="body-text">
-                                            Easily view, manage, and organize all PG Properties, with full details for
-                                            properties, floors, rooms, and beds. Click/tap to expand for more info or
-                                            manage items. 🏠🏢🛏️
-                                        </div>
-                                    </div>
-
-                                    <div class="flex items-center justify-between gap10 flex-wrap mb-15">
-                                        <div class="wg-filter flex-grow">
-                                            <div class="form-search">
-                                                <input type="text" id="search-input"
-                                                    placeholder="Search by property, floor, room, or any detail...">
-                                                <button id="search-btn" type="button"><i
-                                                        class="icon-search"></i></button>
-                                            </div>
-                                        </div>
-                                        <a class="tf-button style-1 w208" href="#" id="add-pg-property-btn">
-                                            <i class="icon-plus"></i>Add PG Property
-                                        </a>
-                                    </div>
-
-                                    <div id="pg-properties-list" class="property-list-userfriendly">
-                                        <!-- User-friendly dynamic tree of PG Properties -->
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-- Property Modal -->
-                            <div class="modal fade" id="propertyModal" tabindex="-1"
-                                aria-labelledby="propertyModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <form id="property-form">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="propertyModalLabel">Add/Edit PG Property
-                                                </h5>
-                                                <button type="button" class="btn-close"
-                                                    data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <input type="hidden" name="id" id="property-id">
-                                                <div class="row">
-                                                    <div class="col-md-6 mb-3">
-                                                        <label class="form-label">Name *</label>
-                                                        <input type="text" class="form-control" name="name" required>
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label class="form-label">Slug *</label>
-                                                        <input type="text" class="form-control" name="slug" required>
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label class="form-label">City</label>
-                                                        <input type="text" class="form-control" name="city">
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label class="form-label">State</label>
-                                                        <input type="text" class="form-control" name="state">
-                                                    </div>
-                                                    <div class="col-md-12 mb-3">
-                                                        <label class="form-label">Address</label>
-                                                        <input type="text" class="form-control" name="address">
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label class="form-label">Contact Number</label>
-                                                        <input type="text" class="form-control" name="contactNumber">
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label class="form-label">Email</label>
-                                                        <input type="email" class="form-control" name="email">
-                                                    </div>
-                                                    <div class="col-md-12 mb-3">
-                                                        <label class="form-label">Google Map Link</label>
-                                                        <input type="text" class="form-control" name="googleMapLink">
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label class="form-label">Gender Type</label>
-                                                        <select class="form-control" name="genderType">
-                                                            <option value="Male">Male</option>
-                                                            <option value="Female">Female</option>
-                                                            <option value="Co-Living">Co-Living</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3 mb-3">
-                                                        <label class="form-label">Check In Time</label>
-                                                        <input type="text" class="form-control" name="checkInTime">
-                                                    </div>
-                                                    <div class="col-md-3 mb-3">
-                                                        <label class="form-label">Check Out Time</label>
-                                                        <input type="text" class="form-control" name="checkOutTime">
-                                                    </div>
-                                                    <div class="col-12 mb-3">
-                                                        <label class="form-label">Description</label>
-                                                        <textarea class="form-control" name="description"></textarea>
-                                                    </div>
-                                                    <div class="col-12 mb-3">
-                                                        <label class="form-label">Amenities (comma separated)</label>
-                                                        <input type="text" class="form-control" name="amenities">
-                                                    </div>
-                                                    <div class="col-12 mb-3">
-                                                        <label class="form-label">Rules (comma separated)</label>
-                                                        <input type="text" class="form-control" name="rules">
-                                                    </div>
-                                                    <div class="col-12 mb-3">
-                                                        <label class="form-label">Images</label>
-                                                        <input type="file" class="form-control" name="images" multiple>
-                                                    </div>
-                                                    <div class="col-12 mb-3 form-check">
-                                                        <input type="checkbox" class="form-check-input" name="isActive"
-                                                            id="property-active">
-                                                        <label class="form-check-label"
-                                                            for="property-active">Active</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Floor Modal -->
-                            <div class="modal fade" id="floorModal" tabindex="-1" aria-labelledby="floorModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form id="floor-form">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="floorModalLabel">Add/Edit Floor</h5>
-                                                <button type="button" class="btn-close"
-                                                    data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <input type="hidden" name="id" id="floor-id">
-                                                <input type="hidden" name="property" id="floor-property">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Floor Number</label>
-                                                    <input type="number" class="form-control" name="floorNumber"
-                                                        required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Name</label>
-                                                    <input type="text" class="form-control" name="name">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Description</label>
-                                                    <textarea class="form-control" name="description"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Room Modal -->
-                            <div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form id="room-form">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="roomModalLabel">Add/Edit Room</h5>
-                                                <button type="button" class="btn-close"
-                                                    data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <input type="hidden" name="id" id="room-id">
-                                                <input type="hidden" name="property" id="room-property">
-                                                <input type="hidden" name="floor" id="room-floor">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Room Number</label>
-                                                    <input type="text" class="form-control" name="roomNumber" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Sharing Type</label>
-                                                    <select class="form-control" name="sharingType" required>
-                                                        <option value=""></option>
-                                                        <option value="Single">Single</option>
-                                                        <option value="Double">Double</option>
-                                                        <option value="Triple">Triple</option>
-                                                        <option value="Shared">Shared</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Capacity</label>
-                                                    <input type="number" class="form-control" name="capacity">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Description</label>
-                                                    <textarea class="form-control" name="description"></textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Price per Month</label>
-                                                    <input type="number" class="form-control" name="pricePerMonth">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Deposit Amount</label>
-                                                    <input type="number" class="form-control" name="depositAmount">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Amenities (comma separated)</label>
-                                                    <input type="text" class="form-control" name="amenities">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Status</label>
-                                                    <select class="form-control" name="status">
-                                                        <option value="Available">Available</option>
-                                                        <option value="Occupied">Occupied</option>
-                                                        <option value="Maintenance">Maintenance</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Bed Modal -->
-                            <div class="modal fade" id="bedModal" tabindex="-1" aria-labelledby="bedModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form id="bed-form">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="bedModalLabel">Add/Edit Bed</h5>
-                                                <button type="button" class="btn-close"
-                                                    data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <input type="hidden" name="id" id="bed-id">
-                                                <input type="hidden" name="room" id="bed-room">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Bed Number</label>
-                                                    <input type="text" class="form-control" name="bedNumber" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Price per Month</label>
-                                                    <input type="number" class="form-control" name="pricePerMonth">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Occupied?</label>
-                                                    <input type="checkbox" class="form-check-input" name="isOccupied"
-                                                        value="true">
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <script>
-                                //--- Toast
-                                function toast(msg, isError) {
-                                    const t = document.createElement("div");
-                                    t.innerText = msg;
-                                    t.style.position = "fixed";
-                                    t.style.zIndex = 999999;
-                                    t.style.left = "50%";
-                                    t.style.top = "40px";
-                                    t.style.transform = "translateX(-50%)";
-                                    t.style.padding = "10px 20px";
-                                    t.style.backgroundColor = isError ? "#dc3545" : "#198754";
-                                    t.style.color = "#fff";
-                                    t.style.borderRadius = "4px";
-                                    document.body.appendChild(t);
-                                    setTimeout(() => { t.remove(); }, 2000);
-                                }
-
-                                //--- Loading Overlay
-                                function showLoading(btn) {
-                                    if (btn) {
-                                        btn.disabled = true;
-                                        btn.dataset.originalText = btn.innerHTML;
-                                        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`;
-                                    }
-                                }
-                                function hideLoading(btn) {
-                                    if (btn) {
-                                        btn.disabled = false;
-                                        if (btn.dataset.originalText !== undefined)
-                                            btn.innerHTML = btn.dataset.originalText;
-                                    }
-                                }
-                                // Overlay for global API calls
-                                function showPageLoading() {
-                                    if (document.getElementById('global-loading-overlay')) return;
-                                    const overlay = document.createElement('div');
-                                    overlay.id = 'global-loading-overlay';
-                                    overlay.style.position = 'fixed';
-                                    overlay.style.top = 0; overlay.style.left = 0; overlay.style.width = '100vw'; overlay.style.height = '100vh';
-                                    overlay.style.background = 'rgba(255,255,255,0.4)';
-                                    overlay.style.zIndex = 199999;
-                                    overlay.innerHTML =
-                                        `<div style="position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);text-align:center;">
-            <div class="spinner-border text-success" style="width:3rem;height:3rem;" role="status"></div>
-            <div style="font-weight:600;color:#198754;">Loading...</div>
-        </div>`;
-                                    document.body.appendChild(overlay);
-                                }
-                                function hidePageLoading() {
-                                    const overlay = document.getElementById('global-loading-overlay');
-                                    if (overlay) overlay.remove();
-                                }
-
-                                //--- Data and State
-                                let allProperties = <%- JSON.stringify(properties || []) %>;
-                                let searchTerm = "";
-
-                                // --- Utility: Compute accurate totals for floors, rooms, beds
-                                function calculatePropertyCounts(property) {
-                                    const floors = Array.isArray(property.floors) ? property.floors : [];
-                                    const totalFloors = floors.length;
-
-                                    let totalRooms = 0;
-                                    let totalBeds = 0;
-
-                                    for (const floor of floors) {
-                                        const rooms = Array.isArray(floor.allRooms) ? floor.allRooms : [];
-                                        totalRooms += rooms.length;
-                                        for (const room of rooms) {
-                                            const beds = Array.isArray(room.allBeds) ? room.allBeds : [];
-                                            totalBeds += beds.length;
-                                        }
-                                    }
-                                    return { totalFloors, totalRooms, totalBeds };
-                                }
-
-                                //--- Helper: Safely encode object for HTML attribute
-                                function safeAttributeJSONString(obj) {
-                                    // Safely encode a JSON string for use in an HTML attribute
-                                    // Replace problematic character(s)
-                                    // - & --> &amp;
-                                    // - " --> &quot;
-                                    // - ' --> &#39;
-                                    // - < --> &lt;
-                                    // - > --> &gt;
-                                    // It's safest to wrap attribute in double-quotes and encode double-quotes and &.
-                                    return JSON.stringify(obj)
-                                        .replace(/&/g, "&amp;")
-                                        .replace(/"/g, "&quot;");
-                                }
-
-                                //--- Render
-                                function renderUserFriendlyPGList() {
-                                    let filtered = allProperties;
-                                    if (searchTerm) {
-                                        const s = searchTerm.toLowerCase();
-                                        filtered = filtered.filter(prop =>
-                                            prop.name?.toLowerCase().includes(s)
-                                            || prop.city?.toLowerCase().includes(s)
-                                            || prop.state?.toLowerCase().includes(s)
-                                            || (prop.slug?.toLowerCase().includes(s))
-                                            || (prop.address?.toLowerCase().includes(s))
-                                            || (prop.amenities && prop.amenities.join(',').toLowerCase().includes(s))
-                                            || (prop.rules && prop.rules.join(',').toLowerCase().includes(s))
-                                            || (prop.contactNumber && prop.contactNumber.includes(s))
-                                            || (prop.email && prop.email.toLowerCase().includes(s))
-                                            || (prop.floors && prop.floors.some(f =>
-                                                (f.name && f.name.toLowerCase().includes(s))
-                                                || (("" + f.floorNumber).includes(s))
-                                                || (f.description && f.description.toLowerCase().includes(s))
-                                                || (f.allRooms && f.allRooms.some(r =>
-                                                    (r.roomNumber && r.roomNumber.toLowerCase().includes(s))
-                                                    || (r.sharingType && r.sharingType.toLowerCase().includes(s))
-                                                    || (r.amenities && r.amenities.join(',').toLowerCase().includes(s))
-                                                ))
-                                            ))
-                                        );
-                                    }
-                                    let html = "";
-                                    if (!filtered.length) {
-                                        html = `<div class="text-center py-5">No properties found</div>`;
-                                    } else {
-                                        html = filtered.map(property => {
-                                            // Compute nested counts for floors, rooms, beds
-                                            const { totalFloors, totalRooms, totalBeds } = calculatePropertyCounts(property);
-
-                                            // Property Amenities and Rules
-                                            // Added: flex-wrap and max-height/scroll to control overflow for badges
-                                            const amenitiesHtml = (property.amenities || []).map(a =>
-                                                `<span class="badge bg-success m-1">${a}</span>`).join('');
-                                            const rulesHtml = (property.rules || []).map(rule =>
-                                                `<span class="badge bg-warning text-dark m-1">${rule}</span>`).join('');
-                                            const imagesHtml = (property.images || []).map(img =>
-                                                `<img src="${img}" style="height:36px;width:36px;object-fit:cover;border-radius:5px;margin:1px;">`
-                                            ).join('');
-                                            const genderHtml = property.genderType
-                                                ? `<span class="badge bg-info text-dark">${property.genderType}</span>` : '';
-                                            // Details and Metrics
-                                            const metaHtml = `
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-4 mb-2">
-                        <b>Name:</b> ${property.name || ""}
-                        <div><b>Slug:</b> <span class="small">${property.slug || ""}</span></div>
-                        <div><b>Status:</b> ${property.isActive ? `<span class="badge bg-success">Active</span>` : `<span class="badge bg-secondary">Inactive</span>`}</div>
-                        <div><b>Gender:</b> ${genderHtml}</div>
-                        <div><b>Contact:</b> ${property.contactNumber || "-"}
-                            <span class="ms-2"><b>Email:</b> <a href="mailto:${property.email}">${property.email || ""}</a></span>
-                        </div>
-                        <div><b>Check-in:</b> ${property.checkInTime || "-"} <b>Check-out:</b> ${property.checkOutTime || "-"}</div>
-                        <div><b>Created:</b> <span class="small">${property.createdAt ? (new Date(property.createdAt)).toLocaleString() : "-"}</span></div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-2">
-                        <div><b>Address:</b> ${property.address || ""}</div>
-                        <div><b>City:</b> ${property.city || ""} <b>State:</b> ${property.state || ""}</div>
-                        <div><b>Map:</b> ${property.googleMapLink
-                                                    ? `<a href="${property.googleMapLink}" target="_blank">View Map</a>`
-                                                    : '<span class="text-secondary small">-</span>'
-                                                }</div>
-                        <div>
-                            <b>Total Floors:</b> ${totalFloors}
-                            <b class="ms-2">Rooms:</b> ${totalRooms}
-                            <b class="ms-2">Beds:</b> ${totalBeds}
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-4 mb-2">
-                        <div class="mb-1"><b>Description:</b> <span class="small text-secondary">${property.description || ""}</span></div>
-                        <b>Amenities:</b> 
-                        <div style="display:flex; flex-wrap: wrap; gap:2px; max-height:80px; overflow-y:auto; margin-top: 2px; margin-bottom: 2px;">
-                            ${amenitiesHtml || '<span class="text-secondary small">None</span>'}
-                        </div>
-                        <b>Rules:</b> 
-                        <div style="display:flex; flex-wrap: wrap; gap:2px; max-height:80px; overflow-y:auto; margin-top: 2px; margin-bottom: 2px;">
-                            ${rulesHtml || '<span class="text-secondary small">None</span>'}
-                        </div>
-                        <div><b>Images:</b><br>${imagesHtml || '<span class="text-secondary small">None</span>'}</div>
-                    </div>
-                </div>`;
-                                            // Property Controls
-                                            const controlsHtml = `
-                <button type="button" class="btn btn-outline-success btn-sm btn-add-floor me-1" title="Add Floor" data-prop="${property._id}"><i class="icon-plus"></i></button>
-                <button type="button" class="btn btn-outline-secondary btn-sm btn-edit-property me-1" data-id="${property._id}" data-prop="${safeAttributeJSONString(property)}"><i class="icon-edit"></i></button>
-                <button type="button" class="btn btn-outline-danger btn-sm btn-delete-property me-1" data-id="${property._id}"><i class="icon-trash-2"></i></button>
-                <button type="button" class="btn btn-outline-warning btn-sm btn-toggle-property" data-id="${property._id}">${property.isActive ? 'Deactivate' : 'Activate'}</button>
-            `;
-                                            // Floors Dynamic Accordion
-                                            const floorsHtml = (property.floors || []).length
-                                                ? `<div class="accordion accordion-flush" id="floors-acc-${property._id}">
-                    ${(property.floors || []).map((floor, fi) => {
-                                                    const floorRoomsCount = (floor.allRooms || []).length;
-                                                    // Floor allRooms (rooms)
-                                                    const roomsHtml = (floor.allRooms || []).length
-                                                        ? `<div class="row">
-                                ${floor.allRooms.map(room => {
-                                                            const roomBeds = (room.allBeds || []);
-                                                            const rAmenities = (room.amenities || []).map(a => `<span class="badge bg-info m-1">${a}</span>`).join('');
-                                                            const rStatusLabel = room.status
-                                                                ? `<span class="badge ${room.status === 'Available' ? 'bg-success' : (room.status === 'Occupied' ? 'bg-danger' : 'bg-info')} ms-1">${room.status}</span>` : '';
-                                                            const rImages = (room.images || []).map(img =>
-                                                                `<img src="${img}" style="height:32px;width:32px;object-fit:cover;border-radius:4px;margin:1px;">`
-                                                            ).join('');
-                                                            const isRoomAvailable = typeof room.isAvailable !== "undefined" ? room.isAvailable : room.status === "Available";
-                                                            return `
-                                    <div class="col-md-6 mb-2">
-                                      <div class="card shadow-sm" style="border-radius:7px;">
-                                          <div class="card-body p-2 pb-2" style="position:relative;">
-                                              <div style="font-weight:600;">
-                                                  🚪 Room ${room.roomNumber || ''}
-                                                  ${rStatusLabel}
-                                              </div>
-                                              <div class="small mb-1 text-secondary">${room.description || ''}</div>
-                                              <div>
-                                                  <b>Sharing:</b> <span>${room.sharingType || '-'}</span>
-                                                  <b class="ms-2">Capacity:</b> <span>${room.capacity || '-'}</span>
-                                                  <b class="ms-2">Beds:</b> <span>${roomBeds.length}</span>
-                                              </div>
-                                              <div>
-                                                  <b>Price/Month:</b> ₹${room.pricePerMonth || '0'}
-                                                  <b class="ms-2">Deposit:</b> ₹${room.depositAmount || '0'}
-                                              </div>
-                                              <div class="mt-1">
-                                                  <b>Amenities:</b>
-                                                  <div style="display:flex; flex-wrap: wrap; gap:2px; max-height:56px; overflow-y:auto; margin-top:2px;">
-                                                    ${rAmenities || '<span class="small text-secondary">None</span>'}
-                                                  </div>
-                                              </div>
-                                              <div>
-                                                  <b>Available:</b> <span class="badge ${isRoomAvailable ? 'bg-success' : 'bg-danger'}">${isRoomAvailable ? 'Yes' : 'No'}</span>
-                                              </div>
-                                              <div class="mb-1">${rImages}</div>
-                                              <div class="mb-1 mt-2">
-                                                  <button type="button" class="btn btn-outline-success btn-sm btn-add-bed me-2" data-room="${room._id}" data-prop="${property._id}" data-floor="${floor._id}"><i class="icon-plus"></i> Add Bed</button>
-                                                  <button type="button" class="btn btn-outline-secondary btn-sm btn-edit-room me-2" data-id="${room._id}" data-prop="${property._id}" data-floor="${floor._id}" data-room="${safeAttributeJSONString(room)}"><i class="icon-edit"></i> Edit Room</button>
-                                                  <button type="button" class="btn btn-outline-danger btn-sm btn-delete-room" data-id="${room._id}"><i class="icon-trash-2"></i> Delete</button>
-                                              </div>
-                                              <div>
-                                                  <details>
-                                                      <summary class="small mt-1 mb-1">Show Beds (${roomBeds.length})</summary>
-                                                      ${roomBeds.length
-                                                                    ? `<div class="row mt-2">
-                                                            ${roomBeds.map(bed => `
-                                                              <div class="col-12 col-md-6 mb-1">
-                                                                <div class="bg-light px-2 py-1 rounded d-flex justify-content-between align-items-center">
-                                                                    <div>
-                                                                        🛏 <b>${bed.bedNumber || ""}</b>
-                                                                        <span class="ms-2 small">₹${bed.pricePerMonth || '0'}</span>
-                                                                        ${bed.isOccupied ? '<span class="badge bg-danger ms-2">Occupied</span>' : '<span class="badge bg-success ms-2">Available</span>'}
-                                                                    </div>
-                                                                    <div>
-                                                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-edit-bed me-1" data-id="${bed._id}" data-room="${room._id}" data-bed="${safeAttributeJSONString(bed)}"><i class="icon-edit"></i></button>
-                                                                        <button type="button" class="btn btn-outline-danger btn-sm btn-delete-bed" data-id="${bed._id}"><i class="icon-trash-2"></i></button>
-                                                                    </div>
-                                                                </div>
-                                                              </div>
-                                                            `).join("")}
-                                                          </div>`
-                                                                    : '<span class="small text-secondary">No beds.</span>'
-                                                                }
-                                                  </details>
-                                              </div>
-                                          </div>
-                                      </div>
-                                    </div>
-                                    `;
-                                                        }).join("")}
-                            </div>` : `<div class="small text-secondary mt-1 ms-2">No rooms on this floor</div>`;
-                                                    // Floor controls and fields
-                                                    return `
-                        <div class="accordion-item" style="border-left:3px solid #dee2e6;">
-                            <h2 class="accordion-header" id="floor-header-${floor._id}">
-                                <button class="accordion-button collapsed bg-light p-2 ps-3" type="button" data-bs-toggle="collapse" data-bs-target="#floor-collapse-${floor._id}" aria-expanded="false" aria-controls="floor-collapse-${floor._id}">
-                                    <b>Floor ${floor.name || floor.floorNumber || (fi + 1)}</b>
-                                    <span class="ms-2 badge bg-primary">Rooms: ${floorRoomsCount}</span>
-                                    <span class="ms-2 badge bg-secondary">ID: ${(floor._id || "").slice(-4).toUpperCase()}</span>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h4>Paying Guest Listings</h4>
+                                <!-- Button trigger modal for Create -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPgModal">
+                                    <i class="icon-plus"></i> Add New PG
                                 </button>
-                            </h2>
-                            <div id="floor-collapse-${floor._id}" class="accordion-collapse collapse" aria-labelledby="floor-header-${floor._id}" data-bs-parent="#floors-acc-${property._id}">
-                                <div class="accordion-body p-2 ps-4">
-                                    ${(floor.description ? `<div class="mb-1 small text-secondary">${floor.description}</div>` : '')}
-                                    <div>
-                                        <button type="button" class="btn btn-outline-success btn-sm btn-add-room me-2 mt-1" data-floor="${floor._id}" data-prop="${property._id}"><i class="icon-plus"></i> Add Room</button>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm btn-edit-floor me-2 mt-1" data-id="${floor._id}" data-prop="${property._id}" data-floor="${safeAttributeJSONString(floor)}"><i class="icon-edit"></i> Edit Floor</button>
-                                        <button type="button" class="btn btn-outline-danger btn-sm btn-delete-floor me-2 mt-1" data-id="${floor._id}"><i class="icon-trash-2"></i> Delete Floor</button>
-                                    </div>
-                                    <div class="mt-2">
-                                        <strong>Rooms:</strong>
-                                        ${roomsHtml}
-                                    </div>
+                            </div>
+
+                            <% if (Array.isArray(payingGuests) && payingGuests.length > 0) { %>
+                                <div class="row g-4">
+                                    <% payingGuests.forEach(function(pg) { %>
+                                        <div class="col-md-4">
+                                            <div class="card h-100 shadow-sm">
+                                                <% if (Array.isArray(pg.images) && pg.images.length > 0) { %>
+                                                    <img src="<%= pg.images[0] %>" class="card-img-top" alt="PG Image" style="height:200px; object-fit:cover;">
+                                                <% } else { %>
+                                                    <div style="height:200px; background:#f2f2f2; display:flex; align-items:center; justify-content:center;" class="card-img-top">
+                                                        <span class="text-muted">No Image</span>
+                                                    </div>
+                                                <% } %>
+                                                <div class="card-body d-flex flex-column">
+                                                    <h5 class="card-title"><%= pg.title %></h5>
+                                                    <div class="mb-2">
+                                                        <i class="icon-map-pin"></i>
+                                                        <%= pg.location && pg.location.address ? pg.location.address : '' %>
+                                                        <% if (pg.location && pg.location.city) { %>, <%= pg.location.city %><% } %>
+                                                        <% if (pg.location && pg.location.state) { %>, <%= pg.location.state %><% } %>
+                                                        <% if (pg.location && pg.location.pincode) { %> - <%= pg.location.pincode %><% } %>
+                                                    </div>
+                                                    <small class="text-muted">Created <%= pg.createdAt ? (new Date(pg.createdAt)).toLocaleDateString() : '' %></small>
+                                                    <div class="mt-2 mb-2">
+                                                        <% if (Array.isArray(pg.images) && pg.images.length > 1) { %>
+                                                            <div class="d-flex flex-wrap gap-1">
+                                                                <% pg.images.slice(1).forEach(function(img) { %>
+                                                                    <img src="<%= img %>" alt="Add Img" style="width:38px;height:38px;object-fit:cover;border-radius:4px;">
+                                                                <% }) %>
+                                                            </div>
+                                                        <% } %>
+                                                    </div>
+                                                    <div class="mt-auto mb-2">
+                                                        <% if (pg.isAvailable) { %>
+                                                            <span class="badge bg-success">Available</span>
+                                                        <% } else { %>
+                                                            <span class="badge bg-danger">Not Available</span>
+                                                        <% } %>
+                                                    </div>
+                                                    <div class="d-flex gap-2 flex-wrap">
+                                                        <!-- Edit button triggers edit modal and populates with PG data -->
+                                                        <button type="button" class="btn btn-sm btn-warning open-edit-modal" 
+                                                            data-pg='<%- JSON.stringify(pg) %>' 
+                                                            data-bs-toggle="modal" data-bs-target="#editPgModal">
+                                                            <i class="icon-edit"></i> Edit
+                                                        </button>
+                                                        <!-- Delete button triggers delete modal -->
+                                                        <button type="button" class="btn btn-sm btn-danger open-delete-modal" 
+                                                            data-id="<%= pg._id %>" data-title="<%= pg.title %>"
+                                                            data-bs-toggle="modal" data-bs-target="#deletePgModal">
+                                                            <i class="icon-trash"></i> Delete
+                                                        </button>
+                                                        <form class="pg-availability-form" data-id="<%= pg._id %>" data-available="<%= pg.isAvailable %>" style="display:inline;">
+                                                            <% if (pg.isAvailable) { %>
+                                                                <button type="submit" class="btn btn-sm btn-secondary">Mark as Unavailable</button>
+                                                            <% } else { %>
+                                                                <button type="submit" class="btn btn-sm btn-success">Mark as Available</button>
+                                                            <% } %>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% }) %>
+                                </div>
+                            <% } else { %>
+                                <div class="alert alert-info">
+                                    No Paying Guest records found.
+                                </div>
+                            <% } %>
+
+                            <!-- CREATE PG MODAL -->
+                            <div class="modal fade" id="createPgModal" tabindex="-1" aria-labelledby="createPgModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <form class="modal-content" id="createPgForm" enctype="multipart/form-data">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="createPgModalLabel">Add New Paying Guest</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Title</label>
+                                                <input type="text" class="form-control" name="title" required placeholder="PG Title">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Address</label>
+                                                <input type="text" class="form-control" name="address" required placeholder="Address">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-label">City</label>
+                                                    <input type="text" class="form-control" name="city" placeholder="City">
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-label">State</label>
+                                                    <input type="text" class="form-control" name="state" placeholder="State">
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-label">Pincode</label>
+                                                    <input type="text" class="form-control" name="pincode" placeholder="Pincode">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Images</label>
+                                                <input type="file" class="form-control" name="images" multiple accept="image/*">
+                                            </div>
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" name="isAvailable" id="createIsAvailable" checked>
+                                                <label class="form-check-label" for="createIsAvailable">Available</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" id="createPgSubmitBtn">Create PG</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </div>
-                        `;
-                                                }).join("")}
-                </div>`
-                                                : `<span class="text-secondary small">No floors on this property yet.</span>`;
+                            <!-- /CREATE PG MODAL -->
 
-                                            // Compose Card
-                                            return `
-                <div class="card mb-3 shadow-sm" style="border-radius:9px;">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span style="font-size:1.12em;font-weight: 600;">🏡 ${property.name}</span>
-                        <div>${controlsHtml}</div>
-                    </div>
-                    <div class="card-body pt-2 pb-2">
-                        ${metaHtml}
-                        <hr class="my-2" />
-                        <div>
-                            <strong>Floors:</strong>
-                            ${floorsHtml}
-                        </div>
-                    </div>
-                </div>
-            `;
-                                        }).join("");
-                                    }
-                                    document.getElementById("pg-properties-list").innerHTML = html;
-                                }
+                            <!-- EDIT PG MODAL -->
+                            <div class="modal fade" id="editPgModal" tabindex="-1" aria-labelledby="editPgModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <form class="modal-content" id="editPgForm" enctype="multipart/form-data">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editPgModalLabel">Edit Paying Guest</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="hidden" name="_id" id="editPgId">
+                                            <div class="mb-3">
+                                                <label class="form-label">Title</label>
+                                                <input type="text" class="form-control" name="title" id="editPgTitle" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Address</label>
+                                                <input type="text" class="form-control" name="address" id="editPgAddress" required>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-label">City</label>
+                                                    <input type="text" class="form-control" name="city" id="editPgCity">
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-label">State</label>
+                                                    <input type="text" class="form-control" name="state" id="editPgState">
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-label">Pincode</label>
+                                                    <input type="text" class="form-control" name="pincode" id="editPgPincode">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Images <small>(Upload to replace/add)</small></label>
+                                                <input type="file" class="form-control" name="images" multiple accept="image/*">
+                                                <div id="editPgImagesPreview" class="d-flex flex-wrap gap-1 mt-2"></div>
+                                            </div>
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" class="form-check-input" name="isAvailable" id="editIsAvailable">
+                                                <label class="form-check-label" for="editIsAvailable">Available</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" id="editPgSubmitBtn">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /EDIT PG MODAL -->
 
-                                //--- SEARCH
-                                document.getElementById("search-btn").onclick = function () {
-                                    searchTerm = document.getElementById("search-input").value.trim();
-                                    renderUserFriendlyPGList();
-                                }
-                                document.getElementById("search-input").onkeydown = function (e) {
-                                    if (e.key === "Enter") {
-                                        searchTerm = this.value.trim();
-                                        renderUserFriendlyPGList();
-                                    }
-                                }
+                            <!-- DELETE PG MODAL -->
+                            <div class="modal fade" id="deletePgModal" tabindex="-1" aria-labelledby="deletePgModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <form class="modal-content" id="deletePgForm">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deletePgModalLabel">Delete Paying Guest</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="hidden" name="_id" id="deletePgId">
+                                            <p>Are you sure you want to delete <strong id="deletePgTitle"></strong>? This cannot be undone.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger" id="deletePgSubmitBtn">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /DELETE PG MODAL -->
 
-                                //--- CRUD Bindings (delegated for dynamic DOM)
-                                document.addEventListener('click', function (e) {
-                                    // Get closest button to use for loading feedback
-                                    let actionBtn = e.target.closest("button");
-                                    // Property CRUD
-                                    if (e.target.closest('.btn-add-floor')) {
-                                        const btn = e.target.closest('.btn-add-floor');
-                                        const propId = btn.getAttribute('data-prop');
-                                        const form = document.getElementById("floor-form");
-                                        if (form) form.reset();
-                                        if (document.getElementById("floor-id")) document.getElementById("floor-id").value = '';
-                                        if (document.getElementById("floor-property")) document.getElementById("floor-property").value = propId;
-                                        $('#floorModal').modal('show');
-                                    }
-                                    if (e.target.closest('.btn-edit-property')) {
-                                        const btn = e.target.closest('.btn-edit-property');
-                                        let prop = {};
-                                        try {
-                                            prop = JSON.parse(btn.getAttribute('data-prop'));
-                                        } catch (e) {
-                                            toast("Failed to read property data for edit. Please refresh.", true);
-                                            return;
-                                        }
-                                        const form = document.getElementById("property-form");
-                                        if (form) form.reset();
-                                        for (let k in prop) {
-                                            const inp = document.querySelector(`#property-form [name="${k}"]`);
-                                            if (inp) {
-                                                // Don't attempt to set 'value' for file inputs:
-                                                if (inp.type === 'file') {
-                                                    continue;
-                                                }
-                                                if (inp.type === 'checkbox')
-                                                    inp.checked = !!prop[k];
-                                                else
-                                                    inp.value = prop[k];
-                                            }
-                                        }
-                                        if (document.getElementById("property-id")) document.getElementById("property-id").value = prop._id;
-                                        $('#propertyModal').modal('show');
-                                    }
-                                    if (e.target.closest('.btn-delete-property')) {
-                                        const id = e.target.closest('.btn-delete-property').getAttribute('data-id');
-                                        if (!confirm("Delete this property and all nested floors/rooms/beds?")) return;
-                                        showLoading(actionBtn);
-                                        fetch(`/property/${id}`, { method: "DELETE" })
-                                            .then(r => r.json())
-                                            .then(res => {
-                                                hideLoading(actionBtn);
-                                                if (res.success) {
-                                                    allProperties = allProperties.filter(p => p._id !== id);
-                                                    renderUserFriendlyPGList();
-                                                    toast("Deleted!", false);
-                                                } else toast("Delete failed: " + res.message, true);
-                                            }).catch(() => hideLoading(actionBtn));
-                                    }
-                                    if (e.target.closest('.btn-toggle-property')) {
-                                        const id = e.target.closest('.btn-toggle-property').getAttribute('data-id');
-                                        showLoading(actionBtn);
-                                        fetch(`/property/toggle/${id}`, { method: "PATCH" })
-                                            .then(r => r.json())
-                                            .then(res => {
-                                                hideLoading(actionBtn);
-                                                if (res.success) {
-                                                    allProperties = allProperties.map(p => p._id === id ? { ...p, isActive: !p.isActive } : p);
-                                                    renderUserFriendlyPGList();
-                                                    toast(res.message, false);
-                                                } else toast(res.message, true);
-                                            }).catch(() => hideLoading(actionBtn));
-                                    }
-                                    if (e.target.closest('.btn-add-room')) {
-                                        const btn = e.target.closest('.btn-add-room');
-                                        const form = document.getElementById("room-form");
-                                        if (form) form.reset();
-                                        if (document.getElementById("room-id")) document.getElementById("room-id").value = '';
-                                        if (document.getElementById("room-property")) document.getElementById("room-property").value = btn.getAttribute('data-prop');
-                                        if (document.getElementById("room-floor")) document.getElementById("room-floor").value = btn.getAttribute('data-floor');
-                                        $('#roomModal').modal('show');
-                                    }
-                                    if (e.target.closest('.btn-edit-floor')) {
-                                        const btn = e.target.closest('.btn-edit-floor');
-                                        let floor = {};
-                                        try {
-                                            floor = JSON.parse(btn.getAttribute('data-floor'));
-                                        } catch (e) {
-                                            toast("Failed to read floor data for edit. Please refresh.", true);
-                                            return;
-                                        }
-                                        const form = document.getElementById("floor-form");
-                                        if (form) form.reset();
-                                        if (document.getElementById("floor-id")) document.getElementById("floor-id").value = floor._id;
-                                        if (document.getElementById("floor-property")) document.getElementById("floor-property").value = btn.getAttribute('data-prop');
-                                        if (document.querySelector('#floor-form [name="floorNumber"]')) document.querySelector('#floor-form [name="floorNumber"]').value = floor.floorNumber;
-                                        if (document.querySelector('#floor-form [name="name"]')) document.querySelector('#floor-form [name="name"]').value = floor.name || '';
-                                        if (document.querySelector('#floor-form [name="description"]')) document.querySelector('#floor-form [name="description"]').value = floor.description || '';
-                                        $('#floorModal').modal('show');
-                                    }
-                                    if (e.target.closest('.btn-delete-floor')) {
-                                        const id = e.target.closest('.btn-delete-floor').getAttribute('data-id');
-                                        if (!confirm("Delete this floor and all rooms/beds?")) return;
-                                        showLoading(actionBtn);
-                                        fetch(`/floor/${id}`, { method: "DELETE" })
-                                            .then(r => r.json())
-                                            .then(res => {
-                                                hideLoading(actionBtn);
-                                                if (res.success) {
-                                                    fetchProperties();
-                                                    toast("Floor deleted!", false);
-                                                } else toast(res.message, true);
-                                            }).catch(() => hideLoading(actionBtn));
-                                    }
-                                    if (e.target.closest('.btn-edit-room')) {
-                                        const btn = e.target.closest('.btn-edit-room');
-                                        let room = {};
-                                        try {
-                                            room = JSON.parse(btn.getAttribute('data-room'));
-                                        } catch (e) {
-                                            toast("Failed to read room data for edit. Please refresh.", true);
-                                            return;
-                                        }
-                                        const form = document.getElementById("room-form");
-                                        if (form) form.reset();
-                                        if (document.getElementById("room-id")) document.getElementById("room-id").value = room._id;
-                                        if (document.getElementById("room-property")) document.getElementById("room-property").value = btn.getAttribute('data-prop');
-                                        if (document.getElementById("room-floor")) document.getElementById("room-floor").value = btn.getAttribute('data-floor');
-                                        if (document.querySelector('#room-form [name="roomNumber"]')) document.querySelector('#room-form [name="roomNumber"]').value = room.roomNumber || '';
-                                        if (document.querySelector('#room-form [name="sharingType"]')) document.querySelector('#room-form [name="sharingType"]').value = room.sharingType || '';
-                                        if (document.querySelector('#room-form [name="capacity"]')) document.querySelector('#room-form [name="capacity"]').value = room.capacity || '';
-                                        if (document.querySelector('#room-form [name="pricePerMonth"]')) document.querySelector('#room-form [name="pricePerMonth"]').value = room.pricePerMonth || '';
-                                        if (document.querySelector('#room-form [name="depositAmount"]')) document.querySelector('#room-form [name="depositAmount"]').value = room.depositAmount || '';
-                                        if (document.querySelector('#room-form [name="status"]')) document.querySelector('#room-form [name="status"]').value = room.status || '';
-                                        if (document.querySelector('#room-form [name="description"]')) document.querySelector('#room-form [name="description"]').value = room.description || '';
-                                        if (document.querySelector('#room-form [name="amenities"]')) document.querySelector('#room-form [name="amenities"]').value = (room.amenities || []).join(', ');
-                                        $('#roomModal').modal('show');
-                                    }
-                                    if (e.target.closest('.btn-delete-room')) {
-                                        const id = e.target.closest('.btn-delete-room').getAttribute('data-id');
-                                        if (!confirm("Delete this room and all beds inside?")) return;
-                                        showLoading(actionBtn);
-                                        fetch(`/room/${id}`, { method: "DELETE" })
-                                            .then(r => r.json())
-                                            .then(res => {
-                                                hideLoading(actionBtn);
-                                                if (res.success) {
-                                                    fetchProperties();
-                                                    toast("Room deleted!", false);
-                                                } else toast(res.message, true);
-                                            }).catch(() => hideLoading(actionBtn));
-                                    }
-                                    if (e.target.closest('.btn-add-bed')) {
-                                        const btn = e.target.closest('.btn-add-bed');
-                                        const form = document.getElementById("bed-form");
-                                        if (form) form.reset();
-                                        if (document.getElementById("bed-id")) document.getElementById("bed-id").value = '';
-                                        if (document.getElementById("bed-room")) document.getElementById("bed-room").value = btn.getAttribute('data-room');
-                                        $('#bedModal').modal('show');
-                                    }
-                                    if (e.target.closest('.btn-edit-bed')) {
-                                        const btn = e.target.closest('.btn-edit-bed');
-                                        let bed = {};
-                                        try {
-                                            bed = JSON.parse(btn.getAttribute('data-bed'));
-                                        } catch (e) {
-                                            toast("Failed to read bed data for edit. Please refresh.", true);
-                                            return;
-                                        }
-                                        const form = document.getElementById("bed-form");
-                                        if (form) form.reset();
-                                        if (document.getElementById("bed-id")) document.getElementById("bed-id").value = bed._id;
-                                        if (document.getElementById("bed-room")) document.getElementById("bed-room").value = bed.room;
-                                        if (document.querySelector('#bed-form [name="bedNumber"]')) document.querySelector('#bed-form [name="bedNumber"]').value = bed.bedNumber || '';
-                                        if (document.querySelector('#bed-form [name="pricePerMonth"]')) document.querySelector('#bed-form [name="pricePerMonth"]').value = bed.pricePerMonth || '';
-                                        if (document.querySelector('#bed-form [name="isOccupied"]')) document.querySelector('#bed-form [name="isOccupied"]').checked = !!bed.isOccupied;
-                                        $('#bedModal').modal('show');
-                                    }
-                                    if (e.target.closest('.btn-delete-bed')) {
-                                        const id = e.target.closest('.btn-delete-bed').getAttribute('data-id');
-                                        if (!confirm("Delete this bed?")) return;
-                                        showLoading(actionBtn);
-                                        fetch(`/bed/${id}`, { method: "DELETE" })
-                                            .then(r => r.json())
-                                            .then(res => {
-                                                hideLoading(actionBtn);
-                                                if (res.success) {
-                                                    fetchProperties();
-                                                    toast("Bed deleted!", false);
-                                                } else toast(res.message, true);
-                                            }).catch(() => hideLoading(actionBtn));
-                                    }
-                                });
+<script>
+(function() {
+    // Utility for loading state
+    function setButtonLoading(btn, isLoading, loadingText) {
+        if (!btn) return;
+        if (isLoading) {
+            btn._originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>${loadingText || btn.textContent}`;
+        } else {
+            if (btn._originalText) btn.innerHTML = btn._originalText;
+            btn.disabled = false;
+        }
+    }
 
-                                // Standalone Add Property Button - keep outside the event delegation for direct binding
-                                document.getElementById("add-pg-property-btn").onclick = function (e) {
-                                    e.preventDefault();
-                                    const form = document.getElementById("property-form");
-                                    if (form) form.reset();
-                                    if (document.getElementById("property-id")) document.getElementById("property-id").value = '';
-                                    if (document.getElementById("property-active")) document.getElementById("property-active").checked = true;
-                                    $('#propertyModal').modal('show');
-                                };
+    // Robust reload that also POSTs a GET to force server render (avoids .reload)
+    function robustReload() {
+        // Use GET to main page - never cache only this session
+        window.location.replace('/admin-pg?ts=' + Date.now());
+    }
 
-                                // Property Form Submit
-                                if (document.getElementById("property-form")) {
-                                    document.getElementById("property-form").onsubmit = function (e) {
-                                        e.preventDefault();
-                                        const form = this;
-                                        const submitBtn = form.querySelector('button[type="submit"],.btn-primary');
-                                        showLoading(submitBtn);
-                                        const id = document.getElementById("property-id").value;
-                                        const fd = new FormData(this);
-                                        if (document.getElementById("property-active"))
-                                            fd.set("isActive", document.getElementById("property-active").checked);
-                                        if (fd.get("amenities"))
-                                            fd.set("amenities", fd.get("amenities").split(',').map(s => s.trim()).filter(Boolean).join(','));
-                                        if (fd.get("rules"))
-                                            fd.set("rules", fd.get("rules").split(',').map(s => s.trim()).filter(Boolean).join(','));
-                                        const url = id ? `/property/${id}` : "/property/create";
-                                        fetch(url, {
-                                            method: id ? "PUT" : "POST",
-                                            body: fd
-                                        }).then(r => r.json()).then(res => {
-                                            hideLoading(submitBtn);
-                                            if (res.success) {
-                                                $("#propertyModal").modal('hide');
-                                                fetchProperties();
-                                                toast("Property saved!", false);
-                                            } else toast(res.message, true);
-                                        }).catch(() => hideLoading(submitBtn));
-                                    };
-                                }
-                                // Floor Form Submit
-                                if (document.getElementById("floor-form")) {
-                                    document.getElementById("floor-form").onsubmit = function (e) {
-                                        e.preventDefault();
-                                        const form = this;
-                                        const submitBtn = form.querySelector('button[type="submit"],.btn-primary');
-                                        showLoading(submitBtn);
-                                        const id = document.getElementById("floor-id").value;
-                                        const data = {
-                                            property: document.getElementById("floor-property").value,
-                                            floorNumber: this.floorNumber.value,
-                                            name: this.name.value,
-                                            description: this.description && this.description.value,
-                                        };
-                                        fetch(id ? `/floor/${id}` : `/floor/create`, {
-                                            method: id ? "PUT" : "POST",
-                                            headers: { "Content-Type": "application/json" },
-                                            body: JSON.stringify(data)
-                                        }).then(r => r.json()).then(res => {
-                                            hideLoading(submitBtn);
-                                            if (res.success) {
-                                                $("#floorModal").modal('hide');
-                                                fetchProperties();
-                                                toast("Floor saved!", false);
-                                            } else toast(res.message, true);
-                                        }).catch(() => hideLoading(submitBtn));
-                                    };
-                                }
-                                // Room Form Submit
-                                if (document.getElementById("room-form")) {
-                                    document.getElementById("room-form").onsubmit = function (e) {
-                                        e.preventDefault();
-                                        const form = this;
-                                        const submitBtn = form.querySelector('button[type="submit"],.btn-primary');
-                                        showLoading(submitBtn);
-                                        const id = document.getElementById("room-id").value;
-                                        let amenities = this.amenities && this.amenities.value ? this.amenities.value.split(',').map(s => s.trim()).filter(Boolean) : [];
-                                        const data = {
-                                            property: document.getElementById("room-property").value,
-                                            floor: document.getElementById("room-floor").value,
-                                            roomNumber: this.roomNumber.value,
-                                            sharingType: this.sharingType.value,
-                                            capacity: this.capacity.value,
-                                            pricePerMonth: this.pricePerMonth.value,
-                                            depositAmount: this.depositAmount && this.depositAmount.value,
-                                            status: this.status && this.status.value,
-                                            description: this.description && this.description.value,
-                                            amenities
-                                        };
-                                        fetch(id ? `/room/${id}` : `/room/create`, {
-                                            method: id ? "PUT" : "POST",
-                                            headers: { "Content-Type": "application/json" },
-                                            body: JSON.stringify(data)
-                                        }).then(r => r.json()).then(res => {
-                                            hideLoading(submitBtn);
-                                            if (res.success) {
-                                                $("#roomModal").modal('hide');
-                                                fetchProperties();
-                                                toast("Room saved!", false);
-                                            } else toast(res.message, true);
-                                        }).catch(() => hideLoading(submitBtn));
-                                    };
-                                }
-                                // Bed Form Submit
-                                if (document.getElementById("bed-form")) {
-                                    document.getElementById("bed-form").onsubmit = function (e) {
-                                        e.preventDefault();
-                                        const form = this;
-                                        const submitBtn = form.querySelector('button[type="submit"],.btn-primary');
-                                        showLoading(submitBtn);
-                                        const id = document.getElementById("bed-id").value;
-                                        const data = {
-                                            room: document.getElementById("bed-room").value,
-                                            bedNumber: this.bedNumber.value,
-                                            pricePerMonth: this.pricePerMonth.value,
-                                            isOccupied: this.isOccupied ? this.isOccupied.checked : false
-                                        };
-                                        fetch(id ? `/bed/${id}` : `/bed/create`, {
-                                            method: id ? "PUT" : "POST",
-                                            headers: { "Content-Type": "application/json" },
-                                            body: JSON.stringify(data)
-                                        }).then(r => r.json()).then(res => {
-                                            hideLoading(submitBtn);
-                                            if (res.success) {
-                                                $("#bedModal").modal('hide');
-                                                fetchProperties();
-                                                toast("Bed saved!", false);
-                                            } else toast(res.message, true);
-                                        }).catch(() => hideLoading(submitBtn));
-                                    }
-                                }
+    // Listen for modal triggers for EDIT and prefill form
+    document.querySelectorAll('.open-edit-modal').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var pg = btn.getAttribute('data-pg');
+            pg = JSON.parse(pg);
+            document.getElementById('editPgId').value = pg._id;
+            document.getElementById('editPgTitle').value = pg.title || '';
+            document.getElementById('editPgAddress').value = (pg.location && pg.location.address) ? pg.location.address : '';
+            document.getElementById('editPgCity').value = (pg.location && pg.location.city) ? pg.location.city : '';
+            document.getElementById('editPgState').value = (pg.location && pg.location.state) ? pg.location.state : '';
+            document.getElementById('editPgPincode').value = (pg.location && pg.location.pincode) ? pg.location.pincode : '';
+            document.getElementById('editIsAvailable').checked = !!pg.isAvailable;
+            
+            // Images preview
+            var imgDiv = document.getElementById('editPgImagesPreview');
+            imgDiv.innerHTML = '';
+            if (Array.isArray(pg.images)) {
+                pg.images.forEach(function(src) {
+                    var img = document.createElement('img');
+                    img.src = src;
+                    img.style.width = "46px";
+                    img.style.height = "46px";
+                    img.style.objectFit = "cover";
+                    img.style.borderRadius = "5px";
+                    imgDiv.appendChild(img);
+                });
+            }
+        });
+    });
 
-                                //--- Fetch and Refresh
-                                function fetchProperties() {
-                                    showPageLoading();
-                                    fetch("/admin-pg")
-                                        .then(r => r.text())
-                                        .then(html => {
-                                            hidePageLoading();
-                                            window.location.reload();
-                                        })
-                                        .catch(() => hidePageLoading());
-                                }
+    // Listen for modal triggers for Delete
+    document.querySelectorAll('.open-delete-modal').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var id = btn.getAttribute('data-id');
+            var title = btn.getAttribute('data-title');
+            document.getElementById('deletePgId').value = id;
+            document.getElementById('deletePgTitle').textContent = title || '';
+        });
+    });
 
-                                // Initial render
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    renderUserFriendlyPGList();
-                                });
-                            </script>
-                            <!-- /main-content-wrap -->
-                        </div>
-                        <!-- /main-content-wrap -->
-                        <!-- bottom-page -->
-                        <div class="bottom-page">
-                            <div class="body-text">Copyright © 2025 <a href="">Transha Stays</a>.
-                                Design by Trivlogic Private Limited All rights reserved</div>
-                        </div>
+    // Delete PG
+    document.getElementById('deletePgForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var btn = document.getElementById('deletePgSubmitBtn');
+        setButtonLoading(btn, true, 'Deleting...');
+        var id = document.getElementById('deletePgId').value;
+        fetch('/delete-pg/' + id, {
+            method: 'DELETE',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => {
+            if (res.ok) return res.json();
+            throw new Error('Delete failed');
+        })
+        .then(data => {
+            if (data.success) {
+                // Close modal
+                try {
+                    var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('deletePgModal'));
+                    modal.hide();
+                } catch(e) {}
+                setTimeout(robustReload, 400);
+            } else {
+                setButtonLoading(btn, false);
+                window.location.reload();
+            }
+        })
+        .catch((err) => {
+            setButtonLoading(btn, false);
+            alert('Error deleting PG. Check server log.');
+        });
+    });
+
+    // Create PG
+    // Handle Create PG via modal
+    document.getElementById('createPgForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var form = e.target;
+        var btn = document.getElementById('createPgSubmitBtn');
+        setButtonLoading(btn, true, 'Creating...');
+        var formData = new FormData(form);
+        var checked = form.querySelector('[name="isAvailable"]').checked;
+        formData.set('isAvailable', checked);
+
+        // Build location object JSON  
+        var location = {
+            address: form.querySelector('[name="address"]').value,
+            city: form.querySelector('[name="city"]').value,
+            state: form.querySelector('[name="state"]').value,
+            pincode: form.querySelector('[name="pincode"]').value
+        };
+        formData.append('location', JSON.stringify(location));
+
+        fetch('/create-pg', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => {
+            if (res.ok) return res.json();
+            throw new Error('Create failed');
+        })
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                setButtonLoading(btn, false);
+                window.location.reload();
+            }
+        })
+        .catch(() => {
+            setButtonLoading(btn, false);
+            alert('Error creating PG');
+        });
+    });
+
+    // Handle Edit PG via modal
+    document.getElementById('editPgForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var form = e.target;
+        var btn = document.getElementById('editPgSubmitBtn');
+        setButtonLoading(btn, true, 'Saving...');
+        var id = document.getElementById('editPgId').value;
+        var formData = new FormData(form);
+        // Construct "isAvailable" value
+        var checked = form.querySelector('[name="isAvailable"]').checked;
+        formData.set('isAvailable', checked);
+
+        // Build location object JSON
+        var location = {
+            address: form.querySelector('[name="address"]').value,
+            city: form.querySelector('[name="city"]').value,
+            state: form.querySelector('[name="state"]').value,
+            pincode: form.querySelector('[name="pincode"]').value
+        };
+        formData.append('location', JSON.stringify(location));
+
+        fetch('/update-pg/' + id, {
+            method: 'PUT',
+            body: formData
+        })
+        .then(res => {
+            if (res.ok) return res.json();
+            throw new Error('Edit failed');
+        })
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                setButtonLoading(btn, false);
+                window.location.reload();
+            }
+        })
+        .catch(() => {
+            setButtonLoading(btn, false);
+            alert('Error updating PG');
+        });
+    });
+
+    // Handle Update Availability
+    document.querySelectorAll('.pg-availability-form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var btn = form.querySelector('button[type="submit"]');
+            setButtonLoading(btn, true, 'Updating...');
+            var id = this.getAttribute('data-id');
+            var isAvailable = this.getAttribute('data-available') !== 'true' ? true : false;
+            fetch('/update-pg/' + id + '/availability', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ isAvailable: isAvailable })
+            })
+            .then(res => {
+                if (res.ok) return res.json();
+                throw new Error('Update failed');
+            })
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    setButtonLoading(btn, false);
+                    window.location.reload();
+                }
+            })
+            .catch(() => {
+                setButtonLoading(btn, false);
+                alert('Error updating availability');
+            });
+        });
+    });
+})();
+</script>
                         <!-- /bottom-page -->
                     </div>
                     <!-- /main-content -->

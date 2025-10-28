@@ -15,7 +15,8 @@
     <link rel="stylesheet" type="text/css" href="admin-css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Font -->
     <link rel="stylesheet" href="admin-font/fonts.css">
 
@@ -25,7 +26,235 @@
     <!-- Favicon and Touch Icons  -->
     <link rel="shortcut icon" href="img/transha/logo.jpeg">
     <link rel="apple-touch-icon-precomposed" href="img/transha/logo.jpeg">
-
+   <style>
+     .main-content-inner {
+            padding: 20px;
+        }
+        
+        .wg-box {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+        }
+        
+        .title-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .form-search {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .apt-card {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+        }
+        
+        .apt-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .badge-corners {
+            border-radius: 7.5px 13px 7.5px 13px;
+        }
+        
+        .btn-xs {
+            font-size: 12px;
+            padding: 4px 11px;
+            line-height: 1.7;
+            margin-right: 5px;
+            border-radius: 9px;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            display: none;
+            overflow: auto;
+            padding: 20px 0;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 95%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-radius: 14px;
+            box-shadow: 0 16px 38px rgba(27, 50, 90, 0.19);
+            position: relative;
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+            background: linear-gradient(70deg, #349bfa 60%, #bcf1ff 140%);
+            color: white;
+            border-radius: 14px 14px 0 0;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+            background: none;
+            border: none;
+        }
+        
+        .section-card {
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+        }
+        
+        .apartment-section, .room-section {
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .apartment-section {
+            background: #f0f7ff;
+        }
+        
+        .room-section {
+            background: #f9fbff;
+            margin-left: 20px;
+        }
+        
+        .hierarchy-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--secondary);
+        }
+        
+        .hierarchy-indicator i {
+            font-size: 12px;
+        }
+        
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .image-preview-item {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .dynamic-list {
+            margin-bottom: 10px;
+        }
+        
+        .dynamic-list-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .dynamic-list-item input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 98%;
+                margin: 10px auto;
+            }
+            
+            .form-search {
+                flex-direction: column;
+            }
+            
+            .tab-container {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1;
+                min-width: 120px;
+                text-align: center;
+            }
+        }
+   </style>
 </head>
 
 <body class="body">
@@ -74,7 +303,7 @@
                                     <li class="menu-item active">
                                         <a href="/admin-resort" class="menu-item-button">
                                             <div class="icon"><i class="icon-file-plus"></i></div>
-                                            <div class="text">Resort Management</div>
+                                            <div class="text">Apartments Management</div>
                                         </a>
 
                                     </li>
@@ -89,6 +318,13 @@
                                         <a href="/admin-booking" class="menu-item-button">
                                             <div class="icon"><i class="icon-layers"></i></div>
                                             <div class="text">Booking Management</div>
+                                        </a>
+
+                                    </li>
+                                    <li class="menu-item  ">
+                                        <a href="/admin-mainbanner" class="menu-item-button">
+                                            <div class="icon"><i class="icon-layers"></i></div>
+                                            <div class="text">Banner Management</div>
                                         </a>
 
                                     </li>
@@ -195,1060 +431,1428 @@
                     <div class="main-content">
                         <!-- main-content-wrap -->
                         <div class="main-content-inner">
-                            <!-- main-content-wrap -->
-                            <div class="main-content-wrap">
-                                <div class="flex items-center flex-wrap justify-between gap20 mb-30">
-                                    <h3>Resort & Room Management</h3>
-                                    <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
-                                        <li>
-                                            <a href="/dashboard">
-                                                <div class="text-tiny">Dashboard</div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <i class="icon-chevron-right"></i>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="text-tiny">Resort</div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <i class="icon-chevron-right"></i>
-                                        </li>
-                                        <li>
-                                            <div class="text-tiny">Room Management</div>
-                                        </li>
-                                    </ul>
+                            <div class="flex items-center flex-wrap justify-between gap20 mb-30">
+                                <h3><i class="fas fa-home" style="color:#247eff"></i> Premium Apartments Management</h3>
+                                <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
+                                    <li>
+                                        <a href="/dashboard">
+                                            <div class="text-tiny">Dashboard</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </li>
+                                    <li>
+                                        <div class="text-tiny">Premium Apartments</div>
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                            <div class="wg-box px-3 py-3 mb-4">
+                                <div class="title-box">
+                                    <i class="fas fa-layer-group" style="font-size:23px;color:#247eff;"></i>
+                                    <div class="body-text">
+                                        <b>Manage Properties, Apartments, and Rooms</b><br>
+                                        <span class="text-muted" style="font-size:13px;">Full hierarchy support: Property → Apartments → Rooms. Add, edit, and manage all levels from this interface.</span>
+                                    </div>
                                 </div>
-
-                                <div class="wg-box">
-                                    <div class="title-box">
-                                        <i class="icon-home"></i>
-                                        <div class="body-text">
-                                            Manage all resorts and their rooms. Expand a resort for details, edit or
-                                            status toggle. Create, edit and delete resorts or rooms.
+                                <div class="flex items-center justify-between gap10 flex-wrap mb-3">
+                                    <div class="wg-filter flex-grow">
+                                        <div class="form-search">
+                                            <input type="text" id="apt-search-input"
+                                                class="form-control"
+                                                style="border-radius:18px;"
+                                                placeholder="Search by property, apartment, room, location...">
+                                            <button id="apt-search-btn" type="button" class="btn btn-primary" style="border-radius:18px;">
+                                                <i class="fas fa-search"></i> Search
+                                            </button>
                                         </div>
                                     </div>
-
-                                    <div class="flex items-center justify-between gap10 flex-wrap mb-20">
-                                        <div class="wg-filter flex-grow">
-                                            <div class="show">
-                                                <div class="text-tiny">Showing</div>
-                                                <div class="select">
-                                                    <select id="limit-select">
-                                                        <option value="10">10</option>
-                                                        <option value="20">20</option>
-                                                        <option value="30">30</option>
-                                                    </select>
+                                    <button class="btn btn-primary" style="border-radius:18px;" id="apt-add-btn">
+                                        <i class="fas fa-plus"></i>
+                                        Add New Property
+                                    </button>
+                                </div>
+                                <div id="premium-apts-card-wrap"></div>
+                            </div>
+                    
+                            <!-- Create/Edit Modal -->
+                            <div class="modal-overlay" id="apt-modal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 id="apt-modal-title">Add/Edit Property</h4>
+                                        <button class="close-btn">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="apt-form">
+                                            <div class="tab-container">
+                                                <div class="tab active" data-tab="property">Property Details</div>
+                                                <div class="tab" data-tab="apartments">Apartments</div>
+                                                <div class="tab" data-tab="rooms">Rooms</div>
+                                                <div class="tab" data-tab="settings">Settings</div>
+                                            </div>
+                                            
+                                            <!-- Property Tab -->
+                                            <div class="tab-content active" id="property-tab">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="form-propertyTitle" class="form-label">Property Title *</label>
+                                                        <input type="text" class="form-control" id="form-propertyTitle" name="propertyTitle" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="form-propertyType" class="form-label">Property Type</label>
+                                                        <select class="form-control" id="form-propertyType" name="propertyType">
+                                                            <option value="Full Apartment">Full Apartment</option>
+                                                            <option value="Room Based">Room Based</option>
+                                                            <option value="Mixed" selected>Mixed</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="text-tiny">entries</div>
-                                            </div>
-                                            <div class="form-search">
-                                                <input type="text" id="search-input"
-                                                    placeholder="Search by resort, room name, type, or amenities...">
-                                                <button id="search-btn"><i class="icon-search"></i></button>
-                                            </div>
-                                        </div>
-                                        <a class="tf-button style-1 w208" href="#" id="add-resort-room-btn">
-                                            <i class="icon-plus"></i>Add Resort Room
-                                        </a>
-                                        <a class="tf-button style-1 w208" href="#" id="add-resort-btn">
-                                            <i class="icon-plus"></i>Add Resort
-                                        </a>
-                                    </div>
-
-                                    <div class="accordion" id="resortsAccordion">
-                                        <% if (resorts && resorts.length) { %>
-                                            <% resorts.forEach(function(resort, resortIdx) { %>
-                                                <div class="card mb-3 shadow-sm" data-resort-id="<%= resort._id %>">
-                                                    <div class="card-header bg-light d-flex justify-content-between align-items-center"
-                                                        id="heading-<%= resort._id %>">
-                                                        <span>
-                                                            <% if (resort.images && resort.images.length) { %>
-                                                                <img src="<%= resort.images[0] %>" alt="Resort Image"
-                                                                    style="width:40px;height:40px;object-fit:cover;border-radius:6px;margin-right:8px;">
-                                                                <% } else { %>
-                                                                    <span class="icon-home text-secondary"
-                                                                        style="font-size:1.6rem;margin-right:8px;"></span>
-                                                                    <% } %>
-                                                                        <strong>
-                                                                            <%= resort.name %>
-                                                                        </strong>
-                                                                        <span class="badge rounded-pill bg-info ms-2">
-                                                                            <%= resort.city %>
-                                                                        </span>
-                                                                        <% if (!resort.isActive) { %>
-                                                                            <span
-                                                                                class="badge rounded-pill bg-secondary ms-1">Inactive</span>
-                                                                            <% } else { %>
-                                                                                <span
-                                                                                    class="badge rounded-pill bg-success ms-1">Active</span>
-                                                                                <% } %>
-                                                        </span>
-                                                        <div>
-                                                            <button
-                                                                class="btn btn-xs btn-outline-secondary toggle-resort-btn"
-                                                                data-resort-id="<%= resort._id %>"
-                                                                data-active="<%= resort.isActive %>"
-                                                                title="Toggle Resort Status">
-                                                                <% if (resort.isActive) { %>
-                                                                    <i class="icon-eye-off"></i>
-                                                                    <% } else { %>
-                                                                        <i class="icon-eye"></i>
-                                                                        <% } %>
-                                                            </button>
-                                                            <button
-                                                                class="btn btn-xs btn-outline-primary edit-resort-btn"
-                                                                data-resort-id="<%= resort._id %>" title="Edit Resort">
-                                                                <i class="icon-edit"></i>
-                                                            </button>
-                                                            <button
-                                                                class="btn btn-xs btn-outline-danger delete-resort-btn"
-                                                                data-resort-id="<%= resort._id %>"
-                                                                title="Delete Resort">
-                                                                <i class="icon-trash"></i>
-                                                            </button>
-                                                            <button class="btn btn-link ms-2" type="button"
-                                                                data-bs-toggle="collapse"
-                                                                data-bs-target="#collapse-<%= resort._id %>"
-                                                                aria-expanded="false"
-                                                                aria-controls="collapse-<%= resort._id %>">
-                                                                <i class="icon-chevron-down"></i>
-                                                            </button>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="form-description" class="form-label">Description</label>
+                                                    <textarea class="form-control" id="form-description" name="description" rows="3"></textarea>
+                                                </div>
+                                                
+                                                <div class="section-card">
+                                                    <h5>Location</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="form-address" class="form-label">Address *</label>
+                                                            <input type="text" class="form-control" id="form-address" name="address" required>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="form-city" class="form-label">City *</label>
+                                                            <input type="text" class="form-control" id="form-city" name="city" required>
                                                         </div>
                                                     </div>
-                                                    <div id="collapse-<%= resort._id %>" class="collapse"
-                                                        data-bs-parent="#resortsAccordion">
-                                                        <div class="card-body">
-                                                            <div class="mb-2"><strong>Address:</strong>
-                                                                <%= resort.address || '-' %>, <%= resort.state %>, <%=
-                                                                            resort.country %> (<%= resort.pincode %>)
-                                                            </div>
-                                                            <div class="mb-2"><strong>Contact:</strong>
-                                                                <%= resort.contactNumber %> | <%= resort.email %>
-                                                            </div>
-                                                            <div class="mb-2"><strong>Amenities:</strong>
-                                                                <% if (resort.amenities && resort.amenities.length) { %>
-                                                                    <%= resort.amenities.join(", ") %>
-                                                                <% } else { %>
-                                                                    <span>N/A</span>
-                                                                <% } %>
-                                                            </div>
-                                                            <div class=" mb-2"><strong>Rules:</strong>
-                                                                        <% if (resort.rules && resort.rules.length) { %>
-                                                                            <%= resort.rules.join(", ") %>
-                                                                <% } else { %>
-                                                                    <span>N/A</span>
-                                                                <% } %>
-                                                            </div>
-                                                            <div class=" mb-2"><strong>Google Map:</strong>
-                                                                                <% if(resort.googleMapLink) { %>
-                                                                                    <a href="<%= resort.googleMapLink %>"
-                                                                                        target="_blank"
-                                                                                        style="color:#1677FF; text-decoration: underline;">Open
-                                                                                        Map</a>
-                                                                                    <% } else { %>
-                                                                                        <span
-                                                                                            class="text-muted">N/A</span>
-                                                                                        <% } %>
-                                                            </div>
-                                                            <div class="mb-2"><strong>Rating:</strong>
-                                                                <% if (typeof resort.rating !== 'undefined' && resort.rating !== null) { %>
-                                                                    <span class="badge rounded-pill bg-warning text-dark">
-                                                                        <%= resort.rating %> <i class="icon-star"></i>
-                                                                    </span>
-                                                                <% } else { %>
-                                                                    <span class="badge rounded-pill bg-secondary text-light">
-                                                                        0 <i class="icon-star"></i>
-                                                                    </span>
-                                                                <% } %>
-                                                            </div>
-                                                            <div class="mb-2">
-                                                                <strong>Check-in:</strong>
-                                                                <%= resort.checkInTime || "12:00 PM" %>
-                                                                    &nbsp;&#183;&nbsp;
-                                                                    <strong>Check-out:</strong>
-                                                                    <%= resort.checkOutTime || "11:00 AM" %>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <span class="ms-2 text-muted"><strong>Rooms:</strong>
-                                                                    <%= resort.totalRooms || (resort.rooms ?
-                                                                        resort.rooms.length : 0) %>
-                                                                </span>
-                                                            </div>
-
-                                                            <% if (resort.rooms && resort.rooms.length) { %>
-                                                                <div class="row g-3">
-                                                                    <% resort.rooms.forEach(function(room, roomIdx) { %>
-                                                                        <div class="col-12 col-md-6 col-lg-4">
-                                                                            <div class="card shadow-sm border mb-2 room-card" data-room-id="<%= room._id %>">
-                                                                                <% if (room.images && room.images.length) { %>
-                                                                                    <div class="room-image-w" style="position:relative;">
-                                                                                        <img src="<%= room.images[0] %>" alt="Room Image" class="card-img-top" style="object-fit:cover; width:100%; height:170px; border-radius:10px 10px 0 0;">
-                                                                                        <% if(room.images.length > 1) { %>
-                                                                                        <span class="badge bg-dark position-absolute" style="top:8px;right:8px;opacity:0.9;">
-                                                                                            +<%= room.images.length-1 %>
-                                                                                        </span>
-                                                                                        <% } %>
-                                                                                    </div>
-                                                                                <% } else { %>
-                                                                                    <div class="room-image-w d-flex align-items-center justify-content-center bg-light" style="height:170px;border-radius:10px 10px 0 0;">
-                                                                                        <span class="text-muted small">No Image</span>
-                                                                                    </div>
-                                                                                <% } %>
-                                                                                <div class="card-body p-3">
-                                                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                                        <div>
-                                                                                            <span class="badge bg-secondary me-2"><%= roomIdx+1 %></span>
-                                                                                            <span class="fw-bold">Room #<%= room.roomNumber %></span>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <% if (room.status==='Available') { %>
-                                                                                                <span class="badge bg-success">Available</span>
-                                                                                            <% } else if (room.status==='Booked') { %>
-                                                                                                <span class="badge bg-warning text-dark">Booked</span>
-                                                                                            <% } else if (room.status==='Maintenance') { %>
-                                                                                                <span class="badge bg-danger">Maintenance</span>
-                                                                                            <% } else { %>
-                                                                                                <span class="badge bg-secondary"><%= room.status %></span>
-                                                                                            <% } %>
-                                                                                        </div>
-                                                                                    </div>
-                        
-                                                                                    <div class="mb-1 small text-muted">
-                                                                                        <strong>Name:</strong> <%= room.name ? room.name : '-' %>
-                                                                                    </div>
-                                                                                    <div class="mb-1 small">
-                                                                                        <strong>Type:</strong> <%= room.roomType %>
-                                                                                        <span class="mx-2">|</span>
-                                                                                        <strong>Bed:</strong> <%= room.bedType || '-' %>
-                                                                                    </div>
-                                                                                    <div class="mb-1 small">
-                                                                                        <strong>Capacity:</strong> <%= room.capacity %>
-                                                                                        <span class="mx-2">|</span>
-                                                                                        <strong>Price:</strong> ₹<%= room.pricePerNight %>/night
-                                                                                    </div>
-                                                                                    <div class="mb-1 small">
-                                                                                        <strong>Amenities:</strong>
-                                                                                        <% if (room.amenities && room.amenities.length) { %>
-                                                                                            <%= room.amenities.slice(0,3).join(', ') %>
-                                                                                            <% if (room.amenities.length > 3) { %>
-                                                                                                <span class="text-muted">+<%= room.amenities.length-3 %> more</span>
-                                                                                            <% } %>
-                                                                                        <% } else { %>
-                                                                                            <span class="text-muted">N/A</span>
-                                                                                        <% } %>
-                                                                                    </div>
-                                                                                    <div class="d-flex gap-2 mt-2">
-                                                                                        <button class="btn btn-xs btn-outline-secondary toggle-room-btn"
-                                                                                            data-room-id="<%= room._id %>" data-status="<%= room.status %>"
-                                                                                            title="Toggle Room Availability">
-                                                                                            <% if (room.status === 'Available') { %>
-                                                                                                <i class="icon-eye-off"></i>
-                                                                                            <% } else { %>
-                                                                                                <i class="icon-eye"></i>
-                                                                                            <% } %>
-                                                                                        </button>
-                                                                                        <button class="btn btn-xs btn-outline-primary edit-room-btn"
-                                                                                            data-room-id="<%= room._id %>"
-                                                                                            title="Edit Room"><i class="icon-edit"></i></button>
-                                                                                        <button class="btn btn-xs btn-outline-danger delete-room-btn"
-                                                                                            data-room-id="<%= room._id %>"
-                                                                                            title="Delete Room"><i class="icon-trash"></i></button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    <% }); %>
-                                                                </div>
-                                                            <% } else { %>
-                                                                <div class="text-muted my-2">No rooms found for this resort.</div>
-                                                            <% } %>
-                                                            <div class="mt-3">
-                                                                <a href="#"
-                                                                    class="btn btn-sm btn-primary add-room-btn"
-                                                                    data-resort-id="<%= resort._id %>">
-                                                                    <i class="icon-plus"></i> Add Room
-                                                                </a>
+                                                    <div class="row">
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-state" class="form-label">State</label>
+                                                            <input type="text" class="form-control" id="form-state" name="state">
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-country" class="form-label">Country</label>
+                                                            <input type="text" class="form-control" id="form-country" name="country" value="India">
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-zipcode" class="form-label">Pin/Zip Code</label>
+                                                            <input type="text" class="form-control" id="form-zipcode" name="zipcode">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="section-card">
+                                                    <h5>Property Details</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-floors" class="form-label">Floors</label>
+                                                            <input type="number" class="form-control" id="form-floors" name="floors" min="1">
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-featured" class="form-label d-block">Featured Property</label>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" id="form-featured" name="featured">
+                                                                <label class="form-check-label" for="form-featured">Mark as featured</label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <% }) %>
-                                        <% } else { %>
-                                            <div class="alert alert-warning">No resorts available.</div>
-                                        <% } %>
+                                                
+                                                <div class="section-card">
+                                                    <h5>Property Images</h5>
+                                                    <label for="form-gallery" class="form-label">Gallery Images</label>
+                                                    <input class="form-control mb-2" id="form-gallery" name="gallery" type="file" multiple accept="image/*">
+                                                    <div class="image-preview" id="gallery-preview"></div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Apartments Tab -->
+                                            <div class="tab-content" id="apartments-tab">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h5>Apartments</h5>
+                                                    <button type="button" class="btn btn-sm btn-primary" id="add-apartment-btn">
+                                                        <i class="fas fa-plus"></i> Add Apartment
+                                                    </button>
+                                                </div>
+                                                <div id="apartments-list"></div>
+                                            </div>
+                                            
+                                            <!-- Rooms Tab -->
+                                            <div class="tab-content" id="rooms-tab">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h5>Rooms</h5>
+                                                    <button type="button" class="btn btn-sm btn-primary" id="add-room-btn">
+                                                        <i class="fas fa-plus"></i> Add Room
+                                                    </button>
+                                                </div>
+                                                <div id="rooms-list"></div>
+                                            </div>
+                                            
+                                            <!-- Settings Tab -->
+                                            <div class="tab-content" id="settings-tab">
+                                                <div class="section-card">
+                                                    <h5>Booking Settings</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="form-checkInTime" class="form-label">Check-in Time</label>
+                                                            <input type="text" class="form-control" id="form-checkInTime" name="checkInTime" value="12:00 PM">
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="form-checkOutTime" class="form-label">Check-out Time</label>
+                                                            <input type="text" class="form-control" id="form-checkOutTime" name="checkOutTime" value="11:00 AM">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="form-minStayNights" class="form-label">Minimum Stay (Nights)</label>
+                                                            <input type="number" class="form-control" id="form-minStayNights" name="minStayNights" min="1" value="1">
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="form-maxStayNights" class="form-label">Maximum Stay (Nights)</label>
+                                                            <input type="number" class="form-control" id="form-maxStayNights" name="maxStayNights" min="1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="form-cancellationPolicy" class="form-label">Cancellation Policy</label>
+                                                        <textarea class="form-control" id="form-cancellationPolicy" name="cancellationPolicy">Free cancellation up to 24 hours before check-in</textarea>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="section-card">
+                                                    <h5>Taxes & Fees</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-cleaningFee" class="form-label">Cleaning Fee (₹)</label>
+                                                            <input type="number" class="form-control" id="form-cleaningFee" name="cleaningFee" min="0" value="0">
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-serviceFee" class="form-label">Service Fee (₹)</label>
+                                                            <input type="number" class="form-control" id="form-serviceFee" name="serviceFee" min="0" value="0">
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-taxPercent" class="form-label">Tax Percentage (%)</label>
+                                                            <input type="number" class="form-control" id="form-taxPercent" name="taxPercent" min="0" value="0">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="section-card">
+                                                    <h5>Host Information</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-hostName" class="form-label">Host Name</label>
+                                                            <input type="text" class="form-control" id="form-hostName" name="hostName">
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-hostContact" class="form-label">Contact</label>
+                                                            <input type="text" class="form-control" id="form-hostContact" name="hostContact">
+                                                        </div>
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="form-hostEmail" class="form-label">Email</label>
+                                                            <input type="email" class="form-control" id="form-hostEmail" name="hostEmail">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="section-card">
+                                                    <h5>Amenities, Highlights & Rules</h5>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Amenities</label>
+                                                        <div id="amenities-list" class="dynamic-list"></div>
+                                                        <button type="button" class="btn btn-sm btn-light" id="add-amenity-btn">
+                                                            <i class="fas fa-plus"></i> Add Amenity
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Highlights</label>
+                                                        <div id="highlights-list" class="dynamic-list"></div>
+                                                        <button type="button" class="btn btn-sm btn-light" id="add-highlight-btn">
+                                                            <i class="fas fa-plus"></i> Add Highlight
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Rules</label>
+                                                        <div id="rules-list" class="dynamic-list"></div>
+                                                        <button type="button" class="btn btn-sm btn-light" id="add-rule-btn">
+                                                            <i class="fas fa-plus"></i> Add Rule
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-flex justify-content-end mt-4">
+                                                <button type="button" class="btn btn-secondary me-2" onclick="closeModal()">Cancel</button>
+                                                <button type="submit" class="btn btn-primary" id="apt-form-submit">Save Property</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="divider"></div>
-                                    <div class="flex items-center justify-between flex-wrap gap10">
-                                        <div class="text-tiny" id="showing-entries">
-                                            Showing <%= resorts && resorts.length ? resorts.length : 0 %> resorts
+                                </div>
+                            </div>
+                    
+                            <!-- View Modal -->
+                            <div class="modal-overlay" id="apt-view-modal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4>Property Details</h4>
+                                        <button class="close-btn">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="apt-view-modal-body"></div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Availability Modal -->
+                            <div class="modal-overlay" id="apt-availability-modal">
+                                <div class="modal-content" style="max-width: 500px;">
+                                    <div class="modal-header">
+                                        <h4>Update Availability</h4>
+                                        <button class="close-btn">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="apt-availability-modal-body"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                        <script>
+                            // Global variables
+                            let editingApartment = null;
+                            let roomImagesCache = [];
+                            let apartmentImagesCache = [];
+                            let currentTab = 'property';
+                    
+                            // Toast notification function
+                            function showToast(message, type = 'success') {
+                                // Create toast element
+                                const toast = document.createElement('div');
+                                toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'}`;
+                                toast.style.position = 'fixed';
+                                toast.style.top = '30px';
+                                toast.style.right = '30px';
+                                toast.style.zIndex = '9999';
+                                toast.style.minWidth = '250px';
+                                toast.innerHTML = message;
+                                
+                                // Add to page
+                                document.body.appendChild(toast);
+                                
+                                // Remove after delay
+                                setTimeout(() => {
+                                    toast.remove();
+                                }, 3000);
+                            }
+                    
+                            // Tab switching
+                            function switchTab(tabName) {
+                                // Update active tab
+                                document.querySelectorAll('.tab').forEach(tab => {
+                                    tab.classList.remove('active');
+                                });
+                                document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+                                
+                                // Update active content
+                                document.querySelectorAll('.tab-content').forEach(content => {
+                                    content.classList.remove('active');
+                                });
+                                document.getElementById(`${tabName}-tab`).classList.add('active');
+                                
+                                currentTab = tabName;
+                            }
+                    
+                            // Initialize tabs
+                            document.querySelectorAll('.tab').forEach(tab => {
+                                tab.addEventListener('click', function() {
+                                    switchTab(this.getAttribute('data-tab'));
+                                });
+                            });
+                    
+                            // Dynamic list functions
+                            function addDynamicInput(listId, inputName, value = '') {
+                                const list = document.getElementById(listId);
+                                const item = document.createElement('div');
+                                item.className = 'dynamic-list-item';
+                                item.innerHTML = `
+                                    <input type="text" class="form-control form-control-sm" name="${inputName}" value="${value}" placeholder="Enter ${inputName.replace('[]', '')}">
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="this.parentElement.remove()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                `;
+                                list.appendChild(item);
+                            }
+                    
+                            function clearDynamicList(listId) {
+                                document.getElementById(listId).innerHTML = '';
+                            }
+                    
+                            // Initialize dynamic lists
+                            document.getElementById('add-amenity-btn').addEventListener('click', () => {
+                                addDynamicInput('amenities-list', 'amenities[]');
+                            });
+                    
+                            document.getElementById('add-highlight-btn').addEventListener('click', () => {
+                                addDynamicInput('highlights-list', 'highlights[]');
+                            });
+                    
+                            document.getElementById('add-rule-btn').addEventListener('click', () => {
+                                addDynamicInput('rules-list', 'rules[]');
+                            });
+                    
+                            // Initialize with one empty field for each dynamic list
+                            addDynamicInput('amenities-list', 'amenities[]');
+                            addDynamicInput('highlights-list', 'highlights[]');
+                            addDynamicInput('rules-list', 'rules[]');
+                    
+                            // Apartment management functions
+                            function addApartmentUI(apartment = {}, index) {
+                                const list = document.getElementById('apartments-list');
+                                const apartmentId = index || Date.now();
+                                
+                                const apartmentDiv = document.createElement('div');
+                                apartmentDiv.className = 'apartment-section';
+                                apartmentDiv.setAttribute('data-id', apartmentId);
+                                
+                                apartmentDiv.innerHTML = `
+                                    <div class="hierarchy-indicator">
+                                        <i class="fas fa-building"></i>
+                                        <span>Apartment</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Apartment Name *</label>
+                                            <input type="text" class="form-control apartment-name" value="${apartment.apartmentName || ''}" placeholder="Enter apartment name" required>
                                         </div>
-                                        <!-- Pagination spot -->
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Total Rooms</label>
+                                            <input type="number" class="form-control apartment-total-rooms" value="${apartment.totalRooms || ''}" min="1">
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Resort & Room modals will be appended here by JS -->
-                                <div id="admin-resort-modals"></div>
-                            </div>
-
-                            <script>
-                                // Resort & Room JS
-                                (function () {
-
-                                    // Resort CRUD (unchanged)
-                                    document.getElementById('add-resort-btn')?.addEventListener('click', function (e) {
-                                        e.preventDefault();
-                                        showResortFormModal();
-                                    });
-
-                                    document.querySelectorAll('.edit-resort-btn').forEach(function (btn) {
-                                        btn.addEventListener('click', function () {
-                                            const resortId = this.getAttribute('data-resort-id');
-                                            fetch('/resort/' + resortId)
-                                                .then(r => r.json())
-                                                .then(data => {
-                                                    if (data && data.resort) {
-                                                        showResortFormModal(data.resort);
-                                                    } else {
-                                                        alert('Unable to fetch resort.');
-                                                    }
-                                                });
-                                        });
-                                    });
-
-                                    document.querySelectorAll('.delete-resort-btn').forEach(function (btn) {
-                                        btn.addEventListener('click', function () {
-                                            if (!confirm('Are you sure you want to delete this resort?')) return;
-                                            const resortId = this.getAttribute('data-resort-id');
-                                            fetch('/resort/' + resortId, { method: 'DELETE' })
-                                                .then(r => {
-                                                    if (r.ok) location.reload();
-                                                    else return r.json().then(j => { throw new Error(j.message); });
-                                                })
-                                                .catch(e => alert('Error deleting resort: ' + (e.message || '')));
-                                        });
-                                    });
-
-                                    document.querySelectorAll('.toggle-resort-btn').forEach(function (btn) {
-                                        btn.addEventListener('click', function () {
-                                            const resortId = this.getAttribute('data-resort-id');
-                                            fetch('/resort/' + resortId + '/toggle', { method: 'PATCH' })
-                                                .then(r => {
-                                                    if (r.ok) location.reload();
-                                                    else return r.json().then(j => { throw new Error(j.message); });
-                                                })
-                                                .catch(e => alert('Error toggling resort status: ' + (e.message || '')));
-                                        });
-                                    });
-
-                                    // Room CRUD
-                                    document.querySelectorAll('.add-room-btn').forEach(function (btn) {
-                                        btn.addEventListener('click', function (e) {
-                                            e.preventDefault();
-                                            const resortId = this.getAttribute('data-resort-id') || '';
-                                            showRoomFormModal({}, resortId);
-                                        });
-                                    });
-                                    document.getElementById('add-resort-room-btn')?.addEventListener('click', function (e) {
-                                        e.preventDefault();
-                                        showRoomFormModal({}, '');
-                                    });
-
-                                    document.querySelectorAll('.edit-room-btn').forEach(function (btn) {
-                                        btn.addEventListener('click', function () {
-                                            const roomId = this.getAttribute('data-room-id');
-                                            // Use backend endpoint: GET /resort/room/:id
-                                            fetch('/resort/room/' + roomId)
-                                                .then(r => r.json())
-                                                .then(data => {
-                                                    if (data && data.room) {
-                                                        showRoomFormModal(data.room, data.room.property);
-                                                    } else {
-                                                        alert('Unable to fetch room.');
-                                                    }
-                                                });
-                                        });
-                                    });
-
-                                    document.querySelectorAll('.delete-room-btn').forEach(function (btn) {
-                                        btn.addEventListener('click', function () {
-                                            if (!confirm('Are you sure you want to delete this room?')) return;
-                                            const roomId = this.getAttribute('data-room-id');
-                                            // Use backend endpoint: DELETE /resort/room/:id
-                                            fetch('/resort/room/' + roomId, { method: 'DELETE' })
-                                                .then(r => {
-                                                    if (r.ok) location.reload();
-                                                    else return r.json().then(j => { throw new Error(j.message); });
-                                                })
-                                                .catch(e => alert('Error deleting room: ' + (e.message || '')));
-                                        });
-                                    });
-
-                                    document.querySelectorAll('.toggle-room-btn').forEach(function (btn) {
-                                        btn.addEventListener('click', function () {
-                                            const roomId = this.getAttribute('data-room-id');
-
-                                            // Hotfix for PATCH /resort/room/:id/toggle sending empty req.body
-                                            // --> We explicitly send a 'dummy' payload, so req.body is at least {}
-                                            fetch('/resort/room/' + roomId + '/toggle', { 
-                                                method: 'PATCH',
-                                                headers: {
-                                                    // Inform backend we're sending JSON; but the backend may not care
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify({ toggle: true })
-                                            })
-                                                .then(r => {
-                                                    if (r.ok) location.reload();
-                                                    else return r.json().then(j => { throw new Error(j.message); });
-                                                })
-                                                .catch(e => alert('Error toggling room status: ' + (e.message || '')));
-                                        });
-                                    });
-
-                                    // Resort Modal (not changed)
-                                    window.showResortFormModal = function (resort = {}) {
-                                        const getArray = arr => Array.isArray(arr) ? arr : [];
-                                        const amenitiesArr = getArray(resort.amenities);
-                                        const rulesArr = getArray(resort.rules);
-                                        const imagesArr = getArray(resort.images);
-
-                                        let html = `
-        <div class="modal fade" id="resortFormModal" tabindex="-1">
-            <div class="modal-dialog modal-xl">
-            <form id="resortForm" autocomplete="off" enctype="multipart/form-data">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">${resort._id ? 'Edit Resort Property' : 'Add Resort Property'}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body" style="max-height:72vh;overflow-y:auto;">
-                        <input type="hidden" name="id" value="${resort._id || ''}">
-                        <div class="row g-3">
-                            <div class="col-md-6 mb-0">
-                                <label class="form-label fw-bold">Name *</label>
-                                <input type="text" name="name" class="form-control" value="${resort.name || ''}" required>
-                            </div>
-                            <div class="col-md-6 mb-0">
-                                <label class="form-label fw-bold">Slug</label>
-                                <input type="text" name="slug" class="form-control" value="${resort.slug || ''}" placeholder="resort-slug">
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label fw-bold">Description</label>
-                                <textarea name="description" class="form-control" rows="2" maxlength="500">${resort.description || ''}</textarea>
-                            </div>
-                            <div class="col-md-8 col-lg-9">
-                                <label class="form-label fw-bold">Address</label>
-                                <input type="text" name="address" class="form-control" value="${resort.address || ''}">
-                            </div>
-                            <div class="col-md-4 col-lg-3">
-                                <label class="form-label fw-bold">Pincode</label>
-                                <input type="text" name="pincode" class="form-control" value="${resort.pincode || ''}">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold">City</label>
-                                <input type="text" name="city" class="form-control" value="${resort.city || ''}">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold">State</label>
-                                <input type="text" name="state" class="form-control" value="${resort.state || ''}">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold">Country</label>
-                                <input type="text" name="country" class="form-control" value="${resort.country || ''}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Contact Number</label>
-                                <input type="tel" name="contactNumber" class="form-control" value="${resort.contactNumber || ''}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Email</label>
-                                <input type="email" name="email" class="form-control" value="${resort.email || ''}">
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label fw-bold">Google Map Link</label>
-                                <input type="url" name="googleMapLink" class="form-control" value="${resort.googleMapLink || ''}">
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label fw-bold">Property Images</label>
-                                <div id="image-list-box" class="mb-2"></div>
-                                <div class="input-group mb-2 gap-2" style="flex-wrap:nowrap">
-                                    <input type="file" class="form-control" id="image-file-input" multiple accept="image/*" name="images">
-                                </div>
-                                <div class="text-tiny text-muted mt-1">Upload images (drag to arrange; max 10).</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Amenities
-                                    <button class="btn btn-xs btn-success ms-1 py-0 px-1" type="button" id="add-amenity-btn">
-                                        <i class="icon-plus"></i> <span style="font-size:90%">Add</span>
-                                    </button>
-                                </label>
-                                <div id="amenities-list" class="mb-1"></div>
-                                <div class="input-group mt-1">
-                                    <input type="text" class="form-control" id="amenity-input" placeholder="Type amenity and click +">
-                                    <button class="btn btn-primary" type="button" id="add-amenity-input-btn"><b>+</b></button>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Rules
-                                    <button class="btn btn-xs btn-warning ms-1 py-0 px-1" type="button" id="add-rule-btn">
-                                        <i class="icon-plus"></i> <span style="font-size:90%">Add</span>
-                                    </button>
-                                </label>
-                                <div id="rules-list" class="mb-1"></div>
-                                <div class="input-group mt-1">
-                                    <input type="text" class="form-control" id="rule-input" placeholder="Type rule and click +">
-                                    <button class="btn btn-warning" type="button" id="add-rule-input-btn"><b>+</b></button>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold">Check-in Time</label>
-                                <input type="text" name="checkInTime" class="form-control" value="${resort.checkInTime || '12:00 PM'}" placeholder="Ex: 12:00 PM">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold">Check-out Time</label>
-                                <input type="text" name="checkOutTime" class="form-control" value="${resort.checkOutTime || '11:00 AM'}" placeholder="Ex: 11:00 AM">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold">Status</label>
-                                <select name="isActive" class="form-select">
-                                    <option value="true" ${resort.isActive ? 'selected' : ''}>Active</option>
-                                    <option value="false" ${resort.isActive === false ? 'selected' : ''}>Inactive</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Total Rooms</label>
-                                <input type="number" name="totalRooms" class="form-control" min="0" value="${resort.totalRooms != null ? resort.totalRooms : ''}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Rating</label>
-                                <input type="number" name="rating" class="form-control" min="0" max="5" step="0.01" value="${resort.rating != null ? resort.rating : ''}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="resortFormSubmitBtn" type="submit" class="btn btn-primary">${resort._id ? 'Update' : 'Create'}</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <span id="resortFormLoading" style="display:none;margin-left:8px;">
-                            <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
-                            <span class="ms-1 align-middle">Processing...</span>
-                        </span>
-                    </div>
-                </div>
-            </form>
-            </div>
-        </div>
-        `;
-
-                                        document.getElementById('admin-resort-modals').innerHTML = html;
-
-                                        var resortModal = new bootstrap.Modal(document.getElementById('resortFormModal'));
-                                        resortModal.show();
-
-                                        // Dynamic fields
-                                        // images: string[] (for edits) or File[] (for new upload, or object {file, preview})
-                                        let amenities = amenitiesArr.slice();
-                                        let rules = rulesArr.slice();
-
-                                        // For image rendering and arranging
-                                        let _imagesInitial =
-                                            imagesArr
-                                                .map(url => typeof url === "object" && url.path ? url.path : url)
-                                                .filter(Boolean);
-
-                                        let images = _imagesInitial.slice();
-
-                                        function renderImages() {
-                                            const wrap = document.getElementById('image-list-box');
-                                            if (!wrap) return;
-                                            wrap.innerHTML = images.length === 0 ? '<div class="text-tiny text-muted">No images added.</div>' : '';
-                                            images.forEach((img, idx) => {
-                                                let src = "";
-                                                if (typeof img === 'string') src = img;
-                                                else if (img instanceof File) src = img.__previewDataUrl || "";
-                                                else if (img && typeof img === 'object' && img.preview) src = img.preview;
-                                                wrap.innerHTML += `
-                    <div class="d-flex align-items-center mb-2 resort-img-item" style="gap:7px" draggable="true" data-idx="${idx}">
-                        <img src="${src}" style="width:60px;height:38px;object-fit:cover; border-radius:4px;border:1px solid #ddd;">
-                        <div>
-                            <button class="btn btn-xs btn-light move-img-up" data-idx="${idx}" title="Move up"><i class="icon-arrow-up"></i></button>
-                            <button class="btn btn-xs btn-light move-img-down" data-idx="${idx}" title="Move down"><i class="icon-arrow-down"></i></button>
-                            <button class="btn btn-xs btn-danger remove-image" data-idx="${idx}" title="Remove"><i class="icon-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-                                            });
-                                            // Drag & drop reorder
-                                            Array.from(wrap.querySelectorAll('.resort-img-item')).forEach(el => {
-                                                el.ondragstart = function (e) {
-                                                    e.dataTransfer.setData("image-drag", el.dataset.idx);
-                                                };
-                                                el.ondragover = function (e) { e.preventDefault(); };
-                                                el.ondrop = function (e) {
-                                                    e.preventDefault();
-                                                    let from = Number(e.dataTransfer.getData("image-drag"));
-                                                    let to = Number(el.dataset.idx);
-                                                    if (from !== to) {
-                                                        let temp = images[from];
-                                                        images.splice(from, 1);
-                                                        images.splice(to, 0, temp);
-                                                        renderImages();
-                                                    }
-                                                }
-                                            });
-                                            wrap.querySelectorAll('.move-img-up').forEach(btn => {
-                                                btn.onclick = () => {
-                                                    let i = Number(btn.dataset.idx);
-                                                    if (i > 0) [images[i - 1], images[i]] = [images[i], images[i - 1]];
-                                                    renderImages();
-                                                }
-                                            });
-                                            wrap.querySelectorAll('.move-img-down').forEach(btn => {
-                                                btn.onclick = () => {
-                                                    let i = Number(btn.dataset.idx);
-                                                    if (i < images.length - 1) [images[i], images[i + 1]] = [images[i + 1], images[i]];
-                                                    renderImages();
-                                                }
-                                            });
-                                            wrap.querySelectorAll('.remove-image').forEach(btn => {
-                                                btn.onclick = () => { 
-                                                    images.splice(Number(btn.dataset.idx), 1); 
-                                                    renderImages(); 
-                                                };
-                                            });
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Price Per Night (₹)</label>
+                                            <input type="number" class="form-control apartment-price" value="${apartment.pricePerNight || ''}" min="0">
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Max Guests</label>
+                                            <input type="number" class="form-control apartment-max-guests" value="${apartment.maxGuests || ''}" min="1">
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control apartment-description" rows="2">${apartment.description || ''}</textarea>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Amenities</label>
+                                        <input type="text" class="form-control apartment-amenities" value="${Array.isArray(apartment.amenities) ? apartment.amenities.join(', ') : ''}" placeholder="Comma separated amenities">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Availability</label>
+                                        <select class="form-control apartment-available">
+                                            <option value="true" ${apartment.isAvailable !== false ? 'selected' : ''}>Available</option>
+                                            <option value="false" ${apartment.isAvailable === false ? 'selected' : ''}>Not Available</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Apartment Images</label>
+                                        <input type="file" class="form-control apartment-images" multiple accept="image/*">
+                                        <div class="image-preview apartment-images-preview" data-id="${apartmentId}"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="removeApartment(this)">
+                                            <i class="fas fa-trash"></i> Remove Apartment
+                                        </button>
+                                    </div>
+                                `;
+                                
+                                list.appendChild(apartmentDiv);
+                                
+                                // Initialize image preview if there are existing images
+                                if (Array.isArray(apartment.images) && apartment.images.length > 0) {
+                                    apartmentImagesCache[apartmentId] = apartment.images.map(src => ({ src }));
+                                    refreshApartmentImagePreviews(apartmentId);
+                                } else {
+                                    apartmentImagesCache[apartmentId] = [];
+                                }
+                                
+                                // Add event listener for image upload
+                                const imageInput = apartmentDiv.querySelector('.apartment-images');
+                                imageInput.addEventListener('change', function() {
+                                    handleApartmentImageChange(this, apartmentId);
+                                });
+                            }
+                    
+                            function removeApartment(button) {
+                                const apartmentDiv = button.closest('.apartment-section');
+                                const apartmentId = apartmentDiv.getAttribute('data-id');
+                                
+                                // Remove from cache
+                                delete apartmentImagesCache[apartmentId];
+                                
+                                // Remove from DOM
+                                apartmentDiv.remove();
+                            }
+                    
+                            function handleApartmentImageChange(input, apartmentId) {
+                                if (!apartmentImagesCache[apartmentId]) {
+                                    apartmentImagesCache[apartmentId] = [];
+                                }
+                                
+                                const files = Array.from(input.files);
+                                const limitedFiles = files.slice(0, 5); // Limit to 5 files
+                                
+                                // Clear previous selection
+                                apartmentImagesCache[apartmentId] = [];
+                                
+                                if (limitedFiles.length === 0) {
+                                    refreshApartmentImagePreviews(apartmentId);
+                                    return;
+                                }
+                                
+                                let filesRead = 0;
+                                const newImages = [];
+                                
+                                limitedFiles.forEach((file, index) => {
+                                    const reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        newImages[index] = { src: e.target.result, name: file.name };
+                                        filesRead++;
+                                        
+                                        if (filesRead === limitedFiles.length) {
+                                            apartmentImagesCache[apartmentId] = newImages;
+                                            refreshApartmentImagePreviews(apartmentId);
                                         }
-
-                                        // On image input, append files to images array, keeping preview DataURL for each file
-                                        document.getElementById('image-file-input').addEventListener('change', function () {
-                                            let files = Array.from(this.files || []);
-                                            let fileCount = files.length + images.filter(img => typeof img !== 'object' || img instanceof File || img.preview).length;
-                                            if (fileCount > 10) {
-                                                alert("A maximum of 10 images allowed.");
-                                                return;
-                                            }
-                                            let pendingPreview = files.length;
-                                            files.forEach(file => {
-                                                file.__previewDataUrl = ""; // for preview
-                                                let reader = new FileReader();
-                                                reader.onload = function (e) {
-                                                    file.__previewDataUrl = e.target.result;
-                                                    images.push(file);
-                                                    pendingPreview--;
-                                                    if (pendingPreview === 0) renderImages();
-                                                };
-                                                reader.readAsDataURL(file);
-                                            });
-                                            if (!files.length) renderImages();
-                                            this.value = ""; // clear input
-                                        });
-
-                                        function renderAmenities() {
-                                            let out = amenities.length === 0 ? '<span class="badge bg-light text-muted text-tiny me-1">No amenities yet</span>' : '';
-                                            amenities.forEach((a, i) => {
-                                                out += `<span class="badge rounded-pill bg-success-subtle text-success me-1 mb-1">
-                    ${a}
-                    <button type="button" class="btn-close ms-1 remove-amenity-btn" data-idx="${i}" title="Remove"></button>
-            </span>`;
-                                            });
-                                            document.getElementById('amenities-list').innerHTML = out;
-                                            document.querySelectorAll('.remove-amenity-btn').forEach(btn => {
-                                                btn.onclick = () => { amenities.splice(Number(btn.dataset.idx), 1); renderAmenities(); }
-                                            });
-                                        }
-                                        function renderRules() {
-                                            let out = rules.length === 0 ? '<span class="badge bg-light text-muted text-tiny me-1">No rules yet</span>' : '';
-                                            rules.forEach((r, i) => {
-                                                out += `<span class="badge rounded-pill bg-warning-subtle text-warning-emphasis me-1 mb-1">
-                    ${r}
-                    <button type="button" class="btn-close ms-1 remove-rule-btn" data-idx="${i}" title="Remove"></button>
-            </span>`;
-                                            });
-                                            document.getElementById('rules-list').innerHTML = out;
-                                            document.querySelectorAll('.remove-rule-btn').forEach(btn => {
-                                                btn.onclick = () => { rules.splice(Number(btn.dataset.idx), 1); renderRules(); }
-                                            });
-                                        }
-                                        renderImages(); renderAmenities(); renderRules();
-
-                                        // Amenity input
-                                        function focusAmenityInput() { document.getElementById('amenity-input').focus(); }
-                                        document.getElementById('add-amenity-btn').onclick = focusAmenityInput;
-                                        document.getElementById('add-amenity-input-btn').onclick = function () {
-                                            let val = document.getElementById('amenity-input').value.trim();
-                                            if (val) {
-                                                amenities.push(val); document.getElementById('amenity-input').value = '';
-                                                renderAmenities();
-                                                focusAmenityInput();
-                                            }
-                                        };
-                                        document.getElementById('amenity-input').addEventListener('keydown', function (e) {
-                                            if (e.key === 'Enter') { e.preventDefault(); document.getElementById('add-amenity-input-btn').click(); }
-                                        });
-                                        // Rule input
-                                        function focusRuleInput() { document.getElementById('rule-input').focus(); }
-                                        document.getElementById('add-rule-btn').onclick = focusRuleInput;
-                                        document.getElementById('add-rule-input-btn').onclick = function () {
-                                            let val = document.getElementById('rule-input').value.trim();
-                                            if (val) {
-                                                rules.push(val); document.getElementById('rule-input').value = '';
-                                                renderRules();
-                                                focusRuleInput();
-                                            }
-                                        };
-                                        document.getElementById('rule-input').addEventListener('keydown', function (e) {
-                                            if (e.key === 'Enter') { e.preventDefault(); document.getElementById('add-rule-input-btn').click(); }
-                                        });
-
-                                        // Resort Form Submit: Properly append up to 10 images (File or URL string)
-                                        document.getElementById('resortForm').onsubmit = function (e) {
-                                            e.preventDefault();
-
-                                            var submitBtn = document.getElementById('resortFormSubmitBtn');
-                                            var loadingSpan = document.getElementById('resortFormLoading');
-                                            if (submitBtn) submitBtn.disabled = true;
-                                            if (loadingSpan) loadingSpan.style.display = '';
-
-                                            let fd = new FormData();
-                                            // Form: gather normal fields
-                                            let inputs = this.elements;
-                                            for (let i = 0; i < inputs.length; ++i) {
-                                                let inp = inputs[i];
-                                                if (inp.name && inp.type !== 'file') {
-                                                    fd.append(inp.name, inp.value);
-                                                }
-                                            }
-                                            // Amenities/rules
-                                            amenities.forEach(a => fd.append('amenities', a));
-                                            rules.forEach(r => fd.append('rules', r));
-                                            // Images: Only append max 10
-                                            let totalPushed = 0;
-                                            for (let j = 0; j < images.length && totalPushed < 10; ++j) {
-                                                let img = images[j];
-                                                if (img instanceof File) fd.append('images', img);
-                                                else if (typeof img === 'string') fd.append('existingImages', img);
-                                                totalPushed++;
-                                            }
-                                            // Fix for isActive select
-                                            if (fd.has('isActive')) {
-                                                let v = fd.get('isActive');
-                                                fd.set('isActive', v === 'true' ? 'true' : 'false');
-                                            }
-                                            // POST/PUT logic
-                                            let reqType = resort._id ? 'PUT' : 'POST';
-                                            let url = resort._id ? `/resort/${resort._id}` : '/resort/create';
-                                            fetch(url, {
-                                                method: reqType,
-                                                body: fd
-                                            })
-                                            .then(async r => {
-                                                if (r.ok) { resortModal.hide(); location.reload(); }
-                                                else {
-                                                    let data;
-                                                    try {
-                                                        data = await r.json();
-                                                        alert('Error: ' + (data.message || r.status));
-                                                    } catch (ex) {
-                                                        alert('Error: ' + r.status);
-                                                    }
-                                                }
-                                            })
-                                            .catch(ex => alert('Error: ' + (ex.message || '')))
-                                            .finally(() => {
-                                                if (submitBtn) submitBtn.disabled = false;
-                                                if (loadingSpan) loadingSpan.style.display = 'none';
-                                            });
-                                        };
-
-                                        document.getElementById('resortFormModal').addEventListener('hidden.bs.modal', function () {
-                                            document.getElementById('admin-resort-modals').innerHTML = '';
-                                        });
                                     };
-
-                                    // Room Modal (multipart POST/PUT to new backend endpoints, FormData with image files/urls)
-                                    window.showRoomFormModal = function (room = {}, resortId = '') {
-                                        const arr = v => Array.isArray(v) ? v.slice() : [];
-                                        let amenities = arr(room.amenities);
-                                        // images: [] of strings (URLs) or File objects (for upload)
-                                        let images = arr(room.images);
-
+                                    reader.readAsDataURL(file);
+                                });
+                            }
+                    
+                            function refreshApartmentImagePreviews(apartmentId) {
+                                const previewContainer = document.querySelector(`.apartment-images-preview[data-id="${apartmentId}"]`);
+                                if (!previewContainer) return;
+                                
+                                previewContainer.innerHTML = '';
+                                
+                                if (Array.isArray(apartmentImagesCache[apartmentId])) {
+                                    apartmentImagesCache[apartmentId].forEach((image, index) => {
+                                        const previewItem = document.createElement('div');
+                                        previewItem.className = 'image-preview-item';
+                                        previewItem.innerHTML = `
+                                            <img src="${image.src}" alt="Preview">
+                                            <div class="remove-btn" onclick="removeApartmentImage('${apartmentId}', ${index})">
+                                                <i class="fas fa-times"></i>
+                                            </div>
+                                        `;
+                                        previewContainer.appendChild(previewItem);
+                                    });
+                                }
+                            }
+                    
+                            function removeApartmentImage(apartmentId, index) {
+                                if (!apartmentImagesCache[apartmentId]) return;
+                                
+                                apartmentImagesCache[apartmentId].splice(index, 1);
+                                refreshApartmentImagePreviews(apartmentId);
+                            }
+                    
+                            // Room management functions
+                            function addRoomUI(room = {}, index) {
+                                const list = document.getElementById('rooms-list');
+                                const roomId = index || Date.now();
+                                
+                                const roomDiv = document.createElement('div');
+                                roomDiv.className = 'room-section';
+                                roomDiv.setAttribute('data-id', roomId);
+                                
+                                const roomTypes = ["Single", "Double", "Suite", "Deluxe"];
+                                
+                                roomDiv.innerHTML = `
+                                    <div class="hierarchy-indicator">
+                                        <i class="fas fa-door-closed"></i>
+                                        <span>Room</span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Room Name *</label>
+                                            <input type="text" class="form-control room-name" value="${room.roomName || ''}" placeholder="Enter room name" required>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label class="form-label">Room Type</label>
+                                            <select class="form-control room-type">
+                                                <option value="">Select Type</option>
+                                                ${roomTypes.map(type => 
+                                                    `<option value="${type}" ${room.roomType === type ? 'selected' : ''}>${type}</option>`
+                                                ).join('')}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <label class="form-label">Capacity</label>
+                                            <input type="number" class="form-control room-capacity" value="${room.capacity || ''}" min="1">
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label class="form-label">Bed Type</label>
+                                            <input type="text" class="form-control room-bed-type" value="${room.bedType || ''}" placeholder="e.g. King, Twin">
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label class="form-label">Price Per Night (₹)</label>
+                                            <input type="number" class="form-control room-price" value="${room.pricePerNight || ''}" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Amenities</label>
+                                        <input type="text" class="form-control room-amenities" value="${Array.isArray(room.amenities) ? room.amenities.join(', ') : ''}" placeholder="Comma separated amenities">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control room-description" rows="2">${room.description || ''}</textarea>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Availability</label>
+                                        <select class="form-control room-available">
+                                            <option value="true" ${room.isAvailable !== false ? 'selected' : ''}>Available</option>
+                                            <option value="false" ${room.isAvailable === false ? 'selected' : ''}>Not Available</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Room Images</label>
+                                        <input type="file" class="form-control room-images" multiple accept="image/*">
+                                        <div class="image-preview room-images-preview" data-id="${roomId}"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="removeRoom(this)">
+                                            <i class="fas fa-trash"></i> Remove Room
+                                        </button>
+                                    </div>
+                                `;
+                                
+                                list.appendChild(roomDiv);
+                                
+                                // Initialize image preview if there are existing images
+                                if (Array.isArray(room.images) && room.images.length > 0) {
+                                    roomImagesCache[roomId] = room.images.map(src => ({ src }));
+                                    refreshRoomImagePreviews(roomId);
+                                } else {
+                                    roomImagesCache[roomId] = [];
+                                }
+                                
+                                // Add event listener for image upload
+                                const imageInput = roomDiv.querySelector('.room-images');
+                                imageInput.addEventListener('change', function() {
+                                    handleRoomImageChange(this, roomId);
+                                });
+                            }
+                    
+                            function removeRoom(button) {
+                                const roomDiv = button.closest('.room-section');
+                                const roomId = roomDiv.getAttribute('data-id');
+                                
+                                // Remove from cache
+                                delete roomImagesCache[roomId];
+                                
+                                // Remove from DOM
+                                roomDiv.remove();
+                            }
+                    
+                            function handleRoomImageChange(input, roomId) {
+                                if (!roomImagesCache[roomId]) {
+                                    roomImagesCache[roomId] = [];
+                                }
+                                
+                                const files = Array.from(input.files);
+                                const limitedFiles = files.slice(0, 5); // Limit to 5 files
+                                
+                                // Clear previous selection
+                                roomImagesCache[roomId] = [];
+                                
+                                if (limitedFiles.length === 0) {
+                                    refreshRoomImagePreviews(roomId);
+                                    return;
+                                }
+                                
+                                let filesRead = 0;
+                                const newImages = [];
+                                
+                                limitedFiles.forEach((file, index) => {
+                                    const reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        newImages[index] = { src: e.target.result, name: file.name };
+                                        filesRead++;
+                                        
+                                        if (filesRead === limitedFiles.length) {
+                                            roomImagesCache[roomId] = newImages;
+                                            refreshRoomImagePreviews(roomId);
+                                        }
+                                    };
+                                    reader.readAsDataURL(file);
+                                });
+                            }
+                    
+                            function refreshRoomImagePreviews(roomId) {
+                                const previewContainer = document.querySelector(`.room-images-preview[data-id="${roomId}"]`);
+                                if (!previewContainer) return;
+                                
+                                previewContainer.innerHTML = '';
+                                
+                                if (Array.isArray(roomImagesCache[roomId])) {
+                                    roomImagesCache[roomId].forEach((image, index) => {
+                                        const previewItem = document.createElement('div');
+                                        previewItem.className = 'image-preview-item';
+                                        previewItem.innerHTML = `
+                                            <img src="${image.src}" alt="Preview">
+                                            <div class="remove-btn" onclick="removeRoomImage('${roomId}', ${index})">
+                                                <i class="fas fa-times"></i>
+                                            </div>
+                                        `;
+                                        previewContainer.appendChild(previewItem);
+                                    });
+                                }
+                            }
+                    
+                            function removeRoomImage(roomId, index) {
+                                if (!roomImagesCache[roomId]) return;
+                                
+                                roomImagesCache[roomId].splice(index, 1);
+                                refreshRoomImagePreviews(roomId);
+                            }
+                    
+                            // Initialize apartment and room buttons
+                            document.getElementById('add-apartment-btn').addEventListener('click', () => {
+                                addApartmentUI();
+                            });
+                    
+                            document.getElementById('add-room-btn').addEventListener('click', () => {
+                                addRoomUI();
+                            });
+                    
+                            // Initialize with one apartment and one room
+                            addApartmentUI();
+                            addRoomUI();
+                    
+                            // Fetch and display apartments
+                            async function fetchApartments(search = '') {
+                                try {
+                                    const url = '/apartments' + (search ? `?search=${encodeURIComponent(search)}` : '');
+                                    const res = await fetch(url);
+                                    const data = await res.json();
+                                    
+                                    if (data.success) {
+                                        renderApartmentCards(data.apartments || data.results || []);
+                                    } else {
+                                        showToast(data.message || 'Error fetching apartments', 'error');
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    showToast('Network error', 'error');
+                                }
+                            }
+                    
+                            // Render apartment cards
+                            function renderApartmentCards(apartments) {
+                                const container = document.getElementById('premium-apts-card-wrap');
+                                container.innerHTML = '';
+                                
+                                if (!apartments.length) {
+                                    container.innerHTML = '<div class="text-center py-4">No apartments found</div>';
+                                    return;
+                                }
+                                
+                                apartments.forEach(apartment => {
+                                    const card = document.createElement('div');
+                                    card.className = 'apt-card card mb-4';
+                                    
+                                    // Prepare images for display
+                                    let imagesHtml = '';
+                                    if (Array.isArray(apartment.gallery) && apartment.gallery.length) {
+                                        const previewImages = apartment.gallery.slice(0, 3);
+                                        imagesHtml = previewImages.map(img => 
+                                            `<img src="${img}" class="rounded me-1" style="width: 60px; height: 60px; object-fit: cover;">`
+                                        ).join('');
+                                        
+                                        if (apartment.gallery.length > 3) {
+                                            imagesHtml += `<span class="badge bg-secondary ms-1">+${apartment.gallery.length - 3}</span>`;
+                                        }
+                                    } else {
+                                        imagesHtml = '<div class="text-muted">No images</div>';
+                                    }
+                                    
+                                    // Prepare location text
+                                    const locationParts = [];
+                                    if (apartment.location) {
+                                        if (apartment.location.address) locationParts.push(apartment.location.address);
+                                        if (apartment.location.city) locationParts.push(apartment.location.city);
+                                        if (apartment.location.state) locationParts.push(apartment.location.state);
+                                        if (apartment.location.country) locationParts.push(apartment.location.country);
+                                    }
+                                    
+                                    // Count apartments and rooms
+                                    const apartmentCount = Array.isArray(apartment.apartments) ? apartment.apartments.length : 0;
+                                    const roomCount = Array.isArray(apartment.rooms) ? apartment.rooms.length : 0;
+                                    
+                                    card.innerHTML = `
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <h5 class="card-title">${apartment.propertyTitle || 'Untitled Property'}</h5>
+                                                <span class="badge ${apartment.isActive ? 'bg-success' : 'bg-danger'}">
+                                                    ${apartment.isActive ? 'Active' : 'Inactive'}
+                                                </span>
+                                            </div>
+                                            
+                                            <div class="mb-2">
+                                                <span class="badge bg-primary me-1">${apartment.propertyType || 'Mixed'}</span>
+                                                ${apartment.featured ? '<span class="badge bg-warning">Featured</span>' : ''}
+                                            </div>
+                                            
+                                            <div class="mb-2">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                                    ${locationParts.join(', ') || 'No location specified'}
+                                                </small>
+                                            </div>
+                                            
+                                            <div class="mb-2">
+                                                ${imagesHtml}
+                                            </div>
+                                            
+                                            <div class="mb-2">
+                                                <small>
+                                                    <i class="fas fa-building me-1"></i> ${apartmentCount} Apartments • 
+                                                    <i class="fas fa-door-closed me-1"></i> ${roomCount} Rooms •
+                                                    <i class="fas fa-layer-group me-1"></i> ${apartment.floors || 1} Floors
+                                                </small>
+                                            </div>
+                                            
+                                            <div class="mt-3">
+                                                <button class="btn btn-sm btn-primary" onclick="openEditModal('${apartment._id}')">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                                <button class="btn btn-sm btn-info" onclick="viewApartment('${apartment._id}')">
+                                                    <i class="fas fa-eye"></i> View
+                                                </button>
+                                                <button class="btn btn-sm btn-warning" onclick="openAvailabilityModal('${apartment._id}')">
+                                                    <i class="fas fa-calendar-alt"></i> Availability
+                                                </button>
+                                                <button class="btn btn-sm btn-danger" onclick="deleteApartment('${apartment._id}')">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    `;
+                                    
+                                    container.appendChild(card);
+                                });
+                            }
+                    
+                            // Modal functions
+                            function openCreateModal() {
+                                editingApartment = null;
+                                document.getElementById('apt-modal-title').textContent = 'Add New Property';
+                                document.getElementById('apt-form').reset();
+                                document.getElementById('apt-modal').style.display = 'block';
+                                document.getElementById('apt-form-submit').onclick = createApartment;
+                                
+                                // Clear dynamic lists and add one empty field each
+                                clearDynamicList('amenities-list');
+                                clearDynamicList('highlights-list');
+                                clearDynamicList('rules-list');
+                                addDynamicInput('amenities-list', 'amenities[]');
+                                addDynamicInput('highlights-list', 'highlights[]');
+                                addDynamicInput('rules-list', 'rules[]');
+                                
+                                // Clear apartments and rooms and add one each
+                                document.getElementById('apartments-list').innerHTML = '';
+                                document.getElementById('rooms-list').innerHTML = '';
+                                addApartmentUI();
+                                addRoomUI();
+                                
+                                // Reset image caches
+                                roomImagesCache = [];
+                                apartmentImagesCache = [];
+                                
+                                // Switch to property tab
+                                switchTab('property');
+                            }
+                    
+                            function openEditModal(id) {
+                                editingApartment = id;
+                                document.getElementById('apt-modal-title').textContent = 'Edit Property';
+                                document.getElementById('apt-form').reset();
+                                document.getElementById('apt-form-submit').onclick = updateApartment;
+                                
+                                // Clear dynamic lists
+                                clearDynamicList('amenities-list');
+                                clearDynamicList('highlights-list');
+                                clearDynamicList('rules-list');
+                                
+                                // Clear apartments and rooms
+                                document.getElementById('apartments-list').innerHTML = '';
+                                document.getElementById('rooms-list').innerHTML = '';
+                                
+                                // Reset image caches
+                                roomImagesCache = [];
+                                apartmentImagesCache = [];
+                                
+                                // Fetch apartment data
+                                fetch(`/apartments/${id}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.success && data.apartment) {
+                                            const apt = data.apartment;
+                                            
+                                            // Fill form fields
+                                            document.getElementById('form-propertyTitle').value = apt.propertyTitle || '';
+                                            document.getElementById('form-description').value = apt.description || '';
+                                            document.getElementById('form-propertyType').value = apt.propertyType || 'Mixed';
+                                            
+                                            // Location
+                                            if (apt.location) {
+                                                document.getElementById('form-address').value = apt.location.address || '';
+                                                document.getElementById('form-city').value = apt.location.city || '';
+                                                document.getElementById('form-state').value = apt.location.state || '';
+                                                document.getElementById('form-country').value = apt.location.country || '';
+                                                document.getElementById('form-zipcode').value = apt.location.pincode || apt.location.zipcode || '';
+                                            }
+                                            
+                                            document.getElementById('form-floors').value = apt.floors || '';
+                                            document.getElementById('form-featured').checked = !!apt.featured;
+                                            
+                                            // Settings
+                                            document.getElementById('form-checkInTime').value = apt.checkInTime || '12:00 PM';
+                                            document.getElementById('form-checkOutTime').value = apt.checkOutTime || '11:00 AM';
+                                            document.getElementById('form-minStayNights').value = apt.minStayNights || 1;
+                                            document.getElementById('form-maxStayNights').value = apt.maxStayNights || '';
+                                            document.getElementById('form-cancellationPolicy').value = apt.cancellationPolicy || '';
+                                            
+                                            // Taxes & Fees
+                                            if (apt.taxesAndFees) {
+                                                document.getElementById('form-cleaningFee').value = apt.taxesAndFees.cleaningFee || 0;
+                                                document.getElementById('form-serviceFee').value = apt.taxesAndFees.serviceFee || 0;
+                                                document.getElementById('form-taxPercent').value = apt.taxesAndFees.taxPercent || 0;
+                                            }
+                                            
+                                            // Host
+                                            if (apt.host) {
+                                                document.getElementById('form-hostName').value = apt.host.name || '';
+                                                document.getElementById('form-hostContact').value = apt.host.contact || '';
+                                                document.getElementById('form-hostEmail').value = apt.host.email || '';
+                                            }
+                                            
+                                            // Dynamic lists
+                                            if (Array.isArray(apt.amenities)) {
+                                                apt.amenities.forEach(amenity => {
+                                                    addDynamicInput('amenities-list', 'amenities[]', amenity);
+                                                });
+                                            } else {
+                                                addDynamicInput('amenities-list', 'amenities[]');
+                                            }
+                                            
+                                            if (Array.isArray(apt.highlights)) {
+                                                apt.highlights.forEach(highlight => {
+                                                    addDynamicInput('highlights-list', 'highlights[]', highlight);
+                                                });
+                                            } else {
+                                                addDynamicInput('highlights-list', 'highlights[]');
+                                            }
+                                            
+                                            if (Array.isArray(apt.rules)) {
+                                                apt.rules.forEach(rule => {
+                                                    addDynamicInput('rules-list', 'rules[]', rule);
+                                                });
+                                            } else {
+                                                addDynamicInput('rules-list', 'rules[]');
+                                            }
+                                            
+                                            // Apartments
+                                            if (Array.isArray(apt.apartments)) {
+                                                apt.apartments.forEach((apartment, index) => {
+                                                    addApartmentUI(apartment, index);
+                                                });
+                                            } else {
+                                                addApartmentUI();
+                                            }
+                                            
+                                            // Rooms
+                                            if (Array.isArray(apt.rooms)) {
+                                                apt.rooms.forEach((room, index) => {
+                                                    addRoomUI(room, index);
+                                                });
+                                            } else {
+                                                addRoomUI();
+                                            }
+                                            
+                                            // Show modal
+                                            document.getElementById('apt-modal').style.display = 'block';
+                                            switchTab('property');
+                                        } else {
+                                            showToast('Error loading apartment data', 'error');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        showToast('Error loading apartment data', 'error');
+                                    });
+                            }
+                    
+                            function closeModal() {
+                                document.getElementById('apt-modal').style.display = 'none';
+                            }
+                    
+                            function closeViewModal() {
+                                document.getElementById('apt-view-modal').style.display = 'none';
+                            }
+                    
+                            function closeAvailabilityModal() {
+                                document.getElementById('apt-availability-modal').style.display = 'none';
+                            }
+                    
+                            // Form submission handlers
+                            async function createApartment(event) {
+                                event.preventDefault();
+                                
+                                const submitBtn = document.getElementById('apt-form-submit');
+                                const originalText = submitBtn.innerHTML;
+                                submitBtn.disabled = true;
+                                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Saving...';
+                                
+                                try {
+                                    const formData = new FormData();
+                                    const data = collectFormData();
+                                    
+                                    formData.append('data', JSON.stringify(data));
+                                    
+                                    // Append gallery images
+                                    const galleryInput = document.getElementById('form-gallery');
+                                    if (galleryInput.files.length > 0) {
+                                        for (let i = 0; i < galleryInput.files.length; i++) {
+                                            formData.append('gallery', galleryInput.files[i]);
+                                        }
+                                    }
+                                    
+                                    const response = await fetch('/apartments', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+                                    
+                                    const result = await response.json();
+                                    
+                                    if (result.success) {
+                                        showToast('Property created successfully');
+                                        closeModal();
+                                        fetchApartments();
+                                    } else {
+                                        showToast(result.message || 'Error creating property', 'error');
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    showToast('Error creating property', 'error');
+                                } finally {
+                                    submitBtn.disabled = false;
+                                    submitBtn.innerHTML = originalText;
+                                }
+                            }
+                    
+                            async function updateApartment(event) {
+                                event.preventDefault();
+                                
+                                const submitBtn = document.getElementById('apt-form-submit');
+                                const originalText = submitBtn.innerHTML;
+                                submitBtn.disabled = true;
+                                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Saving...';
+                                
+                                try {
+                                    const formData = new FormData();
+                                    const data = collectFormData();
+                                    
+                                    formData.append('data', JSON.stringify(data));
+                                    
+                                    // Append gallery images
+                                    const galleryInput = document.getElementById('form-gallery');
+                                    if (galleryInput.files.length > 0) {
+                                        for (let i = 0; i < galleryInput.files.length; i++) {
+                                            formData.append('gallery', galleryInput.files[i]);
+                                        }
+                                    }
+                                    
+                                    const response = await fetch(`/apartments/${editingApartment}`, {
+                                        method: 'PUT',
+                                        body: formData
+                                    });
+                                    
+                                    const result = await response.json();
+                                    
+                                    if (result.success) {
+                                        showToast('Property updated successfully');
+                                        closeModal();
+                                        fetchApartments();
+                                    } else {
+                                        showToast(result.message || 'Error updating property', 'error');
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    showToast('Error updating property', 'error');
+                                } finally {
+                                    submitBtn.disabled = false;
+                                    submitBtn.innerHTML = originalText;
+                                }
+                            }
+                    
+                            function collectFormData() {
+                                const form = document.getElementById('apt-form');
+                                const formData = new FormData(form);
+                                
+                                // Basic property info
+                                const data = {
+                                    propertyTitle: formData.get('propertyTitle'),
+                                    propertyType: formData.get('propertyType'),
+                                    description: formData.get('description'),
+                                    floors: formData.get('floors') ? parseInt(formData.get('floors')) : undefined,
+                                    featured: document.getElementById('form-featured').checked
+                                };
+                                
+                                // Location
+                                data.location = {
+                                    address: formData.get('address'),
+                                    city: formData.get('city'),
+                                    state: formData.get('state'),
+                                    country: formData.get('country'),
+                                    pincode: formData.get('zipcode')
+                                };
+                                
+                                // Booking settings
+                                data.checkInTime = formData.get('checkInTime');
+                                data.checkOutTime = formData.get('checkOutTime');
+                                data.minStayNights = formData.get('minStayNights') ? parseInt(formData.get('minStayNights')) : undefined;
+                                data.maxStayNights = formData.get('maxStayNights') ? parseInt(formData.get('maxStayNights')) : undefined;
+                                data.cancellationPolicy = formData.get('cancellationPolicy');
+                                
+                                // Taxes & fees
+                                data.taxesAndFees = {
+                                    cleaningFee: formData.get('cleaningFee') ? parseFloat(formData.get('cleaningFee')) : 0,
+                                    serviceFee: formData.get('serviceFee') ? parseFloat(formData.get('serviceFee')) : 0,
+                                    taxPercent: formData.get('taxPercent') ? parseFloat(formData.get('taxPercent')) : 0
+                                };
+                                
+                                // Host info
+                                data.host = {
+                                    name: formData.get('hostName'),
+                                    contact: formData.get('hostContact'),
+                                    email: formData.get('hostEmail')
+                                };
+                                
+                                // Dynamic lists
+                                data.amenities = Array.from(document.querySelectorAll('input[name="amenities[]"]'))
+                                    .map(input => input.value.trim())
+                                    .filter(value => value);
+                                    
+                                data.highlights = Array.from(document.querySelectorAll('input[name="highlights[]"]'))
+                                    .map(input => input.value.trim())
+                                    .filter(value => value);
+                                    
+                                data.rules = Array.from(document.querySelectorAll('input[name="rules[]"]'))
+                                    .map(input => input.value.trim())
+                                    .filter(value => value);
+                                
+                                // Apartments
+                                data.apartments = [];
+                                document.querySelectorAll('.apartment-section').forEach(apartmentDiv => {
+                                    const apartmentId = apartmentDiv.getAttribute('data-id');
+                                    const apartment = {
+                                        apartmentName: apartmentDiv.querySelector('.apartment-name').value,
+                                        totalRooms: apartmentDiv.querySelector('.apartment-total-rooms').value ? 
+                                            parseInt(apartmentDiv.querySelector('.apartment-total-rooms').value) : undefined,
+                                        pricePerNight: apartmentDiv.querySelector('.apartment-price').value ? 
+                                            parseFloat(apartmentDiv.querySelector('.apartment-price').value) : undefined,
+                                        maxGuests: apartmentDiv.querySelector('.apartment-max-guests').value ? 
+                                            parseInt(apartmentDiv.querySelector('.apartment-max-guests').value) : undefined,
+                                        description: apartmentDiv.querySelector('.apartment-description').value,
+                                        amenities: apartmentDiv.querySelector('.apartment-amenities').value ?
+                                            apartmentDiv.querySelector('.apartment-amenities').value.split(',').map(a => a.trim()).filter(a => a) : [],
+                                        isAvailable: apartmentDiv.querySelector('.apartment-available').value === 'true',
+                                        images: apartmentImagesCache[apartmentId] ? 
+                                            apartmentImagesCache[apartmentId].map(img => img.src) : []
+                                    };
+                                    
+                                    data.apartments.push(apartment);
+                                });
+                                
+                                // Rooms
+                                data.rooms = [];
+                                document.querySelectorAll('.room-section').forEach(roomDiv => {
+                                    const roomId = roomDiv.getAttribute('data-id');
+                                    const room = {
+                                        roomName: roomDiv.querySelector('.room-name').value,
+                                        roomType: roomDiv.querySelector('.room-type').value,
+                                        capacity: roomDiv.querySelector('.room-capacity').value ? 
+                                            parseInt(roomDiv.querySelector('.room-capacity').value) : undefined,
+                                        bedType: roomDiv.querySelector('.room-bed-type').value,
+                                        pricePerNight: roomDiv.querySelector('.room-price').value ? 
+                                            parseFloat(roomDiv.querySelector('.room-price').value) : undefined,
+                                        amenities: roomDiv.querySelector('.room-amenities').value ?
+                                            roomDiv.querySelector('.room-amenities').value.split(',').map(a => a.trim()).filter(a => a) : [],
+                                        description: roomDiv.querySelector('.room-description').value,
+                                        isAvailable: roomDiv.querySelector('.room-available').value === 'true',
+                                        images: roomImagesCache[roomId] ? 
+                                            roomImagesCache[roomId].map(img => img.src) : []
+                                    };
+                                    
+                                    data.rooms.push(room);
+                                });
+                                
+                                return data;
+                            }
+                    
+                            // Other CRUD operations
+                            async function deleteApartment(id) {
+                                if (!confirm('Are you sure you want to delete this property?')) {
+                                    return;
+                                }
+                                
+                                try {
+                                    const response = await fetch(`/apartments/${id}`, {
+                                        method: 'DELETE'
+                                    });
+                                    
+                                    const result = await response.json();
+                                    
+                                    if (result.success) {
+                                        showToast('Property deleted successfully');
+                                        fetchApartments();
+                                    } else {
+                                        showToast(result.message || 'Error deleting property', 'error');
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    showToast('Error deleting property', 'error');
+                                }
+                            }
+                    
+                            async function toggleStatus(id) {
+                                try {
+                                    const response = await fetch(`/apartments/${id}/toggle`, {
+                                        method: 'PATCH'
+                                    });
+                                    
+                                    const result = await response.json();
+                                    
+                                    if (result.success) {
+                                        showToast('Status updated successfully');
+                                        fetchApartments();
+                                    } else {
+                                        showToast(result.message || 'Error updating status', 'error');
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    showToast('Error updating status', 'error');
+                                }
+                            }
+                    
+                            function openAvailabilityModal(id) {
+                                document.getElementById('apt-availability-modal-body').innerHTML = `
+                                    <div class="mb-3">
+                                        <label class="form-label">Select Type</label>
+                                        <select class="form-control" id="availability-type">
+                                            <option value="property">Entire Property</option>
+                                            <option value="apartment">Specific Apartment</option>
+                                            <option value="room">Specific Room</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3" id="availability-specific" style="display: none;">
+                                        <label class="form-label" id="availability-specific-label">Select</label>
+                                        <select class="form-control" id="availability-specific-select"></select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Availability</label>
+                                        <select class="form-control" id="availability-value">
+                                            <option value="true">Available</option>
+                                            <option value="false">Not Available</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button" class="btn btn-secondary me-2" onclick="closeAvailabilityModal()">Cancel</button>
+                                        <button type="button" class="btn btn-primary" onclick="submitAvailability('${id}')">Update</button>
+                                    </div>
+                                `;
+                                
+                                document.getElementById('apt-availability-modal').style.display = 'block';
+                                
+                                // Add event listener for type change
+                                document.getElementById('availability-type').addEventListener('change', function() {
+                                    const specificDiv = document.getElementById('availability-specific');
+                                    const specificSelect = document.getElementById('availability-specific-select');
+                                    
+                                    if (this.value === 'property') {
+                                        specificDiv.style.display = 'none';
+                                    } else {
+                                        specificDiv.style.display = 'block';
+                                        
+                                        if (this.value === 'apartment') {
+                                            document.getElementById('availability-specific-label').textContent = 'Select Apartment';
+                                            // In a real app, you would fetch the apartments for this property
+                                            specificSelect.innerHTML = '<option value="apartment1">Apartment 1</option><option value="apartment2">Apartment 2</option>';
+                                        } else if (this.value === 'room') {
+                                            document.getElementById('availability-specific-label').textContent = 'Select Room';
+                                            // In a real app, you would fetch the rooms for this property
+                                            specificSelect.innerHTML = '<option value="room1">Room 1</option><option value="room2">Room 2</option>';
+                                        }
+                                    }
+                                });
+                            }
+                    
+                            async function submitAvailability(id) {
+                                const type = document.getElementById('availability-type').value;
+                                const available = document.getElementById('availability-value').value === 'true';
+                                const specific = document.getElementById('availability-specific-select').value;
+                                
+                                let payload = { available };
+                                
+                                if (type === 'apartment') {
+                                    payload.apartmentName = specific;
+                                } else if (type === 'room') {
+                                    payload.roomName = specific;
+                                }
+                                
+                                try {
+                                    const response = await fetch(`/apartments/${id}/availability`, {
+                                        method: 'PATCH',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(payload)
+                                    });
+                                    
+                                    const result = await response.json();
+                                    
+                                    if (result.success) {
+                                        showToast('Availability updated successfully');
+                                        closeAvailabilityModal();
+                                        fetchApartments();
+                                    } else {
+                                        showToast(result.message || 'Error updating availability', 'error');
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    showToast('Error updating availability', 'error');
+                                }
+                            }
+                    
+                            async function viewApartment(id) {
+                                try {
+                                    const response = await fetch(`/apartments/${id}`);
+                                    const result = await response.json();
+                                    
+                                    if (result.success && result.apartment) {
+                                        const apartment = result.apartment;
                                         let html = `
-        <div class="modal fade" id="roomFormModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <form id="roomForm" autocomplete="off" enctype="multipart/form-data">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">${room._id ? 'Edit Room' : 'Add Room'}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body" style="max-height:70vh;overflow-y:auto;">
-                        <input type="hidden" name="id" value="${room._id || ''}">
-                        <input type="hidden" name="property" value="${room.property || resortId}">
-                        <div class="mb-3">
-                            <label><b>Room Number *</b></label>
-                            <input type="text" name="roomNumber" class="form-control" maxlength="24" value="${room.roomNumber || ''}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label><b>Room Name/Title</b></label>
-                            <input type="text" name="name" class="form-control" maxlength="50" value="${room.name || ''}">
-                        </div>
-                        <div class="mb-3">
-                            <label><b>Type</b></label>
-                            <select name="roomType" class="form-select">
-                                <option value="Standard" ${room.roomType === "Standard" ? 'selected' : ''}>Standard</option>
-                                <option value="Deluxe" ${room.roomType === "Deluxe" ? 'selected' : ''}>Deluxe</option>
-                                <option value="Suite" ${room.roomType === "Suite" ? 'selected' : ''}>Suite</option>
-                                <option value="Suite" ${room.roomType && room.roomType !== "Standard" && room.roomType !== "Deluxe" && room.roomType !== "Suite" ? 'selected' : ''}>Other</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label><b>Bed Type</b></label>
-                            <input type="text" name="bedType" class="form-control" maxlength="40" value="${room.bedType || ''}" placeholder="E.g. King, Queen, Twin">
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label><b>Capacity</b></label>
-                                <input type="number" name="capacity" class="form-control" value="${room.capacity || 2}" min="1" max="20">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label><b>Base Price Per Night *</b></label>
-                                <input type="number" name="pricePerNight" class="form-control" value="${room.pricePerNight || 0}" min="0" required>
-                            </div>
-                        </div>
-                        <div class="row">
-        
-                            <div class="col-md-6 mb-3">
-                                <label><b>Current Status</b></label>
-                                <select name="status" class="form-select">
-                                    <option value="Available" ${room.status === "Available" ? 'selected' : ''}>Available</option>
-                                    <option value="Booked" ${room.status === "Booked" ? 'selected' : ''}>Booked</option>
-                                    <option value="Maintenance" ${room.status === "Maintenance" ? 'selected' : ''}>Maintenance</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label><b>Room Description</b></label>
-                            <textarea name="description" class="form-control" rows="2" maxlength="400">${room.description || ''}</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label><b>Room Images</b></label>
-                            <div id="image-list-box-room" class="mb-2"></div>
-                            <div class="input-group mb-2 gap-2" style="flex-wrap:nowrap">
-                                <input type="file" class="form-control" id="room-image-file-input" multiple accept="image/*">
-                            </div>
-                            <div class="text-tiny text-muted mt-1">Upload images (drag to arrange, max 10)</div>
-                        </div>
-                        <div class="mb-3">
-                            <label><b>Room Amenities
-                                <button class="btn btn-xs btn-success ms-1 py-0 px-1" type="button" id="add-room-amenity-btn">
-                                    <i class="icon-plus"></i><span style="font-size:90%">Add</span>
-                                </button>
-                            </b></label>
-                            <div id="room-amenities-list" class="mb-1"></div>
-                            <div class="input-group mt-1">
-                                <input type="text" class="form-control" id="room-amenity-input" placeholder="Type amenity and click +">
-                                <button class="btn btn-primary" type="button" id="add-room-amenity-input-btn"><b>+</b></button>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label><b>Extra Bed Price</b></label>
-                            <input type="number" name="extraBedPrice" class="form-control" value="${room.extraBedPrice || ''}" min="0" placeholder="If applicable">
-                        </div>
-                       
-                      
-                        <div class="mb-3">
-                            <label><b>Max Occupants/Guests</b></label>
-                            <input type="number" name="maxOccupants" class="form-control" min="1" max="30" value="${room.maxOccupants != null ? room.maxOccupants : ''}">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="roomFormSubmitBtn" type="submit" class="btn btn-primary">${room._id ? 'Update' : 'Create'}</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <span id="roomFormLoading" style="display:none;margin-left:8px;">
-                            <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
-                            <span class="ms-1 align-middle">Processing...</span>
-                        </span>
-                    </div>
-                </div>
-            </form></div>
-        </div>
-        `;
-
-                                        document.getElementById('admin-resort-modals').innerHTML = html;
-                                        var roomModal = new bootstrap.Modal(document.getElementById('roomFormModal'));
-                                        roomModal.show();
-
-                                        // Room images logic: image[] is either URL string or File. 
-                                        function renderRoomImages() {
-                                            const wrap = document.getElementById('image-list-box-room');
-                                            if (!wrap) return;
-                                            wrap.innerHTML = images.length === 0 ? '<div class="text-tiny text-muted">No images added.</div>' : '';
-                                            images.forEach((img, idx) => {
-                                                let src = '';
-                                                if (typeof img === 'string') src = img;
-                                                else if (img instanceof File) src = img.__previewDataUrl || '';
-                                                else if (img && typeof img === 'object' && img.preview) src = img.preview;
-                                                wrap.innerHTML += `
-                                                    <div class="d-flex align-items-center mb-2 resort-img-item" style="gap:7px" draggable="true" data-idx="${idx}">
-                                                        <img src="${src}" style="width:50px;height:38px;object-fit:cover; border-radius:4px;border:1px solid #ddd;">
-                                                        <div>
-                                                            <button class="btn btn-xs btn-light move-img-up-room" data-idx="${idx}" title="Move up"><i class="icon-arrow-up"></i></button>
-                                                            <button class="btn btn-xs btn-light move-img-down-room" data-idx="${idx}" title="Move down"><i class="icon-arrow-down"></i></button>
-                                                            <button class="btn btn-xs btn-danger remove-image-room" data-idx="${idx}" title="Remove"><i class="icon-trash"></i></button>
-                                                        </div>
+                                            <h5>${apartment.propertyTitle || 'Untitled Property'}</h5>
+                                            <p><strong>Type:</strong> ${apartment.propertyType || 'Mixed'}</p>
+                                            <p><strong>Description:</strong> ${apartment.description || 'No description'}</p>
+                                            
+                                            <h6 class="mt-4">Location</h6>
+                                            <p>
+                                                ${apartment.location ? `
+                                                    ${apartment.location.address || ''}<br>
+                                                    ${apartment.location.city || ''}, ${apartment.location.state || ''}<br>
+                                                    ${apartment.location.country || ''} ${apartment.location.pincode || ''}
+                                                ` : 'No location specified'}
+                                            </p>
+                                        `;
+                                        
+                                        // Apartments
+                                        if (Array.isArray(apartment.apartments) && apartment.apartments.length > 0) {
+                                            html += `<h6 class="mt-4">Apartments (${apartment.apartments.length})</h6>`;
+                                            apartment.apartments.forEach(apt => {
+                                                html += `
+                                                    <div class="border rounded p-2 mb-2">
+                                                        <strong>${apt.apartmentName || 'Unnamed Apartment'}</strong><br>
+                                                        <small>
+                                                            Rooms: ${apt.totalRooms || 'N/A'} | 
+                                                            Price: ₹${apt.pricePerNight || 'N/A'} | 
+                                                            Max Guests: ${apt.maxGuests || 'N/A'} |
+                                                            ${apt.isAvailable ? 'Available' : 'Not Available'}
+                                                        </small>
                                                     </div>
                                                 `;
                                             });
-                                            // Drag-drop
-                                            Array.from(wrap.querySelectorAll('.resort-img-item')).forEach(el => {
-                                                el.ondragstart = function (e) { e.dataTransfer.setData("room-image-drag", el.dataset.idx);}
-                                                el.ondragover = function (e) { e.preventDefault(); };
-                                                el.ondrop = function (e) {
-                                                    e.preventDefault();
-                                                    let from = Number(e.dataTransfer.getData("room-image-drag"));
-                                                    let to = Number(el.dataset.idx);
-                                                    if (from !== to) {
-                                                        let temp = images[from];
-                                                        images.splice(from, 1);
-                                                        images.splice(to, 0, temp);
-                                                        renderRoomImages();
-                                                    }
-                                                }
-                                            });
-                                            // Up/down/remove
-                                            wrap.querySelectorAll('.move-img-up-room').forEach(btn => {
-                                                btn.onclick = () => {
-                                                    let i = Number(btn.dataset.idx);
-                                                    if (i > 0) [images[i - 1], images[i]] = [images[i], images[i - 1]];
-                                                    renderRoomImages();
-                                                }
-                                            });
-                                            wrap.querySelectorAll('.move-img-down-room').forEach(btn => {
-                                                btn.onclick = () => {
-                                                    let i = Number(btn.dataset.idx);
-                                                    if (i < images.length - 1) [images[i], images[i + 1]] = [images[i + 1], images[i]];
-                                                    renderRoomImages();
-                                                }
-                                            });
-                                            wrap.querySelectorAll('.remove-image-room').forEach(btn => {
-                                                btn.onclick = () => { images.splice(Number(btn.dataset.idx), 1); renderRoomImages(); };
+                                        }
+                                        
+                                        // Rooms
+                                        if (Array.isArray(apartment.rooms) && apartment.rooms.length > 0) {
+                                            html += `<h6 class="mt-4">Rooms (${apartment.rooms.length})</h6>`;
+                                            apartment.rooms.forEach(room => {
+                                                html += `
+                                                    <div class="border rounded p-2 mb-2">
+                                                        <strong>${room.roomName || 'Unnamed Room'}</strong> (${room.roomType || 'N/A'})<br>
+                                                        <small>
+                                                            Capacity: ${room.capacity || 'N/A'} | 
+                                                            Bed: ${room.bedType || 'N/A'} | 
+                                                            Price: ₹${room.pricePerNight || 'N/A'} |
+                                                            ${room.isAvailable ? 'Available' : 'Not Available'}
+                                                        </small>
+                                                    </div>
+                                                `;
                                             });
                                         }
-
-                                        // On image input: process File as preview, push to images[]
-                                        document.getElementById('room-image-file-input').addEventListener('change', function () {
-                                            let files = Array.from(this.files || []);
-                                            let totalCount = files.length + images.filter(img => typeof img !== 'object' || img instanceof File || img.preview).length;
-                                            if (totalCount > 10) {
-                                                alert("A maximum of 10 images allowed.");
-                                                return;
-                                            }
-                                            let pending = files.length;
-                                            files.forEach(file => {
-                                                if (!file.type.startsWith('image/')) {
-                                                    pending--;
-                                                    if (pending === 0) renderRoomImages();
-                                                    return;
-                                                }
-                                                file.__previewDataUrl = "";
-                                                let reader = new FileReader();
-                                                reader.onload = function (e) {
-                                                    file.__previewDataUrl = e.target.result;
-                                                    images.push(file);
-                                                    pending--;
-                                                    if (pending === 0) renderRoomImages();
-                                                };
-                                                reader.readAsDataURL(file);
-                                            });
-                                            if (!files.length) renderRoomImages();
-                                            this.value = "";
-                                        });
-
-                                        // Room amenities
-                                        function renderRoomAmenities() {
-                                            let out = amenities.length === 0 ? '<span class="badge bg-light text-muted text-tiny me-1">No amenities yet</span>' : '';
-                                            amenities.forEach((a, i) => {
-                                                out += `<span class="badge rounded-pill bg-success-subtle text-success me-1 mb-1">
-                    ${a}
-                    <button type="button" class="btn-close ms-1 remove-room-amenity-btn" data-idx="${i}" title="Remove"></button>
-                    </span>`;
-                                            });
-                                            document.getElementById('room-amenities-list').innerHTML = out;
-                                            document.querySelectorAll('.remove-room-amenity-btn').forEach(btn => {
-                                                btn.onclick = () => { amenities.splice(Number(btn.dataset.idx), 1); renderRoomAmenities(); }
-                                            });
+                                        
+                                        document.getElementById('apt-view-modal-body').innerHTML = html;
+                                        document.getElementById('apt-view-modal').style.display = 'block';
+                                    } else {
+                                        showToast('Error loading property details', 'error');
+                                    }
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    showToast('Error loading property details', 'error');
+                                }
+                            }
+                    
+                            // Search functionality
+                            function doApartmentSearch() {
+                                const searchTerm = document.getElementById('apt-search-input').value.trim();
+                                fetchApartments(searchTerm);
+                            }
+                    
+                            // Event listeners
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Initial fetch
+                                fetchApartments();
+                                
+                                // Search button
+                                document.getElementById('apt-search-btn').addEventListener('click', doApartmentSearch);
+                                
+                                // Search input (enter key)
+                                document.getElementById('apt-search-input').addEventListener('keyup', function(event) {
+                                    if (event.key === 'Enter') {
+                                        doApartmentSearch();
+                                    }
+                                });
+                                
+                                // Add button
+                                document.getElementById('apt-add-btn').addEventListener('click', openCreateModal);
+                                
+                                // Close buttons
+                                document.querySelectorAll('.close-btn').forEach(btn => {
+                                    btn.addEventListener('click', function() {
+                                        const modal = this.closest('.modal-overlay');
+                                        if (modal) {
+                                            modal.style.display = 'none';
                                         }
-                                        function focusRoomAmenityInput() { document.getElementById('room-amenity-input').focus();}
-                                        document.getElementById('add-room-amenity-btn').onclick = focusRoomAmenityInput;
-                                        document.getElementById('add-room-amenity-input-btn').onclick = function () {
-                                            let val = document.getElementById('room-amenity-input').value.trim();
-                                            if (val) {
-                                                amenities.push(val);
-                                                document.getElementById('room-amenity-input').value = '';
-                                                renderRoomAmenities();
-                                                focusRoomAmenityInput();
-                                            }
-                                        };
-                                        document.getElementById('room-amenity-input').addEventListener('keydown', function (e) {
-                                            if (e.key === 'Enter') { e.preventDefault(); document.getElementById('add-room-amenity-input-btn').click(); }
-                                        });
-                                        renderRoomImages(); renderRoomAmenities();
-
-                                        // Submit room form as multipart, append images (File or string), amenities array, etc.
-                                        document.getElementById('roomForm').onsubmit = function (e) {
-                                            e.preventDefault();
-                                            var submitBtn = document.getElementById('roomFormSubmitBtn');
-                                            var loadingSpan = document.getElementById('roomFormLoading');
-                                            if (submitBtn) submitBtn.disabled = true;
-                                            if (loadingSpan) loadingSpan.style.display = '';
-
-                                            let fd = new FormData();
-                                            // Fill all named inputs (except files)
-                                            Array.from(this.elements).forEach(inp => {
-                                                if (inp.name && inp.type !== 'file') {
-                                                    fd.append(inp.name, inp.value);
-                                                }
-                                            });
-                                            // amenities
-                                            amenities.forEach(a => fd.append('amenities', a));
-                                            // images: only max 10
-                                            let pushed = 0;
-                                            for (let j = 0; j < images.length && pushed < 10; ++j) {
-                                                let img = images[j];
-                                                if (img instanceof File) fd.append('images', img);
-                                                else if (typeof img === 'string') fd.append('existingImages', img);
-                                                pushed++;
-                                            }
-                                            // compose endpoint/verb
-                                            let reqType = room._id ? 'PUT' : 'POST';
-                                            let url = room._id ? `/resort/room/${room._id}` : '/resort/room';
-                                            fetch(url, {
-                                                method: reqType,
-                                                body: fd
-                                            })
-                                            .then(async r => {
-                                                if (r.ok) { roomModal.hide(); location.reload(); }
-                                                else {
-                                                    let data;
-                                                    try { data = await r.json(); alert('Error: ' + (data.message || r.status)); }
-                                                    catch { alert('Error: ' + r.status); }
-                                                }
-                                            })
-                                            .catch(ex => alert('Error: ' + (ex.message || '')))
-                                            .finally(() => {
-                                                if (submitBtn) submitBtn.disabled = false;
-                                                if (loadingSpan) loadingSpan.style.display = 'none';
-                                            });
-                                        };
-                                        document.getElementById('roomFormModal').addEventListener('hidden.bs.modal', function () {
-                                            document.getElementById('admin-resort-modals').innerHTML = '';
-                                        });
-                                    };
-
-                                })();
-                            </script>
-                            <!-- /main-content-wrap -->
-                        </div>
+                                    });
+                                });
+                                
+                                // Close modals when clicking outside
+                                document.querySelectorAll('.modal-overlay').forEach(modal => {
+                                    modal.addEventListener('click', function(event) {
+                                        if (event.target === this) {
+                                            this.style.display = 'none';
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
                         <!-- /main-content-wrap -->
                         <!-- bottom-page -->
                         <div class="bottom-page">

@@ -3,9 +3,17 @@ const router = express.Router();
 const blogController = require('../controllers/blogController');
 const bannerController = require('../controllers/bannerController');
 const testimonialController = require('../controllers/testimonialController');
-const mainBannerCtrl = require('../controllers/mainBannerController');
+  const mainBannerCtrl = require('../controllers/mainBannerController');
+  const pgController = require('../controllers/pgController');
 const upload = require('../utils/multer');
-const { sendEmailToAdmin } = require('../utils/email');
+const {
+  createBooking,
+  listBookings,
+  getBooking,
+  cancelBooking,
+  updateBookingStatus,
+  deletePremiumApartmentBooking
+} = require("../controllers/premiumApartmentBookingController");
 
 router.get('/main', mainBannerCtrl.getAll);
 router.post('/main', upload.single('image'), mainBannerCtrl.create);
@@ -36,19 +44,33 @@ router.put('/admin-testimonials/:id', upload.single('image'), testimonialControl
 router.delete('/admin-testimonials/:id', testimonialController.deleteTestimonial);
 router.patch('/admin-testimonials/toggle-status/:id', testimonialController.toggleTestimonialStatus);
 
-// routes/apiRoutes.js
-router.post('/book', async (req, res) => {
-    try {
-      const booking = req.body;
+
+  // CREATE booking
+router.post("/premium-apartment-booking", createBooking);
+router.delete("/premium-apartment-booking", deletePremiumApartmentBooking);
+
+// GET all bookings
+router.get("/premium-apartment-booking", listBookings);
+
+// GET single booking
+router.get("/premium-apartment-booking/:id", getBooking);
+
+// CANCEL booking
+router.put("/premium-apartment-booking/:id/cancel", cancelBooking);
+
+// UPDATE booking status
+router.put("/premium-apartment-booking/:id/status", updateBookingStatus);
   
-      await sendEmailToAdmin(booking);
-      
-      res.status(200).json({ success: true });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ success: false, message: 'Notification failed' });
-    }
-  });
-  
+// Create PG
+router.post("/create-pg", upload.array("images", 10), pgController.createPG);
+
+// Update PG
+router.put("/update-pg/:id", upload.array("images", 10), pgController.updatePG);
+
+// Delete PG
+router.delete("/delete-pg/:id", pgController.deletePG);
+
+// Update Availability
+router.patch("/update-pg/:id/availability", pgController.updateAvailability);
 
 module.exports = router;
