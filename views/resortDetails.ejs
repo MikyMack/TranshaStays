@@ -359,6 +359,25 @@
             border: none;
             border-radius: 0;
         }
+        /* Prevent modal shake/jitter due to scrollbar and transform animations */
+        .modal {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            will-change: opacity;
+        }
+        .modal-open {
+            /* Keep layout width stable when scrollbar toggles */
+            padding-right: 0 !important;
+        }
+        .modal.fade.image-modal .modal-dialog {
+            transition: none !important; /* disable slide/scale animation that causes shake */
+        }
+        .image-modal .modal-dialog {
+            margin: 0 auto; /* center without horizontal jump */
+        }
+        .image-modal .modal-body {
+            overflow: hidden; /* avoid inner scrollbars flicker */
+        }
         
         .image-modal .modal-header {
             border-bottom: none;
@@ -399,7 +418,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            transition: var(--transition);
+
             z-index: 10;
         }
         
@@ -1520,7 +1539,33 @@
             window.activeGalleryIdx = (typeof startIdx !== 'undefined' && startIdx >= 0 && startIdx < imgList.length) ? startIdx : 0;
             changeModalImage(galleryId, 0, true);
 
-            var bsModal = new bootstrap.Modal(modal);
+            // Create modal with options to prevent focus/scroll enforcement jitter
+            var bsModal = new bootstrap.Modal(modal, {
+                backdrop: true,
+                keyboard: true,
+                focus: false
+            });
+
+            // Lock body width to prevent layout shift when scrollbar disappears
+            var body = document.body;
+            var prevOverflow = body.style.overflow;
+            var prevPaddingRight = body.style.paddingRight;
+            var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            if (scrollbarWidth > 0) {
+                body.style.paddingRight = '0px';
+            }
+            body.style.overflow = 'hidden';
+
+            modal.addEventListener('hidden.bs.modal', function onHidden(){
+                body.style.overflow = prevOverflow;
+                body.style.paddingRight = prevPaddingRight;
+                modal.removeEventListener('hidden.bs.modal', onHidden);
+                // Clear active gallery when closed
+                if (window.activeGalleryId === galleryId) {
+                    window.activeGalleryId = null;
+                }
+            });
+
             bsModal.show();
             // Save for closing elsewhere
             modal._bsModal = bsModal;
