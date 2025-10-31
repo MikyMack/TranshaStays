@@ -107,38 +107,62 @@
     <section class="rooms1 section-padding pb-60" data-scroll-index="1">
         <div class="container">
             <div class="row">
-                <% if (Array.isArray(resorts) && resorts.length > 0) { %>
-                    <% resorts.forEach(function(resort) { %>
+                <% if (Array.isArray(premiumApartments) && premiumApartments.length > 0) { %>
+                    <% premiumApartments.forEach(function(apartment) { 
+                        // Pick main image (prefer apartment.gallery[0], fallback to default)
+                        var imgSrc = (Array.isArray(apartment.gallery) && apartment.gallery.length > 0) ? apartment.gallery[0] : '/img/default-room.jpg';
+
+                        // Compose location line
+                        var address = (apartment.location && apartment.location.address) ? apartment.location.address + ', ' : '';
+                        var city = (apartment.location && apartment.location.city) ? apartment.location.city + ', ' : '';
+                        var state = (apartment.location && apartment.location.state) ? apartment.location.state + ', ' : '';
+                        var country = (apartment.location && apartment.location.country) ? apartment.location.country : '';
+
+                        // Find minimum room price (in rooms or apartments array)
+                        var minPriceRoom = null;
+                        if (Array.isArray(apartment.rooms) && apartment.rooms.length > 0) {
+                            minPriceRoom = Math.min.apply(null, apartment.rooms
+                                .map(function(room) { return room.pricePerNight || Infinity; })
+                                .filter(function(price) { return price > 0; })
+                            );
+                        }
+                        // Also look for apartments with pricePerNight
+                        var minPriceApt = null;
+                        if (Array.isArray(apartment.apartments) && apartment.apartments.length > 0) {
+                            minPriceApt = Math.min.apply(null, apartment.apartments
+                                .map(function(a) { return a.pricePerNight || Infinity; })
+                                .filter(function(price) { return price > 0; })
+                            );
+                        }
+                        var showMinPrice = (isFinite(minPriceRoom) || isFinite(minPriceApt));
+                        var minPrice = Math.min(
+                            isFinite(minPriceRoom) ? minPriceRoom : Infinity,
+                            isFinite(minPriceApt) ? minPriceApt : Infinity
+                        );
+                    %>
                         <div class="col-md-6 mb-60">
                             <div class="rooms1-single">
                                 <div class="rooms1-img">
-                                    <img src="<%= resort.images && resort.images.length > 0 ? resort.images[0] : '/img/default-room.jpg' %>" alt="<%= resort.name %>">
+                                    <img src="<%= imgSrc %>" alt="<%= apartment.propertyTitle %>">
                                 </div>
                                 <div class="rooms1-content active">
                                     <div class="row">
                                         <div class="col-md-12 col-lg-6">
                                             <div class="rooms1-title">
-                                                <a href="/moreDetails/<%= encodeURIComponent(resort.slug || resort.name) %>">
-                                                    <%= resort.name %>
+                                                <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>">
+                                                    <%= apartment.propertyTitle %>
                                                 </a>
                                             </div>
                                             <div class="rooms1-tagline">
-                                                <%= resort.address ? resort.address + ', ' : '' %>
-                                                <%= resort.city ? resort.city + ', ' : '' %>
-                                                <%= resort.state ? resort.state + ', ' : '' %>
-                                                <%= resort.country ? resort.country : '' %>
+                                                <%= address %><%= city %><%= state %><%= country %>
                                             </div>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             <div class="book">
                                                 <div>
-                                                    <a href="/moreDetails/<%= encodeURIComponent(resort.slug || resort.name) %>" class="butn-dark2"><span>More Details</span></a>
+                                                    <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>" class="butn-dark2"><span>More Details</span></a>
                                                 </div>
-                                                <% if (Array.isArray(resort.rooms) && resort.rooms.length > 0) { 
-                                                    // Find min price of all rooms for this resort
-                                                    var prices = resort.rooms.map(function(room) { return room.pricePerNight || 0; });
-                                                    var minPrice = Math.min.apply(null, prices);
-                                                %>
+                                                <% if (showMinPrice && isFinite(minPrice)) { %>
                                                     <div><span>from</span><span class="price">₹<%= minPrice %></span></div>
                                                 <% } %>
                                             </div>
@@ -149,7 +173,7 @@
                         </div>
                     <% }); %>
                 <% } else { %>
-                    <div class="col-12"><p class="text-center text-muted">No resorts available at the moment.</p></div>
+                    <div class="col-12"><p class="text-center text-muted">No premium apartments available at the moment.</p></div>
                 <% } %>
             </div>
         </div>

@@ -160,7 +160,195 @@
     </header> 
 
     <!-- Booking Search -->
+  <!-- Rooms -->
+  <section class="rooms1 section-padding">
+    <div class="container">
+      <div class="row mb-30 d-flex align-items-end">
+        <div class="col-md-5">
+          <div class="sub-title border-bot-light mb-2">Discover</div>
+          <!-- Premium Apartment Filter as Themed Buttons -->
+          <div id="apartmentFilterGroup" class="transha-filter-btn-group d-flex flex-wrap gap-2" role="group"
+               aria-label="Apartment filter buttons">
+            <button type="button" class="transha-filter-btn active" data-apartment="all">All Apartments</button>
+            <% if (Array.isArray(premiumApartments) && premiumApartments.length > 0) { %>
+              <% premiumApartments.forEach(function(apartment) { %>
+                <button 
+                  type="button" 
+                  class="transha-filter-btn"
+                  data-apartment="<%= apartment._id %>">
+                  <%= apartment.propertyTitle %>
+                </button>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+        <div class="col-md-7">
+            <div class="section-title">Premium Apartment <span>&amp;</span> Rooms</div>
+            <p>Enjoy modern comfort and style in our premium apartment rooms, designed for a relaxing and memorable stay.</p>
+        </div>
+      </div>
 
+      <div class="rooms1-carousel owl-theme owl-carousel" id="premiumRoomsContainer">
+        <% if (Array.isArray(premiumApartments) && premiumApartments.length > 0) { %>
+          <% premiumApartments.forEach(function(apartment) { %>
+            <% 
+              // Utility to pick first available image (room > full apartment > gallery > fallback)
+              function getRoomImage(roomObj, fullAptObj, apartmentObj) {
+                // Try room.images first, if not fullApt.images, if not apartment.gallery, if not fallback
+                if (roomObj && Array.isArray(roomObj.images) && roomObj.images.length > 0 && typeof roomObj.images[0] === 'string' && roomObj.images[0].trim()) {
+                  return roomObj.images[0];
+                }
+                if (fullAptObj && Array.isArray(fullAptObj.images) && fullAptObj.images.length > 0 && typeof fullAptObj.images[0] === 'string' && fullAptObj.images[0].trim()) {
+                  return fullAptObj.images[0];
+                }
+                if (apartmentObj && Array.isArray(apartmentObj.gallery) && apartmentObj.gallery.length > 0 && typeof apartmentObj.gallery[0] === 'string' && apartmentObj.gallery[0].trim()) {
+                  return apartmentObj.gallery[0];
+                }
+                return '/img/default-room.jpg';
+              }
+              // For apartments with "Room Based" or "Mixed", show individual rooms
+              if (apartment.rooms && apartment.rooms.length > 0) {
+                apartment.rooms.forEach(function(room) { 
+                  var imgSrc = getRoomImage(room, null, apartment);
+            %>
+                <div class="rooms1-single" data-apartment="<%= apartment._id %>">
+                  <div class="rooms1-img">
+                    <img src="<%= imgSrc %>" alt="<%= room.roomType || 'Room' %>">
+                  </div>
+                  <div class="rooms1-content">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="rooms1-title">
+                          <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>">
+                            <%= apartment.propertyTitle %> - <%= room.roomType %> <% if (room.roomName) { %> (<%= room.roomName %>) <% } %>
+                          </a>
+                        </div>
+                        <div class="rooms1-tagline"><%= room.capacity %> adults</div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="book">
+                          <div>
+                            <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>" class="butn-dark2"><span>More Details</span></a>
+                          </div>
+                          <div><span>from</span><span class="price">₹<%= room.pricePerNight %></span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            <%   }); 
+              }
+
+              if (apartment.apartments && apartment.apartments.length > 0) {
+                apartment.apartments.forEach(function(fullApt) {
+                  var imgSrc = getRoomImage(null, fullApt, apartment);
+            %>
+                <div class="rooms1-single" data-apartment="<%= apartment._id %>">
+                  <div class="rooms1-img">
+                    <img src="<%= imgSrc %>" alt="<%= fullApt.apartmentName || apartment.propertyTitle %>">
+                  </div>
+                  <div class="rooms1-content">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="rooms1-title">
+                          <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>">
+                            <%= fullApt.apartmentName || apartment.propertyTitle %>
+                          </a>
+                        </div>
+                        <div class="rooms1-tagline">
+                          <%= fullApt.totalRooms %> Rooms &bull; up to <%= fullApt.maxGuests || "?" %> guests
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="book">
+                          <div>
+                            <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>" class="butn-dark2"><span>More Details</span></a>
+                          </div>
+                          <div>
+                            <span>from</span>
+                            <span class="price">₹<%= fullApt.pricePerNight %></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            <%   });
+              }
+            %>
+          <% }); %>
+        <% } else { %>
+          <div class="text-center text-muted w-100">No premium apartments available.</div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const filterGroup = document.getElementById("apartmentFilterGroup");
+      const roomNodes = document.querySelectorAll(".rooms1-single");
+
+      function getOwlIndexOfFirstVisible($carousel) {
+        // Returns the index for Owl Carousel corresponding to the first visible room
+        let $visible = $carousel.find('.rooms1-single').filter(function () {
+          return $(this).css('display') !== 'none';
+        });
+        if ($visible.length) {
+          // Calculate index of first visible within carousel items
+          let allItems = $carousel.find('.rooms1-single');
+          let firstVisible = $visible[0];
+          return allItems.index(firstVisible);
+        }
+        return 0;
+      }
+
+      filterGroup.addEventListener("click", function (e) {
+        if (!e.target.classList.contains("transha-filter-btn")) return;
+
+        // Set active button
+        Array.from(filterGroup.children).forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        const selected = e.target.getAttribute("data-apartment");
+
+        // Show/hide room items
+        let visibleRooms = [];
+        roomNodes.forEach(room => {
+          const aId = room.getAttribute("data-apartment");
+          if (selected === "all" || aId === selected) {
+            room.style.display = "block";
+            visibleRooms.push(room);
+          } else {
+            room.style.display = "none";
+          }
+        });
+
+        // Owl Carousel: Refresh and CENTER to show first visible room in center
+        const $carousel = $(".rooms1-carousel");
+        if ($carousel.data("owl.carousel")) {
+          $carousel.trigger("refresh.owl.carousel");
+          setTimeout(function () {
+            let idx = getOwlIndexOfFirstVisible($carousel);
+            // Center the selected apartment's first room in carousel
+            let owlData = $carousel.data('owl.carousel');
+            if (owlData && owlData.settings.center) {
+              $carousel.trigger('to.owl.carousel', [idx, 400, true]);
+            } else {
+              $carousel.trigger('to.owl.carousel', [idx, 400, true]);
+            }
+          }, 200);
+        }
+      });
+
+      // On page load, auto-center all
+      setTimeout(function () {
+        const $carousel = $(".rooms1-carousel");
+        if ($carousel.data("owl.carousel")) {
+          let idx = getOwlIndexOfFirstVisible($carousel);
+          $carousel.trigger('to.owl.carousel', [idx, 400, true]);
+        }
+      }, 400);
+    });
+  </script>
     <!-- About -->
     <section class="about section-padding bg-white">
         <div class="container">
@@ -227,195 +415,7 @@
         </div>
     </section>
 
-    <!-- Rooms -->
-    <section class="rooms1 section-padding">
-      <div class="container">
-        <div class="row mb-30 d-flex align-items-end">
-          <div class="col-md-5">
-            <div class="sub-title border-bot-light mb-2">Discover</div>
-            <!-- Premium Apartment Filter as Themed Buttons -->
-            <div id="apartmentFilterGroup" class="transha-filter-btn-group d-flex flex-wrap gap-2" role="group"
-                 aria-label="Apartment filter buttons">
-              <button type="button" class="transha-filter-btn active" data-apartment="all">All Apartments</button>
-              <% if (Array.isArray(premiumApartments) && premiumApartments.length > 0) { %>
-                <% premiumApartments.forEach(function(apartment) { %>
-                  <button 
-                    type="button" 
-                    class="transha-filter-btn"
-                    data-apartment="<%= apartment._id %>">
-                    <%= apartment.propertyTitle %>
-                  </button>
-                <% }) %>
-              <% } %>
-            </div>
-          </div>
-          <div class="col-md-7">
-              <div class="section-title">Premium Apartment <span>&amp;</span> Rooms</div>
-              <p>Enjoy modern comfort and style in our premium apartment rooms, designed for a relaxing and memorable stay.</p>
-          </div>
-        </div>
-
-        <div class="rooms1-carousel owl-theme owl-carousel" id="premiumRoomsContainer">
-          <% if (Array.isArray(premiumApartments) && premiumApartments.length > 0) { %>
-            <% premiumApartments.forEach(function(apartment) { %>
-              <% 
-                // Utility to pick first available image (room > full apartment > gallery > fallback)
-                function getRoomImage(roomObj, fullAptObj, apartmentObj) {
-                  // Try room.images first, if not fullApt.images, if not apartment.gallery, if not fallback
-                  if (roomObj && Array.isArray(roomObj.images) && roomObj.images.length > 0 && typeof roomObj.images[0] === 'string' && roomObj.images[0].trim()) {
-                    return roomObj.images[0];
-                  }
-                  if (fullAptObj && Array.isArray(fullAptObj.images) && fullAptObj.images.length > 0 && typeof fullAptObj.images[0] === 'string' && fullAptObj.images[0].trim()) {
-                    return fullAptObj.images[0];
-                  }
-                  if (apartmentObj && Array.isArray(apartmentObj.gallery) && apartmentObj.gallery.length > 0 && typeof apartmentObj.gallery[0] === 'string' && apartmentObj.gallery[0].trim()) {
-                    return apartmentObj.gallery[0];
-                  }
-                  return '/img/default-room.jpg';
-                }
-                // For apartments with "Room Based" or "Mixed", show individual rooms
-                if (apartment.rooms && apartment.rooms.length > 0) {
-                  apartment.rooms.forEach(function(room) { 
-                    var imgSrc = getRoomImage(room, null, apartment);
-              %>
-                  <div class="rooms1-single" data-apartment="<%= apartment._id %>">
-                    <div class="rooms1-img">
-                      <img src="<%= imgSrc %>" alt="<%= room.roomType || 'Room' %>">
-                    </div>
-                    <div class="rooms1-content">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="rooms1-title">
-                            <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>">
-                              <%= apartment.propertyTitle %> - <%= room.roomType %> <% if (room.roomName) { %> (<%= room.roomName %>) <% } %>
-                            </a>
-                          </div>
-                          <div class="rooms1-tagline"><%= room.capacity %> adults</div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="book">
-                            <div>
-                              <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>" class="butn-dark2"><span>More Details</span></a>
-                            </div>
-                            <div><span>from</span><span class="price">₹<%= room.pricePerNight %></span></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              <%   }); 
-                }
-
-                if (apartment.apartments && apartment.apartments.length > 0) {
-                  apartment.apartments.forEach(function(fullApt) {
-                    var imgSrc = getRoomImage(null, fullApt, apartment);
-              %>
-                  <div class="rooms1-single" data-apartment="<%= apartment._id %>">
-                    <div class="rooms1-img">
-                      <img src="<%= imgSrc %>" alt="<%= fullApt.apartmentName || apartment.propertyTitle %>">
-                    </div>
-                    <div class="rooms1-content">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="rooms1-title">
-                            <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>">
-                              <%= fullApt.apartmentName || apartment.propertyTitle %>
-                            </a>
-                          </div>
-                          <div class="rooms1-tagline">
-                            <%= fullApt.totalRooms %> Rooms &bull; up to <%= fullApt.maxGuests || "?" %> guests
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="book">
-                            <div>
-                              <a href="/apartmentDetails/<%= encodeURIComponent(apartment.slug || apartment.propertyTitle) %>" class="butn-dark2"><span>More Details</span></a>
-                            </div>
-                            <div>
-                              <span>from</span>
-                              <span class="price">₹<%= fullApt.pricePerNight %></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              <%   });
-                }
-              %>
-            <% }); %>
-          <% } else { %>
-            <div class="text-center text-muted w-100">No premium apartments available.</div>
-          <% } %>
-        </div>
-      </div>
-    </section>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const filterGroup = document.getElementById("apartmentFilterGroup");
-        const roomNodes = document.querySelectorAll(".rooms1-single");
-
-        function getOwlIndexOfFirstVisible($carousel) {
-          // Returns the index for Owl Carousel corresponding to the first visible room
-          let $visible = $carousel.find('.rooms1-single').filter(function () {
-            return $(this).css('display') !== 'none';
-          });
-          if ($visible.length) {
-            // Calculate index of first visible within carousel items
-            let allItems = $carousel.find('.rooms1-single');
-            let firstVisible = $visible[0];
-            return allItems.index(firstVisible);
-          }
-          return 0;
-        }
-
-        filterGroup.addEventListener("click", function (e) {
-          if (!e.target.classList.contains("transha-filter-btn")) return;
-
-          // Set active button
-          Array.from(filterGroup.children).forEach(btn => btn.classList.remove('active'));
-          e.target.classList.add('active');
-          const selected = e.target.getAttribute("data-apartment");
-
-          // Show/hide room items
-          let visibleRooms = [];
-          roomNodes.forEach(room => {
-            const aId = room.getAttribute("data-apartment");
-            if (selected === "all" || aId === selected) {
-              room.style.display = "block";
-              visibleRooms.push(room);
-            } else {
-              room.style.display = "none";
-            }
-          });
-
-          // Owl Carousel: Refresh and CENTER to show first visible room in center
-          const $carousel = $(".rooms1-carousel");
-          if ($carousel.data("owl.carousel")) {
-            $carousel.trigger("refresh.owl.carousel");
-            setTimeout(function () {
-              let idx = getOwlIndexOfFirstVisible($carousel);
-              // Center the selected apartment's first room in carousel
-              let owlData = $carousel.data('owl.carousel');
-              if (owlData && owlData.settings.center) {
-                $carousel.trigger('to.owl.carousel', [idx, 400, true]);
-              } else {
-                $carousel.trigger('to.owl.carousel', [idx, 400, true]);
-              }
-            }, 200);
-          }
-        });
-
-        // On page load, auto-center all
-        setTimeout(function () {
-          const $carousel = $(".rooms1-carousel");
-          if ($carousel.data("owl.carousel")) {
-            let idx = getOwlIndexOfFirstVisible($carousel);
-            $carousel.trigger('to.owl.carousel', [idx, 400, true]);
-          }
-        }, 400);
-      });
-    </script>
+  
       
 
     <!-- Promo Video -->
